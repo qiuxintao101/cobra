@@ -1,27 +1,30 @@
 
 CoBRA - Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis
+===========================
+
 Introduction to CoBRA:
 CoBRA is a comprehensive ChIP/ATAC‐seq analysis tool built using snakemake and Docker which allows for escalable, reproducible, portable and easy-to-use workflows.
 
 CoBRA combines the use of several dozen ChIP/ATAC‐seq tools, suites, and packages to create a complete pipeline that takes ChIP/ATAC‐seq analysis from unsupervised analyses, differential peak calling, and downstream pathway analysis. In addition, CoBRA has been outfitted with several recently published tools that allow for better normalziation and CNV correction. The results are compiled in a simple and highly visual report containing the key figures to explain the analysis, and then compiles all of the relevant files, tables, and pictures into an easy to navigate folder.
 
 Table of Contents
-System Requirements
-Anatomy of a CoBRA PROJECT
-Getting Started
-[Installing Docker]
-[Running the CoBRA docker container]
-[Downloading the example data]
-[Test dry run on the workflow]
-[Run the workflow]
-Setting up a Project for a CoBRA Run
-Set up data folder
-The Config File
-The Metasheet
-Running CoBRA
-Appendix A: Dana-Farber Members
-Appendix B: Specific CoBRA Commands for Replotting
-Setting up CoBRA for a group of users or server
+* System Requirements
+* Anatomy of a CoBRA PROJECT
+* Getting Started
+* * [Installing Docker]
+* * [Running the CoBRA docker container]
+* * [Downloading the example data]
+* * [Test dry run on the workflow]
+* * [Run the workflow]
+* Setting up a Project for a CoBRA Run
+* Set up data folder
+* The Config File
+* The Metasheet
+* Running CoBRA
+* Appendix A: Dana-Farber Members
+* Appendix B: Specific CoBRA Commands for Replotting
+* Setting up CoBRA for a group of users or server
+
 System requirements:
 Some of the tools that CoBRA uses, e.g. samtools and homer are memory intensive programs. Therefore we recommend the following system requirements for CoBRA:
 
