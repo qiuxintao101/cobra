@@ -1,3 +1,4 @@
+CoBRA
 
 CoBRA - Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis
 ===========================
