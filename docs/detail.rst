@@ -7,7 +7,7 @@ For full information, please see the latest publication (linked here: :ref:`cita
 
 The workflow and conceptual idea behind *CoBRA* is illustrated by the following three Figures. First, we give a high-level conceptual overview and a biological motivation:
 
-   .. figure:: Figures/Fig_1.png
+   .. figure:: Fig_1.png
          :scale: 50 %
          :alt: CoBRA schematics
          :align: center
@@ -18,7 +18,7 @@ The workflow and conceptual idea behind *CoBRA* is illustrated by the following 
  Next, we show a schematic of the *CoBRA* workflow from a more technical perspective by showing the actual steps that are performed:
 
 
-   .. figure:: Figures/Workflow_new.png
+   .. figure:: Cobra_workflow.png
       :scale: 20 %
       :alt: Schematic of the CoBRA workflow and the GC binning
       :align: center
