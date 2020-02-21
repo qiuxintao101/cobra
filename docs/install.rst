@@ -9,17 +9,17 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
 1a. **The "easy" way**: Using ``Docker`` and our preconfigured *CoBRA* containers that contain all necessary tools, R, and R libraries
 
-  You only need to install Snakemake (see below for details) and ``Docker``. *Snakemake* supports Docker in Versions >=2.4. You can check whether you already have ``Docker`` installed by simply typing
+  You only need to install ``Docker``. *CoBRA* supports Docker in Versions >=1.8. You can check whether you already have ``Docker`` installed by simply typing
 
   .. code-block:: Bash
 
-    Docker --version
+    docker --version
 
-  Snakemake requires at least version 2.4. If your version is below, please update to the latest ``Docker`` version.
+  Cobra requires at least version 1.8. If your version is below, please update to the latest ``Docker`` version.
 
   .. note:: Make to read the section :ref:`docs-DockerNotes` properly!
 
-1b. **The "more complicated" way**:  Install the necessary tools (*Snakemake*, *samtools*, *bedtools*, *Subread*, and *R* along with various packages).
+1b. **The "more complicated" way**:  Install the necessary tools (*Snakemake*, *samtools*, *bedtools*, *Homer*, and *R* along with various packages).
 
   .. note:: Note that all tools require Python 3.
 
