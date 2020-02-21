@@ -20,13 +20,13 @@ This site is organized into the following three parts:
    :maxdepth: 2
    :caption: Quick Start and Installation
 
-   chapter1.rst
+   install.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: Pipeline Details
+   :caption: Workflow Details
 
-   chapter2.rst
+   detail.rst
 
 .. toctree::
   :maxdepth: 2
