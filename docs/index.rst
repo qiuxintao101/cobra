@@ -1,15 +1,16 @@
-.. diffTF documentation master file, created by
-   sphinx-quickstart on Thu Nov 30 13:16:14 2017.
+.. diffTF documentation master file
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
 =========================================
-Welcome to the documentation of *diffTF*!
+Welcome to the documentation of *CoBRA*!
 =========================================
 
-Welcome to the *diffTF* documentation, and thank you for the interest in our software! These pages provide documentation and additional information for the *diffTF* pipeline.
+CoBRA - Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis
 
-To get yourself oriented, check the menu on the left or search what you are looking for in the search field in the upper left corner.
+CoBRA is a comprehensive ChIP/ATAC‐seq analysis tool built using snakemake and Docker which allows for escalable, reproducible, portable and easy-to-use workflows.
+
+CoBRA combines the use of several dozen ChIP/ATAC‐seq tools, suites, and packages to create a complete pipeline that takes ChIP/ATAC‐seq analysis from unsupervised analyses, differential peak calling, and downstream pathway analysis. In addition, CoBRA has been outfitted with several recently published tools that allow for better normalziation and CNV correction. The results are compiled in a simple and highly visual report containing the key figures to explain the analysis, and then compiles all of the relevant files, tables, and pictures into an easy to navigate folder.
 
 
 This site is organized into the following three parts:
