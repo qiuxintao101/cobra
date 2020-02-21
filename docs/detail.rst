@@ -5,25 +5,25 @@ Workflow
 For full information, please see the latest publication (linked here: :ref:`citation`).
 
 
-The workflow and conceptual idea behind *diffTF* is illustrated by the following three Figures. First, we give a high-level conceptual overview and a biological motivation:
+The workflow and conceptual idea behind *CoBRA* is illustrated by the following three Figures. First, we give a high-level conceptual overview and a biological motivation:
 
    .. figure:: Figures/Fig_1.png
          :scale: 50 %
-         :alt: diffTF schematics
+         :alt: CoBRA schematics
          :align: center
 
-         Conceptual idea and workflow of *diffTF*, the two different modes and the classification
+         Conceptual idea and workflow of *CoBRA*, the two different modes and the classification
 
 
- Next, we show a schematic of the *diffTF* workflow from a more technical perspective by showing the actual steps that are performed:
+ Next, we show a schematic of the *CoBRA* workflow from a more technical perspective by showing the actual steps that are performed:
 
 
    .. figure:: Figures/Workflow_new.png
       :scale: 20 %
-      :alt: Schematic of the diffTF workflow and the GC binning
+      :alt: Schematic of the CoBRA workflow and the GC binning
       :align: center
 
-      Summary workflows for data processing and methodological details for *diffTF* (for more details, see Suppl. Figure 1 in the publication).
+      Summary workflows for data processing and methodological details for *CoBRA* (for more details, see Suppl. Figure 1 in the publication).
 
 
 We now show which rules are executed by *Snakemake* for a specific example (see the caption of the image):
@@ -36,7 +36,7 @@ We now show which rules are executed by *Snakemake* for a specific example (see 
 
          Exact workflow (a so-called directed acyclic graph, or DAG) that is executed when calling *Snakemake* for an easy of example with two TFs (CEBPB and CTCF) for the two samples GMP.WT1 and MPP.WT1. Each node represents a rule name as defined in the Snakefile, and each arrow a dependency.
 
-*diffTF* is currently implemented as a *Snakemake* pipeline. For a gentle introduction about *Snakemake*, see Section :ref:`workingWithPipeline`. As you can see, the workflow consists of the following steps or *rules*:
+*CoBRA* is currently implemented as a *Snakemake* pipeline. For a gentle introduction about *Snakemake*, see Section :ref:`workingWithPipeline`. As you can see, the workflow consists of the following steps or *rules*:
 
 - ``checkParameterValidity``: R script that checks whether the specified peak file has the correct format, whether the provided *fasta* file and the *BAM* files are compatible, and other checks
 - ``produceConsensusPeaks``:  R script that generates the consensus peaks using the R package ``DiffBind`` if none are provided
@@ -63,7 +63,7 @@ Input
 Summary
 ==============================
 
-As input for *diffTF* for your own analysis, the following data are needed:
+As input for *CoBRA* for your own analysis, the following data are needed:
 
 - *BAM* file with aligned reads for each sample (see :ref:`parameter_summaryFile`)
 - genome reference *fasta* that has been used to produce the *BAM* files (see :ref:`parameter_refGenome_fasta`)
@@ -75,7 +75,7 @@ In addition, the following files are need, all of which we provide already for h
 - mapping table (see :ref:`parameter_HOCOMOCO_mapping`)
 
 
-Lastly, some metadata files are needed that specify *diffTF*-specific and Snakemake-specific parameters. They are explained in detail in the next sections. If this sounds complicated, don't worry, just take the example analysis, and you will understand within a few minutes what these files are:
+Lastly, some metadata files are needed that specify *CoBRA*-specific and Snakemake-specific parameters. They are explained in detail in the next sections. If this sounds complicated, don't worry, just take the example analysis, and you will understand within a few minutes what these files are:
 
 - a general configuration file (:ref:`configurationFile`)
 - a metadata file for the samples (:ref:`section_metadata`)
@@ -166,7 +166,7 @@ Summary
   String. Default "". Specifies the two conditions you want to compare. Only relevant if *conditionSummary* is specified as a factor.
 
 Details
-  This parameter is only relevant if *conditionSummary* is specified as a factor, in which case it specifies the contrast you are making in *diffTF*. Otherwise, it is ignored. Exactly two conditions have to be specified, comma-separated. For example, if you want to compare GMP and MPP samples, the parameter should be "GMP,MPP". Both conditions have to be present in the column "conditionSummary" in the sample file table (see ``summaryFile`` (:ref:`parameter_summaryFile`)).
+  This parameter is only relevant if *conditionSummary* is specified as a factor, in which case it specifies the contrast you are making in *CoBRA*. Otherwise, it is ignored. Exactly two conditions have to be specified, comma-separated. For example, if you want to compare GMP and MPP samples, the parameter should be "GMP,MPP". Both conditions have to be present in the column "conditionSummary" in the sample file table (see ``summaryFile`` (:ref:`parameter_summaryFile`)).
 
   .. note:: The order of the two conditions matters. The condition specified first is the reference condition. For the "GMP,MPP" example, all log2 fold-changes will be the log2fc of *MPP* as compared to *GMP*. That means that a positive log2 fold-change means it is higher in *MPP* as compared to *GMP*. Consequently, the final TF activity (denoted *weighted mean difference* in the output tables) will have the same directionality. This is also particularly relevant for the *allMotifs* output file.
 
@@ -190,7 +190,7 @@ Details
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default  *conditionSummary*. Design formula for the RNA-Seq data. Only relevant and needed if parameter (:ref:`parameter_RNASeqIntegration`) is set to *true*. If missing (to increase compatibility with previous versions of *diffTF*), the default value will be taken.
+  String. Default  *conditionSummary*. Design formula for the RNA-Seq data. Only relevant and needed if parameter (:ref:`parameter_RNASeqIntegration`) is set to *true*. If missing (to increase compatibility with previous versions of *CoBRA*), the default value will be taken.
 
 Details
   This important parameter defines the actual contrast that is done in the differential accessibility analysis. That is, which groups of samples are being compared? Examples include mutant vs wild type, mutated vs. unmutated, etc. The last element in the formula must always be *conditionSummary*, which defines the two groups that are being compared or the continuous variable that is used for inferring negative or positive changes, respectively (see parameter :ref:`parameter_designVariableTypes`). This name is currently hard-coded and required by the pipeline. Our pipeline allows including additional variables to model potential confounding variables, like gender, batches etc. For each additional variable that is part of the formula, a corresponding and identically named column in the sample summary file must be specified. For example, for an analysis that also includes the batch number of the samples, you may specify this as "*~ Treatment + conditionSummary*".
@@ -279,7 +279,7 @@ Details
 
   .. note:: For each TF ``{TF}``, a corresponding file ``{TF}_TFBS.bed`` needs to be present in the directory that is specified by ``dir_TFBS`` (:ref:`parameter_dir_TFBS`).
 
-  .. warning:: We strongly recommending running *diffTF* with as many TF as possible due to our statistical model that we use that compares against a background model.
+  .. warning:: We strongly recommending running *CoBRA* with as many TF as possible due to our statistical model that we use that compares against a background model.
 
 .. _parameter_dir_scripts:
 
@@ -331,7 +331,7 @@ Summary
   Logical. true or false. Default true. Is the data paired-end? If single-end, set to false.
 
 Details
-  Both paired-end and single-end data can be run with *diffTF*.
+  Both paired-end and single-end data can be run with *CoBRA*.
 
 
 SECTION ``peaks``
@@ -367,7 +367,7 @@ Details
     5. Score
     6. Strand
 
-    .. warning:: *diffTF* will take a long time to run if the number of peaks is too high. We recommend having less than 100,000 peaks. If the number of peaks is higher for your analysis, we strongly recommend filtering the peaks beforehand to include only the most relevant peaks.
+    .. warning:: *CoBRA* will take a long time to run if the number of peaks is too high. We recommend having less than 100,000 peaks. If the number of peaks is higher for your analysis, we strongly recommend filtering the peaks beforehand to include only the most relevant peaks.
 
 .. _parameter_peakType:
 
@@ -437,9 +437,9 @@ Details
 
   For user convenience, we provide such sorted files as described in the publication as a separate download:
 
-  - hg19: For a pre-compiled list of 638 human TF with in-silico predicted TFBS based on the *HOCOMOCO 10* database and *PWMScan* for hg19, `download this file: <https://www.embl.de/download/zaugg/diffTF/TFBS/TFBS_hg19_PWMScan_HOCOMOCOv10.tar.gz>`__
-  - hg38: For a pre-compiled list of 767 human TF with in-silico predicted TFBS based on the *HOCOMOCO 11* database and *FIMO* from the MEME suite for hg38, `download this file: <https://www.embl.de/download/zaugg/diffTF/TFBS/TFBS_hg38_FIMO_HOCOMOCOv11.tar.gz>`_. For a pre-compiled list of 768 human TF with in-silico predicted TFBS based on the *HOCOMOCO 11* database and *PWMScan* for hg38, `download this file: <https://www.embl.de/download/zaugg/diffTF/TFBS/TFBS_hg38_PWMScan_HOCOMOCOv11.tar.gz>`__
-  - mm10: For a pre-compiled list of 422 mouse TF with in-silico predicted TFBS based on the *HOCOMOCO 10* database and *PWMScan* for mm10, `download this file: <https://www.embl.de/download/zaugg/diffTF/TFBS/TFBS_mm10_PWMScan_HOCOMOCOv10.tar.gz>`__
+  - hg19: For a pre-compiled list of 638 human TF with in-silico predicted TFBS based on the *HOCOMOCO 10* database and *PWMScan* for hg19, `download this file: <https://www.embl.de/download/zaugg/CoBRA/TFBS/TFBS_hg19_PWMScan_HOCOMOCOv10.tar.gz>`__
+  - hg38: For a pre-compiled list of 767 human TF with in-silico predicted TFBS based on the *HOCOMOCO 11* database and *FIMO* from the MEME suite for hg38, `download this file: <https://www.embl.de/download/zaugg/CoBRA/TFBS/TFBS_hg38_FIMO_HOCOMOCOv11.tar.gz>`_. For a pre-compiled list of 768 human TF with in-silico predicted TFBS based on the *HOCOMOCO 11* database and *PWMScan* for hg38, `download this file: <https://www.embl.de/download/zaugg/CoBRA/TFBS/TFBS_hg38_PWMScan_HOCOMOCOv11.tar.gz>`__
+  - mm10: For a pre-compiled list of 422 mouse TF with in-silico predicted TFBS based on the *HOCOMOCO 10* database and *PWMScan* for mm10, `download this file: <https://www.embl.de/download/zaugg/CoBRA/TFBS/TFBS_mm10_PWMScan_HOCOMOCOv10.tar.gz>`__
 
   However, you may also manually create these files to include additional TF of your choice or to be more or less stringent with the predicted TFBS. For this, you only need PWMs for the TF of interest and then a motif prediction tool such as *FIMO* or *MOODS*.
 
@@ -484,17 +484,17 @@ Input metadata
 
 This file summarizes the data and corresponding available metadata  that should be used for the analysis. The format is flexible and may contain additional columns that are ignored by the pipeline, so it can be used to capture all available information in a single place. Importantly, the file must be saved as tab-separated, the exact name does not matter as long as it is correctly specified in the configuration file.
 
-  .. warning:: Make sure that the line endings are correct. Different operating systems use different characters to mark the end of line, and the line ending character must be compatible with the operating system in which you run *diffTF*. For example, if you created the file in MAC, but you run it in a Linux environment (e.g., a cluster system), you may have to convert line endings to make them compatible with Linux. For more information, see `here <https://blog.shvetsov.com/2012/04/covert-unix-windows-mac-line-endings.html>`__ .
+  .. warning:: Make sure that the line endings are correct. Different operating systems use different characters to mark the end of line, and the line ending character must be compatible with the operating system in which you run *CoBRA*. For example, if you created the file in MAC, but you run it in a Linux environment (e.g., a cluster system), you may have to convert line endings to make them compatible with Linux. For more information, see `here <https://blog.shvetsov.com/2012/04/covert-unix-windows-mac-line-endings.html>`__ .
 
 It must contain at least contain the following columns (the exact names do matter):
 
 - ``sampleID``: The ID of the sample.
 
-  .. note:: Note that each sample ID must be unique! If you want to include replicate samples, rename them, for example by adding "_1", "_2" etc at the end. All that *diffTF* cares about is the correct group assignment as defined by the column *conditionSummary*.
+  .. note:: Note that each sample ID must be unique! If you want to include replicate samples, rename them, for example by adding "_1", "_2" etc at the end. All that *CoBRA* cares about is the correct group assignment as defined by the column *conditionSummary*.
 
 - ``bamReads``:  path to the *BAM* file corresponding to the sample.
 
-  .. warning:: All *BAM* files must meet *SAM* format specifications. You may use the program *ValidateSamFile* from the *Picard tools* to check and identify problems with your file. Chromosome names must have a "*chr*" as prefix, otherwise *diffTF* may crash.
+  .. warning:: All *BAM* files must meet *SAM* format specifications. You may use the program *ValidateSamFile* from the *Picard tools* to check and identify problems with your file. Chromosome names must have a "*chr*" as prefix, otherwise *CoBRA* may crash.
 
 - ``peaks``: absolute path to the sample-specific peak file, in the format as given by ``peakType`` (:ref:`parameter_peakType`). Only needed if no consensus peak file is provided.
 - ``conditionSummary``: String with an arbitrary condition name that defines which condition the sample belongs to. There must be only exactly two different conditions across all samples (e.g., *mutated and unmutated*, *day0 and day10*, ...). In addition, the two conditions must match the ones specified in the ``conditionComparison`` (:ref:`parameter_conditionComparison`).
@@ -557,7 +557,7 @@ Summary
 FILE ``{comparisonType}.summary.tsv.gz``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Summary
-  The final summary table with all *diffTF* results. This table is also used for the final Volcano plot visualization. The number of columns may vary and depends on the mode you run *diffTF* for (i.e., only basic mode or also classification mode, analytical or permutation-based approach).
+  The final summary table with all *CoBRA* results. This table is also used for the final Volcano plot visualization. The number of columns may vary and depends on the mode you run *CoBRA* for (i.e., only basic mode or also classification mode, analytical or permutation-based approach).
 
 Details
   The following columns are always present and relevant:
@@ -663,7 +663,7 @@ FILES ``{comparisonType}.consensusPeaks.filtered.sorted.bed``
 ----------------------------------------------------------------------------------------------
 
 Summary
-  Produced in rule ``filterSexChromosomesAndSortPeaks``. Filtered and sorted consensus peaks (see below). the *diffTF* analysis is based on this set of peaks.
+  Produced in rule ``filterSexChromosomesAndSortPeaks``. Filtered and sorted consensus peaks (see below). the *CoBRA* analysis is based on this set of peaks.
 
 Details
   Filtered consensus peaks (removal of peaks from one of the following chromosomes: chrX, chrY, chrM, chrUn\*, and all contig names that do not start with "chr" such as \*random* or \*hap|_gl\*
@@ -801,7 +801,7 @@ Summary
   Produced in rule ``analyzeTF``. Various diagnostic plots for the differential accessibility TFBS analysis for the real data.
 
 Details
-  See the description of the file ``{comparisonType}.diagnosticPlots.peaks.pdf`` in the ``PEAKS`` folder, which has an identical structure. Here, the second last page shows two density plots of the log2 fold-changes for the specific pairwise comparson that *diffTF* run for, one for the peak log2 fold-changes (independent of any TF) and one for the TF-specific one (i.e., across all TFBS from the subset of peaks with a TFBS for this TF). The last page shows the same but in a cumulative representation.
+  See the description of the file ``{comparisonType}.diagnosticPlots.peaks.pdf`` in the ``PEAKS`` folder, which has an identical structure. Here, the second last page shows two density plots of the log2 fold-changes for the specific pairwise comparson that *CoBRA* run for, one for the peak log2 fold-changes (independent of any TF) and one for the TF-specific one (i.e., across all TFBS from the subset of peaks with a TFBS for this TF). The last page shows the same but in a cumulative representation.
 
 
 FILE ``{TF}.{comparisonType}.permutationResults.rds``
@@ -871,7 +871,7 @@ Sub-folder ``extension{regionExtension}``
 Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`)
 
 - ``{comparisonType}.allTFBS.peaks.bed.gz``: Produced in rule ``intersectPeaksAndTFBS``. *BED* file containing all TFBS from all TF that overlap with the peaks after motif extension
-- ``conditionComparison.rds``: Produced in rule ``DiffPeaks``. Stores the condition comparison as a string. Some steps in *diffTF* need this file as input.
+- ``conditionComparison.rds``: Produced in rule ``DiffPeaks``. Stores the condition comparison as a string. Some steps in *CoBRA* need this file as input.
 - ``{comparisonType}.motifs.coord.permutation{perm}.bed.gz`` and ``{comparisonType}.motifs.coord.nucContent.permutation{perm}.bed.gz`` for each permutation ``{perm}``: Produced in rule ``calcNucleotideContent``, and needed subsequently for the binning. Temporary and result file of *bedtools nuc*, respectively. The latter contains the GC content for all TFBS.
 - ``{comparisonType}.checkParameterValidity.done``: temporary flag file
 - ``{TF}_TFBS.sorted.bed`` for each TF ``{TF}``: Produced in rule ``sortTFBSParallel``. Coordinate-sorted version of the input TFBS. Only "regular" chromosomes starting with "chr" are kept, while sex chromosomes (chrX, chrY), chrM and unassembled contigs such as chrUn are additionally removed.
@@ -879,19 +879,19 @@ Stores results related to the user-specified extension size (``regionExtension``
 
 .. _workingWithPipeline:
 
-Running *diffTF*
+Running *CoBRA*
 ******************
 
 General remarks
 ==============================
 
-*diffTF* is programmed as a *Snakemake* pipeline. *Snakemake* is a bioinformatics workflow manager that uses workflows that are described via a human readable, Python based language. It offers many advantages to the user because each step can easily be modified, parts of the pipeline can be rerun, and workflows can be seamlessly scaled to server, cluster, grid and cloud environments, without the need to modify the workflow definition or only minimal modifications. However, with great flexibility comes a price: the learning curve to work with the pipeline might be a bit higher, especially if you have no *Snakemake* experience. For a deeper understanding and troubleshooting errors, some knowledge of *Snakemake* is invaluable.
+*CoBRA* is programmed as a *Snakemake* pipeline. *Snakemake* is a bioinformatics workflow manager that uses workflows that are described via a human readable, Python based language. It offers many advantages to the user because each step can easily be modified, parts of the pipeline can be rerun, and workflows can be seamlessly scaled to server, cluster, grid and cloud environments, without the need to modify the workflow definition or only minimal modifications. However, with great flexibility comes a price: the learning curve to work with the pipeline might be a bit higher, especially if you have no *Snakemake* experience. For a deeper understanding and troubleshooting errors, some knowledge of *Snakemake* is invaluable.
 
 Simply put, *Snakemake* executes various *rules*. Each *rule* can be thought of as a single *recipe* or task such as sorting a file, running an R script, etc. Each rule has, among other features, a name, an input, an output, and the command that is executed. You can see in the ``Snakefile`` what these rules are and what they do. During the execution, the rule name is displayed, so you know exactly at which step the pipeline is at the given moment. Different rules are connected through their input and output files, so that the output of one rule becomes the input for a subsequent rule, thereby creating *dependencies*, which ultimately leads to the directed acyclic graph (*DAG*) that describes the whole workflow. You have seen such a graph in Section :ref:`workflow`.
 
-In *diffTF*, a rule is typically executed separately for each TF. One example for a particular rule is sorting the TFBS list for the TF CTCF.
+In *CoBRA*, a rule is typically executed separately for each TF. One example for a particular rule is sorting the TFBS list for the TF CTCF.
 
-In *diffTF*, the total number of *jobs* or rules to execute can roughly be approximated as 3 * ``nTF``, where ``nTF`` stands for the number of TFs that are included in the analysis. For each TF, three sets of rules are executed:
+In *CoBRA*, the total number of *jobs* or rules to execute can roughly be approximated as 3 * ``nTF``, where ``nTF`` stands for the number of TFs that are included in the analysis. For each TF, three sets of rules are executed:
 
 1. Calculating read counts for each TFBS within the peak regions (rule ``intersectTFBSAndBAM``)
 2. Differential accessibility analysis  (rule ``analyzeTF``)
@@ -902,12 +902,12 @@ In addition, one rule per permuation is executed, so an additional ``nPermutatio
 
 .. _timeMemoryRequirements:
 
-Executing *diffTF* - Running times and memory requirements
+Executing *CoBRA* - Running times and memory requirements
 ===============================================================
 
-*diffTF* can be computationally demanding depending on the sample size and the number of peaks. In the following, we discuss various issues related to time and memory requirements and we provide some general guidelines that worked well for us.
+*CoBRA* can be computationally demanding depending on the sample size and the number of peaks. In the following, we discuss various issues related to time and memory requirements and we provide some general guidelines that worked well for us.
 
-.. warning:: We generally advise to run *diffTF* in a cluster environment. For small analysis, a local analysis on your machine might work just fine (see the example analysis in the Git repository), but running time increases substantially due to limited amount of available cores.
+.. warning:: We generally advise to run *CoBRA* in a cluster environment. For small analysis, a local analysis on your machine might work just fine (see the example analysis in the Git repository), but running time increases substantially due to limited amount of available cores.
 
 Analysis size
 ---------------
@@ -931,9 +931,9 @@ Number of cores
 
 Some notes regarding the number of available cores:
 
-- *diffTF* can be invoked in a highly parallelized manner, so the more CPUs are available, the better.
+- *CoBRA* can be invoked in a highly parallelized manner, so the more CPUs are available, the better.
 - you can use the ``--cores`` option when invoking *Snakemake* to specify the number of cores that are available for the analysis. If you specify 4 cores, for example, up to 4 rules can be run in parallel (if each of them occupies only 1 core), or 1 rule can use up to 4 cores.
-- we strongly recommend running *diffTF* in a cluster environment due to the massive parallelization. With *Snakemake*, it is easy to run *diffTF* in a cluster setting. Simply do the following:
+- we strongly recommend running *CoBRA* in a cluster environment due to the massive parallelization. With *Snakemake*, it is easy to run *CoBRA* in a cluster setting. Simply do the following:
 
   - write a cluster configuration file that specifies which resources each rule needs. For guidance and user convenience, we provide different cluster configuration files for a small and large analysis. See the folder ``src/clusterConfigurationTemplates`` for examples. Note that these are rough estimates only. See the `*Snakemake* documentation <http://snakemake.readthedocs.io/en/latest/snakefiles/configuration.html#cluster-configuration>`__ for details for how to use cluster configuration files.
   - invoke *Snakemake* with one of the available cluster modes, which will depend on your cluster system. We used ``--cluster`` and tested the pipeline extensively with *LSF/BSUB* and *SLURM*. For more details, see the `*Snakemake* documentation <http://snakemake.readthedocs.io/en/latest/executable.html#cluster-execution>`__
@@ -950,10 +950,10 @@ Some notes regarding the total running time:
 
 .. _clusterEnvironment:
 
-Running *diffTF* in a cluster environment
+Running *CoBRA* in a cluster environment
 ===========================================
 
-If *diffTF* should be run in a cluster environment, the changes are minimal due to the flexibility of *Snakemake*. You only need to change the following:
+If *CoBRA* should be run in a cluster environment, the changes are minimal due to the flexibility of *Snakemake*. You only need to change the following:
 
 - create a cluster configuration file in JSON format. See the files in the ``clusterConfigurationTemplates`` folder for examples. In a nutshell, this file specifies the computational requirements and job details for each job that is run via *Snakemake*.
 - invoke *Snakemake* with a cluster parameter. As an example, you may use the following for a *SLURM* cluster:
@@ -1049,7 +1049,7 @@ Here a few typical use cases, which we will extend regularly in the future if th
 
 2. I received an error, and I do not see any error message.
 
-  First, check the cluster output and error files if you run *diffTF* in cluster mode. They mostly contain an actual error message or at least the print the exact command that resulted in an error. If you executed locally or still cannot find the error message, see below for guidelines.
+  First, check the cluster output and error files if you run *CoBRA* in cluster mode. They mostly contain an actual error message or at least the print the exact command that resulted in an error. If you executed locally or still cannot find the error message, see below for guidelines.
 
 3. I want to rerun a specific part of the pipeline only.
 
@@ -1059,18 +1059,18 @@ Here a few typical use cases, which we will extend regularly in the future if th
 
   Simply add or modify rules to the Snakefile, it is as easy as that.
 
-5. *diffTF* finished successfully, but nothing is significant.
+5. *CoBRA* finished successfully, but nothing is significant.
 
   This can and will happen, depending on the analysis. The following list provides some potential reasons for this:
 
-    - The two conditions are in fact very similar and there is no signal that surpasses the significance threshold. You could, for example, check in a PCA plot based on the peaks that are used as input for *diffTF* whether they show a clear signal and separation.
+    - The two conditions are in fact very similar and there is no signal that surpasses the significance threshold. You could, for example, check in a PCA plot based on the peaks that are used as input for *CoBRA* whether they show a clear signal and separation.
     - There is a confounding factor (like age) that dilutes the signal. One solution is to add the confounding variable into the design model, see above fo details. Again, check in a PCA plot whether samples cluster also according to another variable.
     - You have a small number of samples or one of the groups contains a small number of samples. In both cases, if you run the permutation-based approach, the number of permutations is small, and there might not be enough permutations to achieve significance. For example, if you run an analysis with only 10 permutations, you cannot surpass the 0.05 significance threshold. As a solution, you may switch to the analytical version. Be aware that this requires to rerun large parts of the pipeline from the *diffPeaks* step onwards.
     - You have a very small number of peaks and therefore also a small number of TF binding sites within the peaks, resulting in many TFs to be skipped in the analysis due to an insufficient number of binding sites. As a solution, try increasing the number of peaks or verify that the predicted binding sites are not too stringent (if done independently, therefore not using our TFBS collection that was produced with *PWMScan* and *HOCOMOCO*). We recommend having at least a few thousand peaks, but this can hardly be generalized and depends too much on the biology, the size of the peaks etc.
     - You run the (usually more stringent) permutation-based approach. If the number of permutations is too low, p-values may not be able to reach significance. For more details, see :ref:`parameter_nPermutations`. You may want to rerun the analysis using the analytical approach or using more permutations (if the number of samples makes this possible at all); however, the problems raised above may still apply.
 
 
-6. *diffTF* finished successfully, but almost everything is significant.
+6. *CoBRA* finished successfully, but almost everything is significant.
 
   This can also happen and is usually a good sign. The following list provides some potential reasons for this:
 
@@ -1111,8 +1111,8 @@ Errors occur during the *Snakemake* run can principally be divided into:
 
 From our experience, most errors occur due to the following issues:
 
-- Software-related problems such as R library issues, non-working conda installation etc. Consider using the Singularity-enhanced version of *diffTF* (version 1.2 and above) that immediately solves these issues.
-- issues arising from the data itself. Here, it is more difficult to find the cause. We tried to cover all cases for which *diffTF* may fail, so please post an issue on our `Bitbucket Issue Tracker <https://bitbucket.org/chrarnold/diffTF>`_ if you believe you found a new problem.
+- Software-related problems such as R library issues, non-working conda installation etc. Consider using the Docker-enhanced version of *CoBRA* (version 1.2 and above) that immediately solves these issues.
+- issues arising from the data itself. Here, it is more difficult to find the cause. We tried to cover all cases for which *CoBRA* may fail, so please post an issue on our `Bitbucket Issue Tracker <https://bitbucket.org/chrarnold/CoBRA>`_ if you believe you found a new problem.
 
 
 Identify the cause
@@ -1128,12 +1128,12 @@ To troubleshoot errors, you have to first locate the exact error. Depending on h
             jobid: 1287
             output: output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed, output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed.gz, output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.HXA10.allTFBS.peaks.extension.saf
     RuleException:
-    CalledProcessError in line 493 of /mnt/data/bioinfo_tools_and_refs/bioinfo_tools/diffTF/src/Snakefile:
+    CalledProcessError in line 493 of /mnt/data/bioinfo_tools_and_refs/bioinfo_tools/CoBRA/src/Snakefile:
     Command ' set -euo pipefail;   ulimit -n 4096 &&
                 zgrep "HXA10_TFBS\." output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.allTFBS.peaks.extension.bed.gz | awk 'BEGIN { OFS = "\t" } {print $4"_"$2"-"$3,$1,$2,$3,$6}' | sort -u -k1,1  >output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.HXA10.allTFBS.peaks.extension.saf &&
-                featureCounts             -F SAF             -T 4             -Q 10                          -a output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.HXA10.allTFBS.peaks.extension.saf             -s 0             -O              -o output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed              /mnt/data/common/tobias/diffTF/ATAC-bam-files/FL-WT-ProB-1.bam /mnt/data/common/tobias/diffTF/ATAC-bam-files/FL-WT-ProB-2.bam /mnt/data/common/tobias/diffTF/ATAC-bam-files/FL-WT-ProB-3.bam /mnt/data/common/tobias/diffTF/ATAC-bam-files/FL-Ebf1-KO-ProB-1.bam /mnt/data/common/tobias/diffTF/ATAC-bam-files/FL-Ebf1-KO-ProB-2.bam /mnt/data/common/tobias/diffTF/ATAC-bam-files/FL-Ebf1-KO-ProB-3.bam &&
+                featureCounts             -F SAF             -T 4             -Q 10                          -a output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.HXA10.allTFBS.peaks.extension.saf             -s 0             -O              -o output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed              /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-WT-ProB-1.bam /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-WT-ProB-2.bam /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-WT-ProB-3.bam /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-Ebf1-KO-ProB-1.bam /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-Ebf1-KO-ProB-2.bam /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-Ebf1-KO-ProB-3.bam &&
                 gzip -f < output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed > output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed.gz ' returned non-zero exit status 1.
-      File "/mnt/data/bioinfo_tools_and_refs/bioinfo_tools/diffTF/src/Snakefile", line 493, in __rule_intersectTFBSAndBAM
+      File "/mnt/data/bioinfo_tools_and_refs/bioinfo_tools/CoBRA/src/Snakefile", line 493, in __rule_intersectTFBSAndBAM
       File "/opt/anaconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
     Removing output files of failed job intersectTFBSAndBAM since they might be corrupted:
     output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.HXA10.allTFBS.peaks.extension.saf
@@ -1175,23 +1175,23 @@ We here provide a list of some of the errors that can happen and that users repo
   .. note:: This particular message may also be related to an incompatibility of the *DiffBind* and *DESeq2* libraries. See the :ref:`changelog` for details, as this has been addressed in version 1.1.5.
 
 
-  More generally, however, such messages point to a problem with your R and R libraries installation and have per se nothing to do with *diffTF*. In such cases, we advise to reinstall the latest version of *Bioconductor* and ask someone who is experienced with this to help you. Unfortunately, this issue is so general that we cannot provide any specific solutions. To troubleshoot and identify exactly which library or function causes this, you may run the R script that failed in debug mode and go through it line by line. See the next section for more details.
+  More generally, however, such messages point to a problem with your R and R libraries installation and have per se nothing to do with *CoBRA*. In such cases, we advise to reinstall the latest version of *Bioconductor* and ask someone who is experienced with this to help you. Unfortunately, this issue is so general that we cannot provide any specific solutions. To troubleshoot and identify exactly which library or function causes this, you may run the R script that failed in debug mode and go through it line by line. See the next section for more details.
 
-  .. note:: We strongly recommend running the *Singularity* version of *diffTF* (version 1.2 and above) that immediately solves these issues. See the :ref:`changelog` for more details and the section :ref:`docs-quickstart`
+  .. note:: We strongly recommend running the *Docker* version of *CoBRA* (version 1.2 and above) that immediately solves these issues. See the :ref:`changelog` for more details and the section :ref:`docs-quickstart`
 
-2. Singularity-related errors
+2. Docker-related errors
 
-  Although *Singularity* errors are rare (up until now), it might happen that you receive an error that is related to it. Up until now, these were either of temporary nature (so trying again a while after fixes it) or related to the system you are running *Singularity* on (e.g., a misconfiguration of some sort), among others.
+  Although *Docker* errors are rare (up until now), it might happen that you receive an error that is related to it. Up until now, these were either of temporary nature (so trying again a while after fixes it) or related to the system you are running *Docker* on (e.g., a misconfiguration of some sort), among others.
 
-  For example, in July 2019, SingularityHub was down for a few days due to a single user misusing the service, which had to be shutdown because of that. When trying to download the *diffTF* Singularity images in that time period, the error message was:
+  For example, in July 2019, DockerHub was down for a few days due to a single user misusing the service, which had to be shutdown because of that. When trying to download the *CoBRA* Docker images in that time period, the error message was:
 
   .. code-block:: Bash
 
-    FATAL: Failed to get manifest from Shub: No response received from singularity hub
+    FATAL: Failed to get manifest from Shub: No response received from Docker hub
 
-  Another common error is related to not including paths for the ``bind`` option, resulting in "Directory not found" errors, see :ref:`docs-singularityNotes` for details!
+  Another common error is related to not including paths for the ``bind`` option, resulting in "Directory not found" errors, see :ref:`docs-DockerNotes` for details!
 
-  If you do not know what the error is, post an Issue in the `Bitbucket Issue Tracker <https://bitbucket.org/chrarnold/diffTF>`_ tracker and we are hopefully able to help you quickly.
+  If you do not know what the error is, post an Issue in the `Bitbucket Issue Tracker <https://bitbucket.org/chrarnold/CoBRA>`_ tracker and we are hopefully able to help you quickly.
 
 3. Data-specific errors
 
@@ -1229,14 +1229,14 @@ After fixing the error, rerun *Snakemake*. *Snakemake* will continue at the poin
 Understanding and interpreting results
 ****************************************
 
-Having results is exciting; however, as with most software, now the maybe even harder part starts: Understanding and interpreting the results. Let's first remind ourselves: The main goal of *diffTF* is to aid in formulating testable hypotheses and ultimately improve the understanding of regulatory mechanisms that are driving the differences on a system-wide scale.
+Having results is exciting; however, as with most software, now the maybe even harder part starts: Understanding and interpreting the results. Let's first remind ourselves: The main goal of *CoBRA* is to aid in formulating testable hypotheses and ultimately improve the understanding of regulatory mechanisms that are driving the differences on a system-wide scale.
 
 General notes
 =================
 
   - Irrespective of whether or not you also used the classification mode, we recommend that the first thing to check is the Volcano plot PDF.
   - If a specific question is not addressed here, feel free to contact us. We ill then add it here.
-  - Note that *diffTF* captures differential accessibility, which does not necessarily imply a functional difference. See the publication for more discussion and details.
+  - Note that *CoBRA* captures differential accessibility, which does not necessarily imply a functional difference. See the publication for more discussion and details.
   - the significance as calculated by the empirical or analytical approach should not be over-interpreted from our point of view. We find the TF activity to be the more important measure.
 
 
@@ -1260,5 +1260,5 @@ Specifics for the classification mode
 Limitations
 -------------
 
-As written in the publication, we note that *diffTF* is prone to mis-classifying TFs that (1) act bifunctionally as activators and repressors in different genomic contexts or along with different co-factors, (2) are heavily regulated post-translationally, or (3) show little variation in RNA expression across the samples. Some of these mis-classifications may represent interesting subjects for future investigations.
-Furthermore, if two TFs have similar motifs, which makes it difficult to distinguish them, *diffTF* may have difficulties in classifying them correctly. Thus, for distinguishing the functional roles of TFs from the same motif-family, further biochemical experiments are needed.
+As written in the publication, we note that *CoBRA* is prone to mis-classifying TFs that (1) act bifunctionally as activators and repressors in different genomic contexts or along with different co-factors, (2) are heavily regulated post-translationally, or (3) show little variation in RNA expression across the samples. Some of these mis-classifications may represent interesting subjects for future investigations.
+Furthermore, if two TFs have similar motifs, which makes it difficult to distinguish them, *CoBRA* may have difficulties in classifying them correctly. Thus, for distinguishing the functional roles of TFs from the same motif-family, further biochemical experiments are needed.
