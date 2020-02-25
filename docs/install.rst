@@ -53,23 +53,11 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
     .. code-block:: Bash
 
-      git clone https://git.embl.de/grp-zaugg/CoBRA.git
+      git clone https://bitbucket.org/cfce/cobra.git .
 
-    If you receive an error, *Git* may not be installed on your system. If you run Ubuntu, try the following command:
+    If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
 
-    .. code-block:: Bash
-
-      sudo apt-get install git
-
-    For macOS, there are multiple ways of installing it. If you already have *Homebrew* (http://brew.sh) installed, simply type:
-
-    .. code-block:: Bash
-
-      brew install git
-
-    Otherwise, consult the internet on how to best install Git for your system.
-
-3. **To run CoBRA with an example ATAC-Seq / RNA-seq dataset for 50 TF, simply perform the following steps (see section**  :ref:`exampleDataset` **for dataset details)**:
+3. **To run CoBRA with an example ChIP-Seq / ATAC-seq dataset, simply perform the following steps (see section**  :ref:`exampleDataset` **for dataset details)**:
 
   * Change into the ``example/input`` directory within the Git repository
 
