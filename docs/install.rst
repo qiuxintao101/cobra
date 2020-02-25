@@ -28,24 +28,19 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
   .. note:: Note that most tools in CoBRA are avaiable via conda.
 
-  We recommend installing all tools via conda, in which case the installation then becomes as easy as download following environment yaml file.
+  We recommend installing all tools via conda, in which case the installation then becomes as easy as download the :download:`environment.yml <environment.yml>` file. Then run the following command:
 
-:download:`environment.yml <environment.yml>`.
+.
 
   .. code-block:: Bash
 
-    conda config --add channels defaults
-    conda config --add channels conda-forge
-    conda config --add channels bioconda
-    conda install snakemake bedtools samtools subread
+     conda env create -f environment.yml -n cobra
 
   If conda is not yet installed, follow the `installation instructions <https://conda.io/docs/user-guide/install/index.html>`_. Installation is quick and easy. Make sure to restrat the terminal after installation, so that *conda* is available.
 
-  .. note:: You do not need to uninstall other Python installations or packages in order to use conda. Even if you already have a system Python, another Python installation from a source such as the macOS Homebrew package manager and globally installed packages from pip such as pandas and NumPy, you do not need to uninstall, remove, or change any of them before using conda.
+  In addition, Cobra is needed along with following packages that ourside the conda framework. See the following instructions for each of the tools: `Giggle  <https://github.com/ryanlayer/giggle>`_, `liftover <http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver>`_.
 
-  If you want to install the tools manually and outside of the conda framework, see the following instructions for each of the tools: `snakemake  <http://snakemake.readthedocs.io/en/stable/getting_started/installation.html>`_, `samtools <http://www.htslib.org/download>`_, `bedtools <http://bedtools.readthedocs.io/en/latest/content/installation.html>`_, `Subread <http://subread.sourceforge.net>`_.
-
-  In addition, *R* is needed along with various packages (see below for details).
+  
 
 2. **Clone the Git repository:**
 
