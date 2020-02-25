@@ -38,9 +38,18 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
   In addition, Cobra is needed along with following packages that ourside the conda framework. See the following instructions for each of the tools: `giggle  <https://github.com/ryanlayer/giggle>`_, `liftover <http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver>`_.
 
-  
+2. **Activate cobra conda environment:**
 
-2. **Clone the Git repository:**
+  Once you have installed ``Cobra`` by docker or conda, you now can use the following command activate the environment
+  
+    .. code-block:: Bash
+
+      source activate cobra
+  
+    .. note:: If install the cobra environemnt by docker, please read the :ref:`docs-DockerNotes` properly! Especially folllowing the instructions to mount the current folder inside into the containter.
+
+
+3. **Clone the Git repository:**
 
     .. code-block:: Bash
 
