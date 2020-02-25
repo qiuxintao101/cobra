@@ -30,15 +30,13 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
   We recommend installing all tools via conda, in which case the installation then becomes as easy as download the :download:`environment.yml <environment.yml>` file. Then run the following command:
 
-.
-
   .. code-block:: Bash
 
      conda env create -f environment.yml -n cobra
 
   If conda is not yet installed, follow the `installation instructions <https://conda.io/docs/user-guide/install/index.html>`_. Installation is quick and easy. Make sure to restrat the terminal after installation, so that *conda* is available.
 
-  In addition, Cobra is needed along with following packages that ourside the conda framework. See the following instructions for each of the tools: `Giggle  <https://github.com/ryanlayer/giggle>`_, `liftover <http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver>`_.
+  In addition, Cobra is needed along with following packages that ourside the conda framework. See the following instructions for each of the tools: `giggle  <https://github.com/ryanlayer/giggle>`_, `liftover <http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver>`_.
 
   
 
