@@ -17,10 +17,11 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
   If docker is not installed, please install `docker <https://docs.docker.com/install/>`_ on your platform first. Once docker is installed, you can simply type following command to pull the CoBRA image.
   
-   .. code-block:: Bash
-    
-    docker pull cfce/cobra:latest
 
+  .. code-block:: Bash
+
+    docker pull cfce/cobra:latest
+  
   .. note:: Make to read the section :ref:`docs-DockerNotes` properly!
 
 1b. **The "more complicated" way**:  Install the necessary tools (*Snakemake*, *samtools*, *bedtools*, *Homer*, and *R* along with various packages).
