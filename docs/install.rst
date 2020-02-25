@@ -15,7 +15,7 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
     docker --version
 
-  Cobra requires at least version 1.8. If your version is below, please update to the latest ``Docker`` version.
+  If docker is not installed, please install ``docker<https://docs.docker.com/install/>`` on your platform first.
 
   .. note:: Make to read the section :ref:`docs-DockerNotes` properly!
 
