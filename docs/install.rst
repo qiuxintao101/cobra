@@ -29,8 +29,8 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
   .. note:: Note that most tools in CoBRA are avaiable via conda.
 
   We recommend installing all tools via conda, in which case the installation then becomes as easy as download following environment yaml file.
-  
-  *:environment.yml:`environment.yml`
+
+:download:`environment.yml <environment.yml>`.
 
   .. code-block:: Bash
 
