@@ -42,29 +42,29 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
   Once you have installed ``Cobra`` by docker or conda, you now can use the following command activate the environment
   
-    .. code-block:: Bash
+  .. code-block:: Bash
 
-    source activate cobra
+  source activate cobra
   
-    .. note:: If install the cobra environemnt by docker, please read the :ref:`docs-DockerNotes` properly! Especially folllowing the instructions to mount the current folder inside into the containter.
+  .. note:: If install the cobra environemnt by docker, please read the :ref:`docs-DockerNotes` properly! Especially folllowing the instructions to mount the current folder inside into the containter.
 
 
 3. **Clone the Git repository:**
 
-   If install by docker, please run the following command to change the working directory:
+  If install by docker, please run the following command to change the working directory:
    
 
-    .. code-block:: Bash
+  .. code-block:: Bash
    
-   cd cobra
+  cd cobra
    
-   Following command will get most recent version of codes that require to run cobra, this command need to run in a empty directory:
+  Following command will get most recent version of codes that require to run cobra, this command need to run in a empty directory:
 
-    .. code-block:: Bash
+  .. code-block:: Bash
 
-    git clone https://bitbucket.org/cfce/cobra.git .
+  git clone https://bitbucket.org/cfce/cobra.git .
 
-    If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
+  If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
 
 3. **To run CoBRA with an example ChIP-Seq / ATAC-seq dataset, simply perform the following steps (see section**  :ref:`exampleDataset` **for dataset details)**:
 
