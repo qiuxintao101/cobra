@@ -44,7 +44,7 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
   
   .. code-block:: Bash
 
-  source activate cobra
+     source activate cobra
   
   .. note:: If install the cobra environemnt by docker, please read the :ref:`docs-DockerNotes` properly! Especially folllowing the instructions to mount the current folder inside into the containter.
 
@@ -56,13 +56,13 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
   .. code-block:: Bash
    
-  cd cobra
+     cd cobra
    
   Following command will get most recent version of codes that require to run cobra, this command need to run in a empty directory:
 
   .. code-block:: Bash
 
-  git clone https://bitbucket.org/cfce/cobra.git .
+     git clone https://bitbucket.org/cfce/cobra.git .
 
   If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
 
