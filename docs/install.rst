@@ -112,10 +112,11 @@ Running your own analysis is almost as easy as running the example analysis (see
 
 1. Modify the file ``config.yaml`` accordingly. See Section :ref:`configurationFile` for details about the meaning of the parameters. Do not delete or rename any parameters or sections.
 2. Change the ``metasheet.csv`` file that match the input data, in analogy to the file ``metasheet.csv`` from the example analysis, and refer to that in the file ``config.yaml`` (parameter ``bam``, ``bigwig``, ``bed``)
-3. Start a dryrun with the following command
+3. Activate the cobra environment and start a dryrun with the following command
    
    .. code-block:: Bash
       
+      source activate cobra
       snakemake all -np
    
    If dryrun is successfull, proceeding with the following to start.
