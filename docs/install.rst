@@ -68,83 +68,39 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
 3. **To run CoBRA with an example ChIP-Seq / ATAC-seq dataset, simply perform the following steps (see section**  :ref:`exampleDataset` **for dataset details)**:
 
-  * Change into the ``example/input`` directory within the Git repository
+  Download the example data for the GR-ChIP experiement, this will download all bam, bigwig and bed files that needed to run the example:
 
-      .. code-block:: Bash
+  .. code-block:: Bash
 
-        cd CoBRA/example/input
+     snakemake download_example_GR_ChIP
 
-  * Download the data via the download script
+  To test if the setup is correct, start a dryrun via the following command:
 
-        .. code-block:: Bash
+  .. code-block:: Bash
 
-          sh downloadAllData.sh
+     snakemake all -np
 
-  * To test if the setup is correct, start a dryrun via the first helper script
+  Once the dryrun is successful, start the analysis via the command(using 6 cores).
 
-        .. code-block:: Bash
+  .. code-block:: Bash
 
-          sh startAnalysisDryRun.sh
+     snakemake all --cores 6
 
-  * Once the dryrun is successful, start the analysis via the second helper script.
-
-    .. code-block:: Bash
-
-      sh startAnalysis.sh
-
-    If you want to include ``Docker`` (which we strongly recommend), simply edit the file and add the ``--use-Docker`` and ``--Docker-args`` command line arguments in addition to the other arguments (see the Snakemake documentation and the section :ref:`docs-DockerNotes` for more details).
-
-    Thus, the command you execute should look like this:
-
-        .. code-block:: Bash
-
-          snakemake --snakefile ../../src/Snakefile --cores 2 --configfile config.json \
-           --use-Docker --Docker-args "--bind /your/CoBRA/path"
-
-    Read in section :ref:`docs-DockerNotes` about the ``--bind`` option and what ``/your/CoBRA/path`` means here , it is actually very easy!
-
-    You can also run the example analysis with all TF instead of only 50. For this, simply modify the ``TF`` parameter and set it to the special word ``all`` that tells *CoBRA* to use all recognized TFs instead of a specific list only (see section :ref:`parameter_TFs` for details).
-
-4. **To run your own analysis**, modify the files ``config.json`` and ``sampleData.tsv``. See the instructions in the section `Run your own analysis`_ for more details.
-5. **If your analysis finished successfully**, take a look into the ``FINAL_OUTPUT`` folder within your specified output directory, which contains the summary tables and visualization of your analysis. If you received an error, take a look in Section :ref:`docs-errors` to troubleshoot.
+4. **To run your own analysis**, modify the files ``config.yaml`` and ``metasheet.csv``. See the instructions in the section `Run your own analysis`_ for more details.
+5. **If your analysis finished successfully**, take a look into the ``analysis`` folder within your specified output directory, which contains the data and visualization of your analysis. If you received an error, take a look in Section :ref:`docs-errors` to troubleshoot.
 
 .. _docs-prerequisites:
 
 Prerequisites for the "easy" way
 ==================================
 
-The only prerequisite here is that Snakemake and ``Docker`` must be installed on the system you want to run *CoBRA*. See above for details with respect to the supported versions etc. For details how to install Snakemake, see below.
+The only prerequisite here is that ``Docker`` must be installed on the system you want to run *CoBRA*. See above for details with respect to the supported versions etc.
 
 
 Prerequisites for the "manual" way
 =====================================
 
-Note that most of this section is only relevant if you use Snakemake without ``Docker``. This section lists the required software and how to install them. As outlined in Section :ref:`docs-quickstart`, the easiest way is to install all of them via ``conda``. However, it is of course also possible to install the tools separately.
-
-Snakemake
---------------------------
-
-Please ensure that you have at least version 5.3 installed. Principally, there are `multiple ways to install Snakemake <http://snakemake.readthedocs.io/en/stable/getting_started/installation.html>`_. We recommend installing it, along with all the other required software, via conda.
-
-*samtools*, *bedtools*, *Subread*
-----------------------------------
-
-In addition, `samtools <http://www.htslib.org/download>`_, `bedtools <http://bedtools.readthedocs.io>`_ and `Subread <http://subread.sourceforge.net>`_ are needed to run *CoBRA*. We recommend installing them, along with all the other required software, via conda.
-
-
-R and R packages
---------------------------
-
-A working ``R`` installation is needed and a number of packages from either CRAN or Bioconductor have to be installed.  Type the following in ``R`` to install them:
-
-.. code-block:: R
-
-  install.packages(c("checkmate", "futile.logger", "tidyverse", "reshape2", "RColorBrewer", "ggrepel", "lsr", "modeest", "boot", "grDevices", "pheatmap", "matrixStats", "locfdr"))
-
-  if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-  BiocManager::install(c("limma", "vsn", "csaw", "DESeq2", "DiffBind", "geneplotter", "Rsamtools", "preprocessCore", "apeglm"))
+Note that most of this section is only relevant if you use *CoBRA* without ``Docker``. This section lists the required software and how to install them. As outlined in Section :ref:`docs-quickstart`, the easiest way is to install all of them via ``conda``. However, it is of course also possible to install the tools separately.
 
 
 .. _docs-runOwnAnalysis:
@@ -154,11 +110,10 @@ Run your own analysis
 
 Running your own analysis is almost as easy as running the example analysis (see section :ref:`exampleDataset`). Carefully read and follow the following steps and notes:
 
-1. Copy the files ``config.json`` and ``startAnalysis.sh`` to a directory of your choice.
-2. Modify the file ``config.json`` accordingly. For example, we strongly recommend running the analysis for all TF instead of just 50 as for the example analysis. For this, simply change the parameter â€œTFsâ€ to â€œallâ€. See Section :ref:`configurationFile` for details about the meaning of the parameters. Do not delete or rename any parameters or sections.
-3. Create a **tab-separated** file that defines the input data, in analogy to the file ``sampleData.tsv`` from the example analysis, and refer to that in the file ``config.json`` (parameter ``summaryFile``)
-4. Adapt the file ``startAnalysis.sh`` if necessary (the exact command line call to Snakemake and the various Snakemake-related parameters). If you run with Docker, see the section below for modifications.
-5. Since running the pipeline is often computationally demanding, read Section :ref:`timeMemoryRequirements` and decide on which machine to run the pipeline. In most cases, we recommend running *CoBRA* in a cluster environment (see Section :ref:`clusterEnvironment` for details). The pipeline is written in Snakemake, and we strongly suggest to also read Section :ref:`workingWithPipeline` to get a basic understanding of how the pipeline works.
+1. Modify the file ``config.yaml`` accordingly. See Section :ref:`configurationFile` for details about the meaning of the parameters. Do not delete or rename any parameters or sections.
+2. Change the ``metasheet.csv`` file that match the input data, in analogy to the file ``metasheet.csv`` from the example analysis, and refer to that in the file ``config.yaml`` (parameter ``bam``, ``bigwig``, ``bed``)
+3. Start a dryrun with the following command snakemake all -np. If dryrun is successfull, proceed with snakemake all --cores 6 to start.
+4. Since running the pipeline is often computationally demanding, read Section :ref:`timeMemoryRequirements` and decide on which machine to run the pipeline. In most cases, we recommend running *CoBRA* in a cluster environment (see Section :ref:`clusterEnvironment` for details). The pipeline is written in Snakemake, and we strongly suggest to also read Section :ref:`workingWithPipeline` to get a basic understanding of how the pipeline works.
 
 
 .. _docs-DockerNotes:
