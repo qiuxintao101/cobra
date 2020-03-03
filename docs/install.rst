@@ -80,7 +80,7 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
      snakemake all -np
 
-  Once the dryrun is successful, start the analysis via the command(using 6 cores).
+  Once the dryrun is successful, start the analysis via the command (using 6 cores).
 
   .. code-block:: Bash
 
@@ -119,7 +119,7 @@ Running your own analysis is almost as easy as running the example analysis (see
       source activate cobra
       snakemake all -np
    
-   If dryrun is successfull, proceeding with the following to start.
+   If dryrun is successfull, proceeding with the following to start (using 6 cores).
    
    .. code-block:: Bash
       
@@ -132,16 +132,18 @@ Running your own analysis is almost as easy as running the example analysis (see
 
 Adaptations and notes when running with Docker
 ============================================================
- With ``Docker``, each rule will be executed in pre-configured isolated containers that contain all necessary tools.  To enable it, you only have to add the following arguments when you execute Snakemake:
+ With ``Docker``, the CoBRA workflow will be executed in pre-configured isolated container that contain all necessary tools.  To use it, you only have to add the following arguments when you initial the docker container:
 
-1. ``--use-Docker``: Just type it like this!
+.. code-block:: Bash
 
-2. ``--Docker-args``: You need to make all directories that contain files that are referenced in the *CoBRA* configuration file available within the container also. By default, only the directory and subdirectories from which you start the analysis are automatically mounted inside the container. Since the *CoBRA* source code is outside the ``input`` folder for the example analysis, however, at least the root directory of the Git repository has to be mounted. This is actually quite simple! Just use ``--Docker-args "--bind /your/CoBRA/path"`` and replace ``/your/CoBRA/path`` with the root path in which you cloned the *CoBRA* Git repository (the one that has the subfolders ``example``, ``src`` etc.). If you reference additional files, simply add one or multiple directories to the bind path (use the comma to separate them). For example, if you reference the files ``/g/group1/user1/mm10.fa`` and ``/g/group2/user1/files/bla.txt`` in the configuration file file, you may add ``/g/group1/user1,/g/group2/user1/files`` or even just ``/g`` to the bind path (as all files you reference are within ``/g``).
+   docker run --rm -v $PWD:/cobra -it cfce/cobra:latest
+
+1. ``--rm``: This option will help delete the container immediately after it exits. This helps to prevent having to clean up containers after finish runing the workflow.
+
+2. ``-v``: The -v flag mounts the current directory ``$PWD`` into /cobra in the container. You need to make all directories that contain files that are referenced in the *CoBRA* configuration file available within the container. By default, only the directory and subdirectories from which you start the analysis are automatically mounted inside the container. Since the *CoBRA* source code is outside the ``input`` folder for the example analysis, however, at least the root directory of the Git repository has to be mounted. This is actually quite simple! Just use ``--Docker-args "--bind /your/CoBRA/path"`` and replace ``/your/CoBRA/path`` with the root path in which you cloned the *CoBRA* Git repository (the one that has the subfolders ``example``, ``src`` etc.). If you reference additional files, simply add one or multiple directories to the bind path (use the comma to separate them). For example, if you reference the files ``/g/group1/user1/mm10.fa`` and ``/g/group2/user1/files/bla.txt`` in the configuration file file, you may add ``/g/group1/user1,/g/group2/user1/files`` or even just ``/g`` to the bind path (as all files you reference are within ``/g``).
 
   .. note:: We note again that within a Docker container, you cannot access paths outside of the directory from where you started executing Snakemake. If you receive errors in the ``checkParameterValidity`` rule that a directory does not exist even though you can cd into it, you most likely forgot to include the path this folder or a parent path as part of the ``bind`` option.
 
-3. ``--Docker-prefix /your/directory`` (optional): You do not have to, but you may want to add the ``--Docker-prefix`` argument to store all ``Docker`` containers in a central place (here: ``/your/directory``) instead of the local ``.snakemake`` directory. If you intend to run multiple *CoBRA* analyses in different folders, you can save space and time because the containers won't have to be downloaded each time and stored in multiple locations.
+3. ``-it``: The -it options allows you to interact with the container’s shell and run any command inside of it.
 
-Please read the following additional notes and warnings related to ``Docker``:
-
-- .. warning:: If you use ``Docker`` version 3, make sure you have at least version 3.0.3 installed, as there was an issue with Snakemake and particular ``Docker`` versions. For more details, see `here <https://bitbucket.org/snakemake/snakemake/issues/1017/snakemake-process-suspended-upon-execution>`_.
+You do not have to, but you may go through the following tutorial related to ``Docker``, this will help you understand the docker better. For more details, see `here <https://docker-curriculum.com/>`_.
