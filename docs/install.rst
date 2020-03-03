@@ -146,4 +146,11 @@ Adaptations and notes when running with Docker
 
 3. ``-it``: The -it options allows you to interact with the container’s shell and run any command inside of it.
 
+Once you start runing the cobra containter, it's bash shell will be attached to the terminal, and the command prompt will change:
+
+.. code-block:: Bash
+
+   docker run --rm -v $PWD:/cobra -it cfce/cobra:latest
+
+
 You do not have to, but you may go through the following tutorial related to ``Docker``, this will help you understand the docker better. For more details, see `here <https://docker-curriculum.com/>`_.
