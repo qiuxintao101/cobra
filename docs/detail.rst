@@ -7,7 +7,7 @@ For full information, please see the latest publication (linked here: :ref:`cita
 
 The workflow and conceptual idea behind *CoBRA* is illustrated by the following three Figures. First, we give a high-level conceptual overview and a biological motivation:
 
-   .. figure:: Fig_1.png
+   .. figure:: workflow.png
          :scale: 25 %
          :alt: CoBRA schematics
          :align: center
@@ -29,11 +29,16 @@ The workflow and conceptual idea behind *CoBRA* is illustrated by the following 
 We now show which rules are executed by *Snakemake* for a specific example (see the caption of the image):
 
 
-   .. figure:: Figures/dag.png
+   .. figure:: Fig_1.png
          :scale: 20 %
          :alt: Directed acyclic graph of an example workflow
          :align: center
-
+         
+   .. figure:: dag.png
+         :scale: 20 %
+         :alt: Directed acyclic graph of an example workflow
+         :align: center
+         
          Exact workflow (a so-called directed acyclic graph, or DAG) that is executed when calling *Snakemake* for an easy of example with two TFs (CEBPB and CTCF) for the two samples GMP.WT1 and MPP.WT1. Each node represents a rule name as defined in the Snakefile, and each arrow a dependency.
 
 *CoBRA* is currently implemented as a *Snakemake* pipeline. For a gentle introduction about *Snakemake*, see Section :ref:`workingWithPipeline`. As you can see, the workflow consists of the following steps or *rules*:
