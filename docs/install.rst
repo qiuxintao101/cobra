@@ -20,7 +20,7 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
   .. code-block:: Bash
 
-    docker pull cfce/cobra:latest
+    docker run --rm -v $PWD:/cobra -it cfce/cobra:latest
   
   .. note:: Make to read the section :ref:`docs-DockerNotes` properly!
 
@@ -140,9 +140,9 @@ Adaptations and notes when running with Docker
 
 1. ``--rm``: This option will help delete the container immediately after it exits. This helps to prevent having to clean up containers after finish runing the workflow.
 
-2. ``-v``: The ``-v`` flag mounts the current directory ``$PWD`` into /cobra in the container. You need to make all directories that contain files that are referenced in the *CoBRA* configuration file available within the container. By default, only the directory and subdirectories from which you start the analysis are automatically mounted inside the container. Since the *CoBRA* source code is outside the ``input`` folder for the example analysis, however, at least the root directory of the Git repository has to be mounted. This is actually quite simple! Just use ``--Docker-args "--bind /your/CoBRA/path"`` and replace ``/your/CoBRA/path`` with the root path in which you cloned the *CoBRA* Git repository (the one that has the subfolders ``example``, ``src`` etc.). If you reference additional files, simply add one or multiple directories to the bind path (use the comma to separate them). For example, if you reference the files ``/g/group1/user1/mm10.fa`` and ``/g/group2/user1/files/bla.txt`` in the configuration file file, you may add ``/g/group1/user1,/g/group2/user1/files`` or even just ``/g`` to the bind path (as all files you reference are within ``/g``).
+2. ``-v``: The ``-v`` flag mounts the current directory ``$PWD`` into /cobra in the container. You need to make all directories that contain files that are referenced in the *CoBRA* config file available within the container. If you reference additional files, simply add multiple ``-v`` flags to the mount path (use the space to separate them). For example, if you reference the files ``/mnt/home/user1/AR_ChIP.bam`` and ``/mnt/home/user1/AR_ChIP.bed`` in the configuration file file, you may add ``-v /mnt/home/user1:/mnt/home/user1 `` or even just ``-v /mnt:/mnt`` to the bind path.
 
-  .. note:: We note again that within a Docker container, you cannot access paths outside of the directory from where you started executing Snakemake. If you receive errors in the ``checkParameterValidity`` rule that a directory does not exist even though you can cd into it, you most likely forgot to include the path this folder or a parent path as part of the ``bind`` option.
+  .. note:: We note again that within a Docker container, you cannot access paths outside of the directory from where you started executing Snakemake. If you receive errors indecate that a directory does not exist even though you can cd into it, you most likely forgot to include the path this folder or a parent path as part of the ``-v`` option.
 
 3. ``-it``: The ``-it`` options allows you to interact with the container’s shell and run any command inside of it.
 
