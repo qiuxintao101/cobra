@@ -132,7 +132,7 @@ Running your own analysis is almost as easy as running the example analysis (see
 
 Adaptations and notes when running with Docker
 ============================================================
- With ``Docker``, the CoBRA workflow will be executed in pre-configured isolated container that contain all necessary tools.  To use it, you only have to add the following arguments when you initial the docker container:
+ With ``Docker``, the *CoBRA* workflow will be executed in pre-configured isolated container that contain all necessary tools.  To use it, you only have to add the following arguments when you initial the docker container:
 
 .. code-block:: Bash
 
@@ -150,7 +150,8 @@ Once you start runing the cobra containter, it's bash shell will be attached to 
 
 .. code-block:: Bash
 
-   docker run --rm -v $PWD:/cobra -it cfce/cobra:latest
+   (base) root@5d8bf16cd2cb:/#
 
+Above command prompt change means you have suceefully start the cotainer of cobra, you may proceed to run the example or your own data.
 
 You do not have to, but you may go through the following tutorial related to ``Docker``, this will help you understand the docker better. For more details, see `here <https://docker-curriculum.com/>`_.
