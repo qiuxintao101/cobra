@@ -8,7 +8,7 @@ For full information, please see the latest publication (linked here: :ref:`cita
 The workflow and conceptual idea behind *CoBRA* is illustrated by the following three Figures. First, we give a high-level conceptual overview and a biological motivation:
 
    .. figure:: workflow.png
-         :scale: 25 %
+         :scale: 40 %
          :alt: CoBRA schematics
          :align: center
 
@@ -29,7 +29,7 @@ The workflow and conceptual idea behind *CoBRA* is illustrated by the following 
 We now show which rules are executed by *Snakemake* for a specific example (see the caption of the image):
          
    .. figure:: dag.png
-         :scale: 20 %
+         :scale: 35 %
          :alt: Directed acyclic graph of an example workflow
          :align: center
          
