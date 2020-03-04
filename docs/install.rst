@@ -15,7 +15,7 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
     docker --version
 
-  If docker is not installed, please install `docker <https://docs.docker.com/install/>`_ on your platform first. Once docker is installed, you can simply type following command to pull the CoBRA image.
+  If docker is not installed, please install `docker <https://docs.docker.com/install/>`_ on your platform first. Once docker is installed, you can simply type following command to pull and run the CoBRA image.
   
 
   .. code-block:: Bash
