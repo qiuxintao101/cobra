@@ -37,22 +37,17 @@ We now show which rules are executed by *Snakemake* for a specific example (see 
 
 *CoBRA* is currently implemented as a *Snakemake* pipeline. For a gentle introduction about *Snakemake*, see Section :ref:`workingWithPipeline`. As you can see, the workflow consists of the following steps or *rules*:
 
-- ``checkParameterValidity``: R script that checks whether the specified peak file has the correct format, whether the provided *fasta* file and the *BAM* files are compatible, and other checks
-- ``produceConsensusPeaks``:  R script that generates the consensus peaks using the R package ``DiffBind`` if none are provided
-- ``filterSexChromosomesAndSortPeaks``: Filters various chromosomes (sex, unassembled ones, contigs, etc) from the peak file.
-- ``sortTFBSParallel``: Sort the TFBS lists by position
-- ``resortBAM``: Sort the *BAM* file for optimized processing (only run if data are paired-end)
-- ``intersectPeaksAndBAM``: Count all reads for peak regions across all input files
-- ``intersectPeaksAndTFBS``: Intersect all TFBS with peak regions to retain only TFBS in peak regions
-- ``intersectTFBSAndBAM``: Count all reads from all TFBS across all input files in a TF-specific manner
-- ``DiffPeaks``: R script that performs a differential accessibility analysis for the peak regions as well as sample permutations
-- ``analyzeTF``: R script that performs a TF-specific differential accessibility analysis
-- ``summary1``:  R script that summarizes the previous script for all TFs
-- ``concatenateMotifs`` and ``concatenateMotifsPerm``: Concatenates previous results from either real or permuted data (TFBS motives)
-- ``calcNucleotideContent``: Calculates the GC content for all TFBS
-- ``binningTF``:  R script that performs the binning approach in a TF-specific manner
-- ``summaryFinal``:  R script that summarizes the analysis and calculates final statistics
-- ``cleanUpLogFiles``: Cleans up the ``LOGS_AND_BENCHMARKS`` directory (mostly relevant if run in cluster mode)
+- ``merge_bed``: Using the bedops to get the union set of peaks that is exist in sample sets
+- ``bed_enhancer_promoter``:  Filter the union peaks with ±1kb of TSS to get enhancer and promoter sites
+- ``bedtools_intersect``: Count all reads for peak regions across all bam files
+- ``pca_plot``: R script that plot all samples in a two dimensional space with PC1 and PC2
+- ``heatmapSS_plot``: R script that calculate pair-wise sample-sample correlation and plot all samples with hierarchical clustering
+- ``heatmapSF_plot``: R script that performs k-means/hierarchical clustering for the most variable peaks
+- ``limma_and_deseq``: R script that performs a differential accessibility analysis for the peak regions based on deseq and limma
+- ``deseq_motif``: HOMER to performs the know as well as de novo motif enrichment analysis with GC content mathced back ground
+- ``GSEA``: GESA analysis on the preranked peak lists, gene are assigned to the nearist peaks
+- ``cistrome_tookit``: Calcuate the giggle socre compare the differential peaks to the existing TF ChIP-seq data avaiable on Cistrome DB
+
 
 
 Input
