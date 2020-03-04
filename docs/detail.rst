@@ -8,7 +8,7 @@ For full information, please see the latest publication (linked here: :ref:`cita
 The workflow and conceptual idea behind *CoBRA* is illustrated by the following three Figures. First, we give a high-level conceptual overview and a biological motivation:
 
    .. figure:: workflow.png
-         :scale: 45 %
+         :scale: 35 %
          :alt: CoBRA schematics
          :align: center
 
