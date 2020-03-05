@@ -489,7 +489,7 @@ Input metadata
   
   .. note:: CoBRA parses the meta file and will convert MOST of these invalid characters into '.'--dollarsigns will just be dropped.  The CoBRA parser will also convert between dos/mac files to unix format.
   
-  .. note:: It is very important that you know that samples A is what you mark with 1, and samples B is what you mark with a 2. You should name your output following this format as well  ``comp_A_over_B`` This will let the reader know what the output DE files refer to. Deseq:  ``baseMeanA`` refers to samples A, which follows condition 1 and “baseMeanB” refers to samples B which follows condition 2. logfc is B/A
+  .. note:: It is very important that you know that samples ``A`` is what you mark with 1, and samples ``B`` is what you mark with a 2. You should name your output following this format as well  ``comp_A_over_B`` This will let the reader know what the output DE files refer to. Deseq:  ``baseMeanA`` refers to samples ``A``, which follows condition 1 and ``baseMeanB`` refers to samples ``B`` which follows condition 2. logfc is ``B/A``
 
   .. warning:: Do not change the samples data after you started an analysis. You may introduce inconsistencies that will result in error messages. If you need to alter the sample data, we strongly advise to recalculate all steps in the pipeline.
 
