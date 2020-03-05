@@ -289,24 +289,48 @@ SECTION ``samples``
 .. _parameter_summaryFile:
 
 
-``summaryFile``
+``bed``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Summary
-  String. Default "samples.tsv". Path to the sample metadata file.
+  Paths to the bed files.
 
 Details
-  Path to a tab-separated file that summarizes the input data. See the section :ref:`section_metadata` and the example file for how this file should look like.
+  Path to a bed file that summarizes the peak information for the data. Following is an example:
+  
+  .. code-block:: Bash
+     bed:
+       sample1: ./XX1.bed
+       sample2: ./XX2.bed
 
 
-.. _parameter_pairedEnd:
-
-``pairedEnd``
+``samples``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Summary
-  Logical. true or false. Default true. Is the data paired-end? If single-end, set to false.
+  Paths to the bam files.
 
 Details
-  Both paired-end and single-end data can be run with *CoBRA*.
+  Path to a bam file for each sample. Following is an example:
+  
+  .. code-block:: Bash
+     samples:
+       sample1: ./XX1.bed
+       sample2: ./XX2.bed
+
+
+``bigwig``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Summary
+  Paths to the bigwig files.
+
+Details
+  Path to a bigwig file for each sample. Following is an example:
+  
+  .. code-block:: Bash
+     bigwig:
+       sample1: ./XX1.bed
+       sample2: ./XX2.bed
+
+
 
 
 SECTION ``peaks``
