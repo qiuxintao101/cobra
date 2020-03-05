@@ -8,7 +8,7 @@ For full information, please see the latest publication (linked here: :ref:`cita
 The workflow and conceptual idea behind *CoBRA* is illustrated by the following three Figures. First, we give a high-level conceptual overview and a biological motivation:
 
    .. figure:: workflow.png
-         :scale: 35 %
+         :scale: 30 %
          :alt: CoBRA schematics
          :align: center
 
@@ -19,7 +19,7 @@ The workflow and conceptual idea behind *CoBRA* is illustrated by the following 
 
 
    .. figure:: Cobra_workflow.png
-      :scale: 18 %
+      :scale: 16 %
       :alt: Schematic of the CoBRA workflow and the GC binning
       :align: center
 
@@ -29,7 +29,7 @@ The workflow and conceptual idea behind *CoBRA* is illustrated by the following 
 We now show which rules are executed by *Snakemake* for a specific example (see the caption of the image):
          
    .. figure:: dag.png
-         :scale: 30 %
+         :scale: 20 %
          :alt: Directed acyclic graph of an example workflow
          :align: center
          
@@ -59,21 +59,23 @@ Summary
 
 As input for *CoBRA* for your own analysis, the following data are needed:
 
-- *BAM* file with aligned reads for each sample (see :ref:`parameter_summaryFile`)
-- genome reference *fasta* that has been used to produce the *BAM* files (see :ref:`parameter_refGenome_fasta`)
-- Optionally: corresponding RNA-Seq data (see :ref:`parameter_RNASeqCounts`)
+- *BAM* file with aligned reads for each sample (see :ref:`parameter_BamFile`)
+- *BED* file with called peaks for each sample (see :ref:`parameter_BedFile`)
+- *BIGWIG* file with compressed, indexed, binary format for genome-wide signal data for calculations (see :ref:`parameter_BigwigFile`)
+- Optionally: corresponding CNV data (see :ref:`parameter_CNVFile`)
 
-In addition, the following files are need, all of which we provide already for human hg19, hg38 and mouse mm10:
+In addition, the following files are need, all of which we provide already for human hg19, hg38 and mouse mm9, mm10:
 
-- TF-specific list of TFBS (see :ref:`parameter_dir_TFBS`)
-- mapping table (see :ref:`parameter_HOCOMOCO_mapping`)
+- genome & genome_dict (see :ref:`parameter_RefGenome`)
+- refseqGenes (see :ref:`parameter_RefGene`)
+- lift chain files (see :ref:`parameter_LiftChain`)
+- Cistrome DB in giggle format (see :ref:`parameter_CistromeGiggle`)
 
 
 Lastly, some metadata files are needed that specify *CoBRA*-specific and Snakemake-specific parameters. They are explained in detail in the next sections. If this sounds complicated, don't worry, just take the example analysis, and you will understand within a few minutes what these files are:
 
 - a general configuration file (:ref:`configurationFile`)
 - a metadata file for the samples (:ref:`section_metadata`)
-- optionally, if run on a cluster, a cluster configuration file (see in particular the Snakemake documentation for details, but we also provide example cluster files as well as Section :ref:`clusterEnvironment`)
 
 
 .. _configurationFile:
@@ -85,7 +87,7 @@ To run the pipeline, a configuration file that defines various parameters of the
 
 .. note:: Please note the following important points:
 
-  - the name of this file is irrelevant, but it must be in the right format (JSON) and it must be referenced correctly when calling *Snakemake* (via the ``--configfile`` parameter). We recommend naming it ``config.json``
+  - the name of this file is irrelevant, but it must be in the right format (JSON) and it must be referenced correctly when calling *Snakemake* (via the ``--configfile`` parameter). We recommend naming it ``config.yaml``
   - neither section nor parameter names must be changed.
   - For parameters that specify a path, both absolute and relative paths are possible.  We recommend specifying an absolute path. Relative paths must be specified relative to the *Snakemake* working directory.
   - For parameters that specify a directory, there should be no trailing slash.
@@ -96,17 +98,17 @@ In the following, we explain all parameters in detail, organized by section name
 SECTION ``par_general``
 --------------------------------------------
 
-.. _parameter_outdir:
+.. _parameter_Project_Name:
 
 
-``outdir``
+``Project Name``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default "output". Root output directory.
+  String. Default "ChIP_seq". The name will be use for pca, sample-sample, sample-feature plot titles.
 
 Details
-  The root output directory where all output is stored.
+   Please use "_" to seperate different words.
 
 
 
