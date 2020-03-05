@@ -360,11 +360,11 @@ Details
   - column names in the first row
   - Columns 1 to 5:
 
-    1. Chromosome
-    2. Start
-    3. End
-    4. Identifier (will be made unique for each if this is not the case already)
-    5. log2CNV
+     1. Chromosome
+     2. Start
+     3. End
+     4. Identifier (will be made unique for each if this is not the case already)
+     5. log2CNV
 
 
 SECTION ``additionalInputFiles``
@@ -381,13 +381,10 @@ Summary
   String. Default hg19.fasta. Path to the reference genome *fasta* file.
 
 Details
-
+  For user convenience, CoBRA will automatic download this file if it is not been downloaded. However, you may also manually create this file to apply to new species.
   .. warning:: You need write access to the directory in which the *fasta* file is stored, make sure this is the case or copy the *fasta* file to a different directory. The reason is that the pipeline produces a *fasta* index file, which is put in the same directory as the corresponding *fasta* file. This is a limitation of *samtools faidx* and not our pipeline.
 
   .. note:: This file has to be in concordance with the input data; that is, the exact same genome assembly version must be used. In the first step of the pipeline, this is checked explicitly, and any mismatches will result in an error.
-
-.. _parameter_dir_TFBS:
-
 
 
 ``TSS.plus.minus.1kb``
@@ -441,7 +438,7 @@ Summary
   String. Path to the giggle.tar.gz, that can be use for cistrome toolkit analysis for finding similar ChIP-seq data that compare to the peaks of interested.
 
 Details
-  For user convenience, CoBRA will automatic download this file if it is not been downloaded. Can also be downloaded here http://cistrome.org/~chenfei/MAESTRO/giggle.tar.gz.
+  For user convenience, CoBRA will automatic download this file if it is not been downloaded. Can also be downloaded `here <http://cistrome.org/~chenfei/MAESTRO/giggle.tar.gz>`__.
 
  
  
@@ -451,23 +448,35 @@ Details
 Input metadata
 =============================================
 
-This file summarizes the data and corresponding available metadata  that should be used for the analysis. The format is flexible and may contain additional columns that are ignored by the pipeline, so it can be used to capture all available information in a single place. Importantly, the file must be saved as tab-separated, the exact name does not matter as long as it is correctly specified in the configuration file.
+This file summarizes the data and corresponding available metadata  that should be used for the analysis. The format is flexible and may contain additional columns that are ignored by the pipeline, so it can be used to capture all available information in a single place. Importantly, the file must be saved as comma-separated, the exact name does not matter as long as it is correctly specified in the configuration file.
 
   .. warning:: Make sure that the line endings are correct. Different operating systems use different characters to mark the end of line, and the line ending character must be compatible with the operating system in which you run *CoBRA*. For example, if you created the file in MAC, but you run it in a Linux environment (e.g., a cluster system), you may have to convert line endings to make them compatible with Linux. For more information, see `here <https://blog.shvetsov.com/2012/04/covert-unix-windows-mac-line-endings.html>`__ .
 
-It must contain at least contain the following columns (the exact names do matter):
+Make the *__metasheet__* file in excel, and save it as a .txt or .csv, It doesn’t matter what it is named as long as it is called in the *__config__* in the spot marked “metasheet,” see the *__config__* section if confused. The format should be something like the following:
 
-- ``sampleID``: The ID of the sample.
+| Sample | Cell | Condition  | Treatment | Replicates | comp_M7_DOX_over_NoDox | comp_T47D__DOX_over_NoDox |
+|--------|------|------------|-----------|------------|------------------------|---------------------------|
+| A1     | MCF7 | Full_Media | NoDOX     | 1          | 1                      |                           |
+| A2     | MCF7 | Full_Media | NoDOX     | 2          | 1                      |                           |
+| B1     | MCF7 | Full_Media | DOX       | 1          | 2                      |                           |
+| B2     | MCF7 | Full_Media | DOX       | 2          | 2                      |                           |
+| C1     | T47D | Full_Media | NoDOX     | 1          |                        | 1                         |
+| C2     | T47D | Full_Media | NoDOX     | 2          |                        | 1                         |
+| D1     | T47D | Full_Media | DOX       | 1          |                        | 2                         |
+| D2     | T47D | Full_Media | DOX       | 2          |                        | 2                         |
 
-  .. note:: Note that each sample ID must be unique! If you want to include replicate samples, rename them, for example by adding "_1", "_2" etc at the end. All that *CoBRA* cares about is the correct group assignment as defined by the column *conditionSummary*.
+- The first column should always be sample names that exactly match the sample names used in config.yaml (see __SAMPLES__ just above)
+- The samples that you want to perform a Differential Peak Calling (DE) on using limma and deseq should be marked by the “comp” columns more on this below
+	- This is important! The “control” should be marked with a 1, and the “treatment” should be marked with a 2.
+- It is recommended that if you should have a “replicates” column to denote different samples, it is a good idea to not only have each of the sample names be unique, but also make sure that the associated metadata is unique as well to each sample.
+- The rest of the  metadata columns are up to the user to write. Sample must always be first, and you are allowed to have as many “comp_XXXX” columns as you want at the end. All of the middle columns are your metadata (for this example, this is cell, condition, treatment, replicates)
 
-- ``bamReads``:  path to the *BAM* file corresponding to the sample.
-
-  .. warning:: All *BAM* files must meet *SAM* format specifications. You may use the program *ValidateSamFile* from the *Picard tools* to check and identify problems with your file. Chromosome names must have a "*chr*" as prefix, otherwise *CoBRA* may crash.
-
-- ``peaks``: absolute path to the sample-specific peak file, in the format as given by ``peakType`` (:ref:`parameter_peakType`). Only needed if no consensus peak file is provided.
-- ``conditionSummary``: String with an arbitrary condition name that defines which condition the sample belongs to. There must be only exactly two different conditions across all samples (e.g., *mutated and unmutated*, *day0 and day10*, ...). In addition, the two conditions must match the ones specified in the ``conditionComparison`` (:ref:`parameter_conditionComparison`).
-- if applicable, all additional variables from the design formula except ``conditionSummary`` must also be present as a separate column.
+- Again, make this in excel so that all of the spacing is done correctly and save it out as a .txt or .csv file. This is the most common bug, so please follow this.
+- Common Problems with *__metasheet__*
+- Characters to avoid: ("-", "(", ")", " ", "/", "$") To avoid bugs, the only punctuation that should be used is the underscore “_”. Dashes, periods, etc, could cause a bug because there is a lot of table formatting and manipulation, or they are invalid characters in R. NOTE: CoBRA parses the meta file and will convert MOST of these invalid characters into '.'--dollarsigns will just be dropped.  The CoBRA parser will also convert between dos/mac files to unix format.
+	- It is very important that you know that samples A is what you mark with 1, and samples B is what you mark with a 2. You should name your output following this format as well "comp\_cond\_AvB” This will let the reader know what the output DE files refer to.  
+		-  Deseq: ”baseMeanA” refers to samples A, which follows condition 1 and “baseMeanB” refers to samples B which follows condition 2. logfc is B/A
+		-  Limma: Logfc refers to B/A
 
 
 .. warning:: Do not change the samples data after you started an analysis. You may introduce inconsistencies that will result in error messages. If you need to alter the sample data, we strongly advise to recalculate all steps in the pipeline.
