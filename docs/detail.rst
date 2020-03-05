@@ -298,6 +298,7 @@ Details
   Path to a bed file that summarizes the peak information for the data. Following is an example:
   
   .. code-block:: Bash
+  
      bed:
        sample1: ./XX1.bed
        sample2: ./XX2.bed
@@ -312,6 +313,7 @@ Details
   Path to a bam file for each sample. Following is an example:
   
   .. code-block:: Bash
+  
      samples:
        sample1: ./XX1.bed
        sample2: ./XX2.bed
@@ -326,6 +328,7 @@ Details
   Path to a bigwig file for each sample. Following is an example:
   
   .. code-block:: Bash
+  
      bigwig:
        sample1: ./XX1.bed
        sample2: ./XX2.bed
