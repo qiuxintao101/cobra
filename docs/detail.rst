@@ -315,8 +315,8 @@ Details
   .. code-block:: Bash
   
      samples:
-       sample1: ./XX1.bed
-       sample2: ./XX2.bed
+       sample1: ./XX1.bam
+       sample2: ./XX2.bam
 
 
 ``bigwig``
@@ -330,72 +330,41 @@ Details
   .. code-block:: Bash
   
      bigwig:
-       sample1: ./XX1.bed
-       sample2: ./XX2.bed
+       sample1: ./XX1.bw
+       sample2: ./XX2.bw
 
 
 
 
-SECTION ``peaks``
+SECTION ``CNV``
 --------------------------------------------
 
-.. _parameter_consensusPeaks:
 
-
-``consensusPeaks``
+``cnv``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Summary
-  String. Default "" (empty). Path to the consensus peak file.
+  Paths to the igv files for CNV analysis.
 
 Details
-  If set to the empty string "", the pipeline will generate a consensus peaks out of the peak files from each individual sample using the R package ``DiffBind``. For this, you need to provide the following two things:
-
-  - a peak file for each sample in the metadata file in the column *peaks*, see the section :ref:`section_metadata` for details.
-  - The format of the peak files, as specified in ``peakType`` (:ref:`parameter_peakType`)
-
-  If a file is provided, it must be a valid *BED* file with at least 3 columns:
+  Path to a igv file for each sample. Following is an example:
+  
+  .. code-block:: Bash
+  
+     cnv:
+       sample1: ./XX1.igv
+       sample2: ./XX2.igv
+       
+  If a file is provided, it must be a valid *igv* file with at least 5 columns:
 
   - tab-separated columns
-  - no column names in the first row
-  - Columns 1 to 3:
+  - column names in the first row
+  - Columns 1 to 5:
 
     1. Chromosome
-    2. Start position
-    3. End position
-
-  - Optional (content for each is ignored and not checked for validity):
-
+    2. Start
+    3. End
     4. Identifier (will be made unique for each if this is not the case already)
-    5. Score
-    6. Strand
-
-    .. warning:: *CoBRA* will take a long time to run if the number of peaks is too high. We recommend having less than 100,000 peaks. If the number of peaks is higher for your analysis, we strongly recommend filtering the peaks beforehand to include only the most relevant peaks.
-
-.. _parameter_peakType:
-
-
-``peakType``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Summary
-  String. Default ``narrow``. File format of the individual, sample-specific peak files. Only relevant if no consensus peak file has been provided (i.e., the :ref:`parameter_consensusPeaks` is empty).
-
-Details
-  Only needed if no consensus peak set has been provided. All individual peak files must be in the same format. We recommend the ``narrow`` format (files ending in ``.narrowPeak``) that is a direct output from *MACS2*, but other formats are supported. See the help for *DiffBind dba* for a full list of supported formats, the most common ones include:
-
-  - ``bed``: .bed file; peak score is in fifth column
-  - ``narrow``: narrowPeaks file (from *MACS2*)
-
-.. _parameter_minOverlap:
-
-
-``minOverlap``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Summary
-  Integer >= 0 or Float between 0 and 1. Default 2. Minimum overlap for peak files for a peak to be considered into the consensus peak set. Corresponds to the ``minOverlap`` argument in the *dba* function of *DiffBind*. Only relevant if no consensus peak file has been provided (i.e., ``consensusPeaks``, :ref:`parameter_consensusPeaks`, is empty).
-
-Details
-  Only include peaks in at least this many peak sets in the main binding matrix. If set to a value between zero and one, peak will be included from at least this proportion of peak sets. For more information, see the ``minOverlap`` argument in the *dba* function of *DiffBind*  `(see here) <http://bioconductor.org/packages/release/bioc/manuals/DiffBind/man/DiffBind.pdf>`_.
+    5. log2CNV
 
 
 SECTION ``additionalInputFiles``
@@ -405,11 +374,11 @@ SECTION ``additionalInputFiles``
 .. _parameter_refGenome_fasta:
 
 
-``refGenome_fasta``
+``genome``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default â€˜hg19.fastaâ€™. Path to the reference genome *fasta* file.
+  String. Default hg19.fasta. Path to the reference genome *fasta* file.
 
 Details
 
@@ -421,63 +390,61 @@ Details
 
 
 
-``dir_TFBS``
+``TSS.plus.minus.1kb``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Path to the directory where the TF-specific files for TFBS results are stored.
+  String. Path to the refGene plus minus 1kb bed file are stored.
 
 Details
-  Each TF *{TF}* has to have one *BED* file, in the format *{TF}.bed*.  Each file must be a valid *BED6* file with 6 columns, as follows:
+  Each file must be a valid *BED* file with 5 columns, as follows:
 
   1. chromosome
   2. start
   3. end
-  4. ID (or sequence)
-  5. score or any other numeric column
-  6. strand
+  4. strand
+  5. Gene_ID
 
-  For user convenience, we provide such sorted files as described in the publication as a separate download:
-
-  - hg19: For a pre-compiled list of 638 human TF with in-silico predicted TFBS based on the *HOCOMOCO 10* database and *PWMScan* for hg19, `download this file: <https://www.embl.de/download/zaugg/CoBRA/TFBS/TFBS_hg19_PWMScan_HOCOMOCOv10.tar.gz>`__
-  - hg38: For a pre-compiled list of 767 human TF with in-silico predicted TFBS based on the *HOCOMOCO 11* database and *FIMO* from the MEME suite for hg38, `download this file: <https://www.embl.de/download/zaugg/CoBRA/TFBS/TFBS_hg38_FIMO_HOCOMOCOv11.tar.gz>`_. For a pre-compiled list of 768 human TF with in-silico predicted TFBS based on the *HOCOMOCO 11* database and *PWMScan* for hg38, `download this file: <https://www.embl.de/download/zaugg/CoBRA/TFBS/TFBS_hg38_PWMScan_HOCOMOCOv11.tar.gz>`__
-  - mm10: For a pre-compiled list of 422 mouse TF with in-silico predicted TFBS based on the *HOCOMOCO 10* database and *PWMScan* for mm10, `download this file: <https://www.embl.de/download/zaugg/CoBRA/TFBS/TFBS_mm10_PWMScan_HOCOMOCOv10.tar.gz>`__
-
-  However, you may also manually create these files to include additional TF of your choice or to be more or less stringent with the predicted TFBS. For this, you only need PWMs for the TF of interest and then a motif prediction tool such as *FIMO* or *MOODS*.
+  For user convenience, CoBRA will automatic download this file if it is not been downloaded. However, you may also manually create this file to apply to new species.
 
 
-.. _parameter_RNASeqCounts:
+``refseqGenes``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Details
+  Each file must be a valid *BED* file with 5 columns, as follows:
+
+  1. chromosome
+  2. start
+  3. end
+  4. Gene_ID
+  5. Gene_Name
+
+  For user convenience, CoBRA will automatic download this file if it is not been downloaded. However, you may also manually create this file to apply to new species.
 
 
-``RNASeqCounts``
+
+``lift.chain``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default â€œâ€. Path to the file with RNA-Seq counts.
+  String. Path to the lift.chain.gz.
 
 Details
-  If no RNA-Seq data is included, set to the empty string â€œâ€. Otherwise, if ``RNASeqIntegration`` (:ref:`parameter_RNASeqIntegration`) is set to true,  specify the path to a tab-separated file with *raw* RNA-Seq counts. We apply some basic filtering for lowly expressed genes and exclude genes with small counts, so there is principally no need for manual filtering unless you want to do so. For guidance, you may want to read `Question 4 here <https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/faq.html>`__.
-
-  The first line must be used for labeling the samples, with column names being identical to the sample names as specific in the sample summary table (``summaryFile``, :ref:`parameter_summaryFile`). If you have RNA-Seq data for only a subset of the input samples, this is no problem - the classification will then naturally only be based on the subset. The first column must be named ENSEMBL and it must contain ENSEMBL IDs (e.g., *ENSG00000028277*) without dots. The IDs are then matched to the IDs from the file as specified in ``HOCOMOCO_mapping`` (:ref:`parameter_HOCOMOCO_mapping`).
-
-.. _parameter_HOCOMOCO_mapping:
+  For user convenience, CoBRA will automatic download this file if it is not been downloaded.
 
 
-``HOCOMOCO_mapping``
+ ``giggle``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Path to the TF-Gene translation table.
+  String. Path to the giggle.tar.gz, that can be use for cistrome toolkit analysis for finding similar ChIP-seq data that compare to the peaks of interested.
 
 Details
-  If RNA-Seq integration shall be used, a translation table to associate TFs and ENSEMBL genes is needed. For convenience, we provide such a translation table compatible with the pre-provided TFBS lists. Specifically, for each of the currently three TFBS lists, we provide corresponding translation tables for:
+  For user convenience, CoBRA will automatic download this file if it is not been downloaded. Can also be downloaded here http://cistrome.org/~chenfei/MAESTRO/giggle.tar.gz.
 
-  1. hg19 with HOCOMOCO 10
-  2. hg38 with HOCOMOCO 11
-  3. mm10 with HOCOMOCO 10
-
-  If you want to create your own version, check the example translation tables and construct one with an identical structure.
-
+ 
+ 
 .. _section_metadata:
 
 
