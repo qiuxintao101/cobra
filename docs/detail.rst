@@ -431,7 +431,7 @@ Details
   For user convenience, CoBRA will automatic download this file if it is not been downloaded.
 
 
- ``giggle``
+``giggle``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
@@ -496,9 +496,9 @@ The pipeline produces quite a large number of output files, only some of which a
 
 Most files have one of the following file formats:
 
-- .bed.gz (gzipped bed file)
-- .tsv.gz (tab-separated value, text file with tab as column separators, gzipped)
-- .rds (binary R format, read into with the function ``readRDS``)
+- .bed (bed file)
+- .csv (file with comma as column separators)
+- .png (PNG format)
 - .pdf (PDF format)
 - .log (text format)
 
@@ -508,7 +508,7 @@ FOLDER ``Analysis``
 In this folder, the final output files are stored. Most users want to examine the files in here for further analysis.
 
 
-Sub-folder ``extension{regionExtension}``
+Sub-folder ``diff_peak{regionExtension}``
 ----------------------------------------------
 
 Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`). In the following, the files are ordered by significance or relevance for interpretation an downstream analyses.
