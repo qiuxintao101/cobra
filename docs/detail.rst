@@ -101,207 +101,186 @@ SECTION ``par_general``
 .. _parameter_Project_Name:
 
 
-``Project Name``
+``projectName``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
   String. Default "ChIP_seq". The name will be use for pca, sample-sample, sample-feature plot titles.
 
 Details
-   Please use "_" to seperate different words.
+  Please use "_" to seperate different words.
 
 
 
-``maxCoresPerRule``
+``enhancer``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  Integer > 0. Default 16. Maximum number of cores to use for rules that support multithreading.
+  Enhancer option: enhancer / promoter / all (default). 
 
 Details
-  This affects currently only rules involving *featureCounts* - that is, *intersectPeaksAndBAM* while for rule *intersectTFBSAndBAM*, the number of cores is hard-coded to 4. When running *Snakemake* locally, each rule will use at most this number of cores, while in a cluster setting, this value refers to the maximum number of CPUs an individual job / rule will occupy. If the node the job is executed on has fewer nodes, then the maximum number of cores on the node will be taken.
+  Enhancer options to filter the union set of peaks, which will be used in all analysis in the workflow.
 
 
-.. _parameter_regionExtension:
 
-
-``regionExtension``
+``metasheet``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  Integer >= 0. Default 100. Target region extension in base pairs.
+  Location of metasheet, default is metasheet.csv.
 
 Details
-  Specifies the number of base pairs each target region (from the peaks file) should be extended in both 5â€™ and 3â€™ direction.
+  Specifies the location of metasheet that will be used.
+  
 
-.. _parameter_maxCoresPerRule:
-
-
-
-
-.. _parameter_comparisonType:
-
-
-``comparisonType``
+``ref``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default "".
+  String. Default ""scripts/ref.yaml".
 
 Details
-  This parameter helps to organize complex analysis for which multiple different types of comparisons should be done. Set it to a short but descriptive name that summarizes the type of comparison you are making or the types of cells you compare. The value of this parameter appears as prefix in most output files created by the pipeline. It may also be empty.
+  Specifies the location of ref.yaml that will be used. Most of reference files that will not need to be changed commonly are in the ref.yaml.
 
 
-.. _parameter_conditionComparison:
-
-
-``conditionComparison``
+``assembly``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default "". Specifies the two conditions you want to compare. Only relevant if *conditionSummary* is specified as a factor.
+  String. Default hg19. hg38 / mm9 / mm10 are avaiable.
 
 Details
-  This parameter is only relevant if *conditionSummary* is specified as a factor, in which case it specifies the contrast you are making in *CoBRA*. Otherwise, it is ignored. Exactly two conditions have to be specified, comma-separated. For example, if you want to compare GMP and MPP samples, the parameter should be "GMP,MPP". Both conditions have to be present in the column "conditionSummary" in the sample file table (see ``summaryFile`` (:ref:`parameter_summaryFile`)).
-
-  .. note:: The order of the two conditions matters. The condition specified first is the reference condition. For the "GMP,MPP" example, all log2 fold-changes will be the log2fc of *MPP* as compared to *GMP*. That means that a positive log2 fold-change means it is higher in *MPP* as compared to *GMP*. Consequently, the final TF activity (denoted *weighted mean difference* in the output tables) will have the same directionality. This is also particularly relevant for the *allMotifs* output file.
-
-.. _parameter_designContrast:
+  Specifies the assembly that the input files are aligned to, all options need to be listed in the ref.yaml.
 
 
-``designContrast``
+``rpkm_threshold``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default  *conditionSummary*. Design formula for the differential accessibility analysis.
-
+  Number. Default 1. This provide threshold that can apply to filter for all unspuervised analysis.
+  
 Details
-  This important parameter defines the actual contrast that is done in the differential accessibility analysis. That is, which groups of samples are being compared? Examples include mutant vs wild type, mutated vs. unmutated, etc. The last element in the formula must always be *conditionSummary*, which defines the two groups that are being compared or the continuous variable that is used for inferring negative or positive changes, respectively (see parameter :ref:`parameter_designVariableTypes`). This name is currently hard-coded and required by the pipeline. Our pipeline allows including additional variables to model potential confounding variables, like gender, batches etc. For each additional variable that is part of the formula, a corresponding and identically named column in the sample summary file must be specified. For example, for an analysis that also includes the batch number of the samples, you may specify this as "*~ Treatment + conditionSummary*".
+  At least mini_num_sample should have RPKM > rpkm_threshold
 
 
-.. _parameter_designContrastRNA:
-
-
-``designContrastRNA``
+``mini_num_sample``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default  *conditionSummary*. Design formula for the RNA-Seq data. Only relevant and needed if parameter (:ref:`parameter_RNASeqIntegration`) is set to *true*. If missing (to increase compatibility with previous versions of *CoBRA*), the default value will be taken.
-
+  Number. Default 1. This paramter toghter with rpkm_threshold provide threshold that can apply to filter for all unspuervised analysis.
+  
 Details
-  This important parameter defines the actual contrast that is done in the differential accessibility analysis. That is, which groups of samples are being compared? Examples include mutant vs wild type, mutated vs. unmutated, etc. The last element in the formula must always be *conditionSummary*, which defines the two groups that are being compared or the continuous variable that is used for inferring negative or positive changes, respectively (see parameter :ref:`parameter_designVariableTypes`). This name is currently hard-coded and required by the pipeline. Our pipeline allows including additional variables to model potential confounding variables, like gender, batches etc. For each additional variable that is part of the formula, a corresponding and identically named column in the sample summary file must be specified. For example, for an analysis that also includes the batch number of the samples, you may specify this as "*~ Treatment + conditionSummary*".
-
-.. _parameter_designVariableTypes:
+  At least mini_num_sample should have RPKM > rpkm_threshold
 
 
-``designVariableTypes``
+``scale``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default  *conditionSummary:factor*.   The data types of **all** elements listed in ``designContrast`` (:ref:`parameter_designContrast`).
+  String. Default q. The scale method for the nomalize counts among samples.
 
 Details
-  Names must be separated by commas, spaces are allowed and will be eliminated automatically. The data type must be specified with a â€œ:â€, followed by either â€œnumericâ€, â€œintegerâ€, â€œlogicalâ€, or â€œfactorâ€. For example, if ``designContrast`` (:ref:`parameter_designContrast`) is specified as "*~ Treatment + conditionSummary*", the corresponding types might be "Treatment:factor, conditionSummary:factor". If a data type is specified as either "logical" or "factor", the variable will be treated as a discrete variable with a finite number of distinct possibilities (something like batch, for example).
-
-  .. note:: Importantly, *conditionSummary* can either be specified as "factor" or "numeric"/"integer", which changes the way the results are interpreted and what the log2 fold-changes represent. *conditionSummary* is usually specified as factor because you want to make a pairwise comparison of exactly two conditions. If *conditionSummary* is specified as "integer" or "numeric" (i.e., continuous-valued), however, the variable is treated as continuously-scaled, which changes the interpretation of the results: the reported log2 fold change is then per unit of change of that variable. That is, in the final Volcano plot, TFs displayed in the left side have a negative slope per unit of change of that variable, while TFs at the right side have a positive one.
+  The scale method for the normaliztion: z- z-score, q- quantile-normalize, l- log-transform
 
 
-.. _parameter_nPermutations:
-
-
-``nPermutations``
+``filter-opt``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  Integer >=  0. Default 50. The number of random sample permutations.
+  String. Default cov. Fliter metric in feature selection.
 
 Details
-  If set to a value > 0, in addition to the real data, the sample conditions as specified in the sample table will be randomly permuted *nPermutations* times. This is the recommended way of computing statistical significances for each TF.
-  In this approach, the resulting significance value captures the significance of the effect size (that is, the TF activity) for the real data as compared to permuted one.
-  Note that the maximum number of possible permutations is limited by the number of samples and can be computed with the binomial coefficient *n* over *k*. For example, if you have *n* = 8 samples in total and they split up in the two conditions/groups as *k* = 5 / *k* = 3, the total number of permutations is 8 over 5 or 8 over 3 (they are both identical). We generally recommend setting this value to high values such as 1,000. If the value is set to a number higher than the number of possible permutations, it will be adjusted automatically to the maximum number of permutations as determined by the binomial coefficient.
+  Metric in feature selection: sd- Standard deviation, cov- Coefficient of Variation, av- mean
 
-  If set to 0, an alternative way of computing significances that is not based on permutations is performed. First, in the CG normalization step, a Welch Two Sample t-test is performed for each bin and the overall significance by treating the T-statistics as z-scores is calculated, which allows to summarize them across the bins and convert them to one p-value per TF. For this conversion of z-scores per bin to p-value an estimate of the variance of the T-scores is approximated (see the publication for details). This procedure reduces the dependency of the p-value on the sample size (since the number of TFBS can range between a few dozen and multiple tens of thousands depending on the TF).
 
-  .. note:: If set to a value > 0, the ``nBootstraps`` (:ref:`parameter_nBootstraps`) is ignored and can be set to any value.
-
-  .. note:: While using permutations is the recommended approach for assessing statistical significance, in some cases it might be more useful to use the analytical approach: (1) If the number of samples is small or the groups show a very uneven distributions, the total number of possible permutations is also very small and therefore also the permutation-based approach might not accurately assess significance. As a rough guideline, we do not recommend running less than 100 permutations. (2) This approach is usually more stringent than the analytical one. If you have only small differences between the two groups and despite the fact there is no strong signal to capture in the first place, you may want to run the analytical approach instead in such a case.
-
-  .. note:: The permutation-based approach is computationally more expensive than the analytical approach. The running time of the pipeline increases with the number of permutations.
-
-.. warning:: Do not change the value of this parameter after (parts of) the pipeline have been run, some steps may fail due to this change. If you really need to change the value, rerun the pipeline from the *diffPeaks* step onwards.
-
-.. _parameter_nBootstraps:
-
-``nBootstraps``
+``filter-percent``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  Integer >=  0. Default 1,000. The number of bootstrap for estimating the variance of the TF-specific T scores in the CG binning step.
+  Integer >=  0. Default 100. Top percent cutoff that will apply with the filter metric.
 
 Details
-  To properly estimate the variance of the T scores for each TF in the CG binning step, we employ a bootstrap approach using the boot library in R with a user-adjustable number of bootstrap replicates (default 1,000), with resampling the bin-specific data and then performing the t-test against the full sample as described above. We then calculate the variance of the bootstrapped T scores for each bin. For more details, see the methods of the publication.
-
-  .. note:: Only relevant if the ``nPermutations`` (:ref:`parameter_nPermutations`) is set to 0. If both are set to 0, an error is thrown.
-
-  .. warning:: If bootstraps are used, it is recommended to use a reasonable large number. We recommend a value 1,000 and found that higher numbers do not add much benefit but instead only increase running time unnecessarily.
+  Top filter-percent of filter-opt peaks will be use for the un-supervised analysis.
 
 
-.. _parameter_nGCBins:
-
-
-``nGCBins``
+``SSpeaks``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  Integer > 0. Default 10. Number of GC bins for the binning step.
+  Integer > 0. Default 20000000. 
 
 Details
+  This parameter sets the Maxium peaks can be used for Sample-Sample correlation plot.
+  
 
-  This parameter sets the number of GC bins that are used during the binning step. The default is to split the data into 10 bins (0-10% GC content, 11-20%, ..., 91-100%), for each of which the significance is calculated independently (see Methods). Too many bins may result in bins being skipped due to an insufficient number of TFBS for that particular bin and TF, while too few bins may introduce GC-specific biases when summarizing the signal across all TFBS.
-
-
-
-.. _parameter_TFs:
-
-
-``TFs``
+``SFpeaks``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default "all". Either "all" or a comma-separated list of TF names of TFs to include. If set to "all", all TFs that are found in the directory as specified in ``dir_TFBS`` (:ref:`parameter_dir_TFBS`) will be used.
+  Integer > 0. Default 20000000. 
 
 Details
-  If the analysis should be restricted to a subset of TFs, list the names of the TF to include in a comma-separated manner here.
-
-  .. note:: For each TF ``{TF}``, a corresponding file ``{TF}_TFBS.bed`` needs to be present in the directory that is specified by ``dir_TFBS`` (:ref:`parameter_dir_TFBS`).
-
-  .. warning:: We strongly recommending running *CoBRA* with as many TF as possible due to our statistical model that we use that compares against a background model.
-
-.. _parameter_dir_scripts:
+  This parameter sets the Maxium peaks can be used for Sample-Feature plot.
 
 
-``dir_scripts``
+``num_kmeans_clust``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. The path to the directory where the R scripts for running the pipeline are stored.
+  Integer > 0. Default 6. 
 
 Details
-  .. warning:: The folder name must be ``R``, and it has to be located in the same folder as the ``Snakefile``.
-
-.. _parameter_RNASeqIntegration:
+  This parameter sets the number of clusters that will be used in the k-means clustering.
 
 
-``RNASeqIntegration``
+``Padj``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  Logical. true or false. Default false. Should RNA-Seq data be integrated into the pipeline?
+  Integer > 0. Default 0.05. 
 
 Details
-  If set to true, RNA-Seq counts as specified in ``RNASeqCounts`` (:ref:`parameter_RNASeqCounts`) will be used to classify each TF into either â€œactivatorâ€, â€œrepressorâ€, â€œunknownâ€, or â€œnot-expressedâ€ for the final Volcano plot visualization and the summary table.
+  This parameter sets the cut-off for DEseq differential peak calling.
 
-  .. note::RNA-Seq integration is only included in the very last step of the pipeline, so it can also be easily integrated later.
+``LG2FC``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
+  Integer >= 0. Default 0. 
+
+Details
+  This parameter sets the cut-off for DEseq differential peak calling.
+
+
+``motif``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
+  String, deafult 'false'.
+
+Details
+  This parameter is use to decide the on and off for the motif enrichement and clustering analysis.
+
+
+``bam_sort``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
+  String, deafult 'true'.
+
+Details
+  This parameter is to flag if the bam files provied for input are sorted or not.
+
+
+``CNV_correction``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
+  String, deafult 'false'.
+
+Details
+  This parameter is to flag if the CNV correction should be perfomed or not.
+
 
 
 SECTION ``samples``
