@@ -454,8 +454,9 @@ This file summarizes the data and corresponding available metadata  that should 
 
 Make the *__metasheet__* file in excel, and save it as a .txt or .csv, It doesn’t matter what it is named as long as it is called in the *__config__* in the spot marked “metasheet,” see the *__config__* section if confused. The format should be something like the following:
 
++--------+------+------------+-----------+------------+------------------------+---------------------------+
 | Sample | Cell | Condition  | Treatment | Replicates | comp_M7_DOX_over_NoDox | comp_T47D__DOX_over_NoDox |
-|--------|------|------------|-----------|------------|------------------------|---------------------------|
++--------+------+------------+-----------+------------+------------------------+---------------------------|
 | A1     | MCF7 | Full_Media | NoDOX     | 1          | 1                      |                           |
 | A2     | MCF7 | Full_Media | NoDOX     | 2          | 1                      |                           |
 | B1     | MCF7 | Full_Media | DOX       | 1          | 2                      |                           |
@@ -464,10 +465,15 @@ Make the *__metasheet__* file in excel, and save it as a .txt or .csv, It doesn�
 | C2     | T47D | Full_Media | NoDOX     | 2          |                        | 1                         |
 | D1     | T47D | Full_Media | DOX       | 1          |                        | 2                         |
 | D2     | T47D | Full_Media | DOX       | 2          |                        | 2                         |
++--------+------+------------+-----------+------------+------------------------+---------------------------+
+
+
 
 - The first column should always be sample names that exactly match the sample names used in config.yaml (see __SAMPLES__ just above)
 - The samples that you want to perform a Differential Peak Calling (DE) on using limma and deseq should be marked by the “comp” columns more on this below
-	- This is important! The “control” should be marked with a 1, and the “treatment” should be marked with a 2.
+
+This is important! The “control” should be marked with a 1, and the “treatment” should be marked with a 2.
+
 - It is recommended that if you should have a “replicates” column to denote different samples, it is a good idea to not only have each of the sample names be unique, but also make sure that the associated metadata is unique as well to each sample.
 - The rest of the  metadata columns are up to the user to write. Sample must always be first, and you are allowed to have as many “comp_XXXX” columns as you want at the end. All of the middle columns are your metadata (for this example, this is cell, condition, treatment, replicates)
 
