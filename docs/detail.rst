@@ -448,34 +448,34 @@ Details
 Input metadata
 =============================================
 
-This file summarizes the data and corresponding available metadata  that should be used for the analysis. The format is flexible and may contain additional columns that are ignored by the pipeline, so it can be used to capture all available information in a single place. Importantly, the file must be saved as comma-separated, the exact name does not matter as long as it is correctly specified in the configuration file.
+  This file summarizes the data and corresponding available metadata  that should be used for the analysis. The format is flexible and may contain additional columns that are ignored by the pipeline, so it can be used to capture all available information in a single place. Importantly, the file must be saved as comma-separated, the exact name does not matter as long as it is correctly specified in the configuration file.
 
   .. warning:: Make sure that the line endings are correct. Different operating systems use different characters to mark the end of line, and the line ending character must be compatible with the operating system in which you run *CoBRA*. For example, if you created the file in MAC, but you run it in a Linux environment (e.g., a cluster system), you may have to convert line endings to make them compatible with Linux. For more information, see `here <https://blog.shvetsov.com/2012/04/covert-unix-windows-mac-line-endings.html>`__ .
 
-Make the *__metasheet__* file in excel, and save it as a .txt or .csv, It doesn’t matter what it is named as long as it is called in the *__config__* in the spot marked “metasheet,” see the *__config__* section if confused. The format should be something like the following:
+  Make the *__metasheet__* file in excel, and save it as a .txt or .csv, It doesn’t matter what it is named as long as it is called in the *__config__* in the spot marked “metasheet,” see the *__config__* section if confused. The format should be something like the following:
 
-+--------+------+------------+-----------+------------+------------------------+---------------------------+
-| Sample | Cell | Condition  | Treatment | Replicates | comp_M7_DOX_over_NoDox | comp_T47D__DOX_over_NoDox |
-+--------+------+------------+-----------+------------+------------------------+---------------------------|
-| A1     | MCF7 | Full_Media | NoDOX     | 1          | 1                      |                           |
-+--------+------+------------+-----------+------------+------------------------+---------------------------+
-| A2     | MCF7 | Full_Media | NoDOX     | 2          | 1                      |                           |
-+--------+------+------------+-----------+------------+------------------------+---------------------------+
-| B1     | MCF7 | Full_Media | DOX       | 1          | 2                      |                           |
-+--------+------+------------+-----------+------------+------------------------+---------------------------+
-| B2     | MCF7 | Full_Media | DOX       | 2          | 2                      |                           |
-+--------+------+------------+-----------+------------+------------------------+---------------------------+
-| C1     | T47D | Full_Media | NoDOX     | 1          |                        | 1                         |
-+--------+------+------------+-----------+------------+------------------------+---------------------------+
-| C2     | T47D | Full_Media | NoDOX     | 2          |                        | 1                         |
-+--------+------+------------+-----------+------------+------------------------+---------------------------+
-| D1     | T47D | Full_Media | DOX       | 1          |                        | 2                         |
-+--------+------+------------+-----------+------------+------------------------+---------------------------+
-| D2     | T47D | Full_Media | DOX       | 2          |                        | 2                         |
-+--------+------+------------+-----------+------------+------------------------+---------------------------+
+  +--------+------+------------+-----------+------------+------------------------+---------------------------+
+  | Sample | Cell | Condition  | Treatment | Replicates | comp_M7_DOX_over_NoDox | comp_T47D__DOX_over_NoDox |
+  +--------+------+------------+-----------+------------+------------------------+---------------------------+
+  | A1     | MCF7 | Full_Media | NoDOX     | 1          | 1                      |                           |
+  +--------+------+------------+-----------+------------+------------------------+---------------------------+
+  | A2     | MCF7 | Full_Media | NoDOX     | 2          | 1                      |                           |
+  +--------+------+------------+-----------+------------+------------------------+---------------------------+
+  | B1     | MCF7 | Full_Media | DOX       | 1          | 2                      |                           |
+  +--------+------+------------+-----------+------------+------------------------+---------------------------+
+  | B2     | MCF7 | Full_Media | DOX       | 2          | 2                      |                           |
+  +--------+------+------------+-----------+------------+------------------------+---------------------------+
+  | C1     | T47D | Full_Media | NoDOX     | 1          |                        | 1                         |
+  +--------+------+------------+-----------+------------+------------------------+---------------------------+
+  | C2     | T47D | Full_Media | NoDOX     | 2          |                        | 1                         |
+  +--------+------+------------+-----------+------------+------------------------+---------------------------+
+  | D1     | T47D | Full_Media | DOX       | 1          |                        | 2                         |
+  +--------+------+------------+-----------+------------+------------------------+---------------------------+
+  | D2     | T47D | Full_Media | DOX       | 2          |                        | 2                         |
+  +--------+------+------------+-----------+------------+------------------------+---------------------------+
 
 
-  The first column should always be sample names that exactly match the sample names used in config.yaml (see __SAMPLES__ just above)
+  The first column should always be sample names that exactly match the sample names used in config.yaml
   The samples that you want to perform a Differential Peak Calling (DE) on using limma and deseq should be marked by the “comp” columns more on this below
 
   .. warning:: This is important! The “control” should be marked with a 1, and the “treatment” should be marked with a 2.
@@ -484,12 +484,11 @@ Make the *__metasheet__* file in excel, and save it as a .txt or .csv, It doesn�
   The rest of the  metadata columns are up to the user to write. Sample must always be first, and you are allowed to have as many “comp_XXXX” columns as you want at the end. All of the middle columns are your metadata (for this example, this is cell, condition, treatment, replicates)
 
   Again, make this in excel so that all of the spacing is done correctly and save it out as a .txt or .csv file. This is the most common bug, so please follow this.
-- Common Problems with *__metasheet__*
-- Characters to avoid: ("-", "(", ")", " ", "/", "$") To avoid bugs, the only punctuation that should be used is the underscore “_”. Dashes, periods, etc, could cause a bug because there is a lot of table formatting and manipulation, or they are invalid characters in R. 
+  .. warning:: Common Problems with *__metasheet__* Characters to avoid: ("-", "(", ")", " ", "/", "$") To avoid bugs, the only punctuation that should be used is the underscore “_”. Dashes, periods, etc, could cause a bug because there is a lot of table formatting and manipulation, or they are invalid characters in R. 
    .. note:: CoBRA parses the meta file and will convert MOST of these invalid characters into '.'--dollarsigns will just be dropped.  The CoBRA parser will also convert between dos/mac files to unix format.
    It is very important that you know that samples A is what you mark with 1, and samples B is what you mark with a 2. You should name your output following this format as well "comp_A_over_B” This will let the reader know what the output DE files refer to.  
-		-  Deseq: ”baseMeanA” refers to samples A, which follows condition 1 and “baseMeanB” refers to samples B which follows condition 2. logfc is B/A
-		-  Limma: Logfc refers to B/A
+   Deseq: ”baseMeanA” refers to samples A, which follows condition 1 and “baseMeanB” refers to samples B which follows condition 2. logfc is B/A
+   Limma: Logfc refers to B/A
 
 
   .. warning:: Do not change the samples data after you started an analysis. You may introduce inconsistencies that will result in error messages. If you need to alter the sample data, we strongly advise to recalculate all steps in the pipeline.
@@ -510,7 +509,7 @@ Most files have one of the following file formats:
 - .pdf (PDF format)
 - .log (text format)
 
-FOLDER ``FINAL_OUTPUT``
+FOLDER ``Analysis``
 =============================================
 
 In this folder, the final output files are stored. Most users want to examine the files in here for further analysis.
@@ -645,7 +644,7 @@ Details
   - *Diff_mean*, *Diff_median*, *Diff_mode*, *Diff_skew*: Difference of the mean, median, mode, and skewness between the log2 fold-change distribution across all TFBS and the peaks, respectively
 
 
-FOLDER ``PEAKS``
+FOLDER ``diff_peaks``
 =============================================
 
 Stores peak-associated files.
@@ -825,7 +824,7 @@ Details
   .. note:: Covariances are only computed for the real data but not the permuted ones.
 
 
-FOLDER ``LOGS_AND_BENCHMARKS``
+FOLDER ``rpkm.1_num_sample.0_scale.q_fliter.cov.2``
 =============================================
 
 Stores various log and error files.
@@ -845,7 +844,7 @@ Stores various log and error files.
   - ``all.errors.log``
   - ``all.warnings.log``
 
-FOLDER ``TEMP``
+FOLDER ``attic``
 =============================================
 
 Stores temporary and intermediate files. Since they are usually not relevant for the user, they are explained only very briefly here.
