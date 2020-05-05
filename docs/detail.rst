@@ -582,27 +582,43 @@ For example, the folder name 'rpkm.2_num_sample.3_scale.q_fliter.cov.2' means th
 FOLDER ``differential_peaks``
 =============================================
 
+Sub-folders ``{comparsion_defined_in_metasheet}``
+------------------------------
+
+Stores differential anlaysis results that was defined by user in the metasheet.csv. Following are files inside the folder:
+
+- ``{comparsion_defined_in_metasheet}.deseq.csv`` - differential peaks list based on the union peaks, log2FoldChange, padj for each peak is in the list. 
+
+- ``{comparsion_defined_in_metasheet}.deseq.with.Nearby.Gene.csv`` - in addition to the differential peak list, the nearby gene is annotate for each peak.
+
+- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.up.bed`` - treatment enriched peaks based on the Padj and log2FoldChange cut off defined in the config.yaml.
+
+- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.-{}.down.bed`` - control enriched peaks based on the Padj and log2FoldChange cut off defined in the config.yaml.
+
+- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.pdf`` - heatmap that showing the differential peaks between the treatment and control group
+
+- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.up.bed_motif`` - motif enrichedment results for treatment enriched motifs, both know and denovo results are included
+
+- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.-down.bed_motif`` - motif enrichedment results for control enriched motifs, both know and denovo results are included
+
+- ``GSEA`` - GSEA analysis result based on the log2FoldChange for each nearby genes in the differential peak list
+
+- ``cistrome_toolkit`` - cistrome_toolkit analysis result based on the treatment and control enriched differential peaks
+
+- ``DEseq.normalized.counts.csv`` - DEseq normalized counts for each sample and each peak
+
 
 FOLDER ``logs``
 =============================================
 
 Stores various log and error files.
 
-- ``*.log`` files from R scripts: Each log file is produced by the corresponding R script and contains debugging information as well as warnings and errors:
+- ``*.log`` files from bam file sorting and cleaing: Each log file is produced by the corresponding rule and contains debugging information as well as warnings and errors:
 
-  - ``checkParameterValidity.R.log``
-  - ``produceConsensusPeaks.R.log``
-  - ``diffPeaks.R.log``
-  - ``analyzeTF.{TF}.R.log`` for each TF ``{TF}``
-  - ``summary1.R.log``
-  - ``binningTF.{TF}.log``  for each TF ``{TF}``
-  - ``summaryFinal.R.log``
-
-- ``*.log`` summary files: Summary logs for user convenience, produced at very end of the pipeline only. They should contain all errors and warnings from the pipeline run.
-
-  - ``all.errors.log``
-  - ``all.warnings.log``
-
+  - ``clean_bam`` logs for picard bam clean 
+  - ``remove_duplicates`` logs for picard remove duplicate 
+  - ``reorder`` logs for reorder the bam files
+  - ``read_coutns`` for bedtools intersect to get the sample-peak count matrix
 
 .. _workingWithPipeline:
 
@@ -615,16 +631,6 @@ General remarks
 *CoBRA* is programmed as a *Snakemake* pipeline. *Snakemake* is a bioinformatics workflow manager that uses workflows that are described via a human readable, Python based language. It offers many advantages to the user because each step can easily be modified, parts of the pipeline can be rerun, and workflows can be seamlessly scaled to server, cluster, grid and cloud environments, without the need to modify the workflow definition or only minimal modifications. However, with great flexibility comes a price: the learning curve to work with the pipeline might be a bit higher, especially if you have no *Snakemake* experience. For a deeper understanding and troubleshooting errors, some knowledge of *Snakemake* is invaluable.
 
 Simply put, *Snakemake* executes various *rules*. Each *rule* can be thought of as a single *recipe* or task such as sorting a file, running an R script, etc. Each rule has, among other features, a name, an input, an output, and the command that is executed. You can see in the ``Snakefile`` what these rules are and what they do. During the execution, the rule name is displayed, so you know exactly at which step the pipeline is at the given moment. Different rules are connected through their input and output files, so that the output of one rule becomes the input for a subsequent rule, thereby creating *dependencies*, which ultimately leads to the directed acyclic graph (*DAG*) that describes the whole workflow. You have seen such a graph in Section :ref:`workflow`.
-
-In *CoBRA*, a rule is typically executed separately for each TF. One example for a particular rule is sorting the TFBS list for the TF CTCF.
-
-In *CoBRA*, the total number of *jobs* or rules to execute can roughly be approximated as 3 * ``nTF``, where ``nTF`` stands for the number of TFs that are included in the analysis. For each TF, three sets of rules are executed:
-
-1. Calculating read counts for each TFBS within the peak regions (rule ``intersectTFBSAndBAM``)
-2. Differential accessibility analysis  (rule ``analyzeTF``)
-3. Binning step (rule ``binningTF``)
-
-In addition, one rule per permuation is executed, so an additional ``nPermutations`` rules are performed. Lastly, a few other rules are executed that however do not add up much more to the overall rule count.
 
 
 .. _timeMemoryRequirements:
@@ -645,123 +651,18 @@ We now provide a *very rough* classification into small, medium and large with r
 - Large: Number of samples larger than say 20 or number of peaks clearly exceeds 100,000, or very high read depth per sample
 - Medium: Anything between small and large
 
-Memory
----------------
-
-Some notes regarding memory:
-
-- Disk space: Make sure you have enough space left on your device. As a guideline, analysis with 8 samples need around 12 GB of disk space, while a large analysis with 84 samples needs around 45 GB. The number of permutations also has an influence on the (temporary) required storage and a high number of permutations (> 500) may substantially increase the memory footprint. Note that most space is occupied in the *TEMP* folder, which can be deleted after an analysis has been run successfully. We note, however, that rerunning (parts of) the analysis will require regenerating files from the TEMP folder, so only delete the folder or files if you are sure that you do not need them anymore.
-- Machine memory: Although most steps of the pipeline have a modest memory footprint of less than 4 GB or so, depending on the analysis size, some may need 10+ GB of RAM during execution. We therefore recommend having at least 10 GB available for large analysis (see above).
-
-Number of cores
------------------
-
-Some notes regarding the number of available cores:
-
-- *CoBRA* can be invoked in a highly parallelized manner, so the more CPUs are available, the better.
-- you can use the ``--cores`` option when invoking *Snakemake* to specify the number of cores that are available for the analysis. If you specify 4 cores, for example, up to 4 rules can be run in parallel (if each of them occupies only 1 core), or 1 rule can use up to 4 cores.
-- we strongly recommend running *CoBRA* in a cluster environment due to the massive parallelization. With *Snakemake*, it is easy to run *CoBRA* in a cluster setting. Simply do the following:
-
-  - write a cluster configuration file that specifies which resources each rule needs. For guidance and user convenience, we provide different cluster configuration files for a small and large analysis. See the folder ``src/clusterConfigurationTemplates`` for examples. Note that these are rough estimates only. See the `*Snakemake* documentation <http://snakemake.readthedocs.io/en/latest/snakefiles/configuration.html#cluster-configuration>`__ for details for how to use cluster configuration files.
-  - invoke *Snakemake* with one of the available cluster modes, which will depend on your cluster system. We used ``--cluster`` and tested the pipeline extensively with *LSF/BSUB* and *SLURM*. For more details, see the `*Snakemake* documentation <http://snakemake.readthedocs.io/en/latest/executable.html#cluster-execution>`__
 
 Total running time
 --------------------
 
 Some notes regarding the total running time:
 
-- the total running time is very difficult to estimate beforehand and depends on many parameters, most importantly the number of samples, their read depth, the number of peaks, and the number of TF included in the analysis.
-- for small analysis such as the example analysis in the Git repository, running times are roughly 30 minutes with 2 cores for 50 TF and a few hours with all 640 TF.
-- for large analysis, running time will be up to a day or so when executed on a cluster machine
+- the total running time is based on the number of samples, their read depth, the number of peaks, and the number of TF included in the analysis
+- for small analysis such as the example analysis in the Git repository, running times are roughly 30 minutes with 2 cores for sorted bam files
+- for large analysis, running time will be up to 2 hrs or so when executed on a cluster machine
+- for the motif anslysis, running time will add 1 hr in additional to the running time above
 
 
-.. _clusterEnvironment:
-
-Running *CoBRA* in a cluster environment
-===========================================
-
-If *CoBRA* should be run in a cluster environment, the changes are minimal due to the flexibility of *Snakemake*. You only need to change the following:
-
-- create a cluster configuration file in JSON format. See the files in the ``clusterConfigurationTemplates`` folder for examples. In a nutshell, this file specifies the computational requirements and job details for each job that is run via *Snakemake*.
-- invoke *Snakemake* with a cluster parameter. As an example, you may use the following for a *SLURM* cluster:
-
-  .. code-block:: Bash
-
-    snakemake -s path/to/Snakefile \
-    --configfile path/to/configfile --latency-wait 30 \
-    --notemp --rerun-incomplete --reason --keep-going \
-    --cores 16 --local-cores 1 --jobs 400 \
-    --cluster-config path/to/clusterconfigfile \
-    --cluster " sbatch -p {cluster.queue} -J {cluster.name} \
-        --cpus-per-task {cluster.nCPUs} \
-       --mem {cluster.memory} --time {cluster.maxTime} -o \"{cluster.output}\" \
-       -e \"{cluster.error}\"  --mail-type=None --parsable "
-
-- the corresponding cluster configuration file might look like this:
-
-  .. code-block:: json
-
-    {
-      "__default__": {
-        "queue": "htc",
-        "nCPUs": "{threads}",
-        "memory": 2000,
-        "maxTime": "1:00:00",
-        "name": "{rule}.{wildcards}",
-        "output": "{rule}.{wildcards}.out",
-        "error": "{rule}.{wildcards}.err"
-      },
-      "resortBAM": {
-        "memory": 5000,
-        "maxTime": "1:00:00"
-      },
-      "intersectPeaksAndPWM": {
-        "memory": 5000,
-        "maxTime": "1:00:00"
-      },
-      "intersectPeaksAndBAM": {
-        "memory": 5000,
-        "maxTime": "1:00:00"
-      },
-      "intersectTFBSAndBAM": {
-        "memory": 5000,
-        "maxTime": "1:00:00"
-      },
-      "DiffPeaks": {
-        "memory": 5000,
-        "maxTime": "1:00:00"
-      },
-      "analyzeTF": {
-        "memory": 5000,
-        "maxTime": "1:00:00"
-      },
-      "binningTF": {
-        "memory": 5000,
-        "maxTime": "1:00:00"
-      },
-      "summaryFinal": {
-        "memory": 5000,
-        "maxTime": "0:30:00"
-      },
-      "cleanUpLogFiles": {
-        "memory": 1000,
-        "maxTime": "0:30:00"
-      }
-    }
-
-
-A few motes might help you to get started:
-
-- **each** name in the ``--cluster`` argument string from the command line (here: ``queue``, ``name`` ``nCPUs``, ``memory``, ``maxTime``, ``output``, and ``error``) must appear also in the ``__default__`` section of the referenced cluster configuration file (via ``--cluster-config``)
-- for brevity here, only rules with requirements different from the specified default have been included here in the online version, while the templates in the repository contain all rules, even if they have the same requirements as the default. The latter makes it easier for practical purposes to change requirements later on
-- the ``--cluster`` argument is the only part that has to be adjusted for your cluster system.  It is quite simple really, you essentially just link the content of the configuration file to the cluster system you want to submit the jobs to. More specifically, you refer to the cluster configuration file via the ``cluster.`` string, followed by the name of the parameter in the cluster configuration. For parameters that refer to filenames, an extra escaped quotation mark ``\"`` has been added so that the command also works in case of spaces in filenames (which should *always* be avoided at all costs)
-- the cluster configuration file has multiple sections defined that correspond to the names of the rules as defined in the Snakefile, plus the special section ``__default__`` at the very top, the latter of which specifies the default cluster options that apply to all rules unless overwritten via its own rule-specific section
-- **each** name (e.g., here: ``queue``, ``name`` ``nCPUs``, ```memory``, ``maxTime``, ``output``, and ``error``) **must be defined** in the ``__default__`` section of the cluster configuration file
-- note that in this example, we provided some extra parameters for convenience such as ``name`` (so the cluster job will have a reasonable name and can be recognized) that are not strictly necessary
-- the ``{threads}`` syntax of the ``nCPUs`` name can be generally used and is a placeholder for the specified number of threads for the particular rule, as specified in the corresponding ``Snakefile``
-- in our example, memory is given in Megabytes, so 5000 refers to roughly 5 GB. Queue names are either ``htc`` or ``1day``. Adjust this accordingly to your cluster system.
-- for more details, see the Snakemake documentation
-- .. note:: From a practical point of view, just try to mimic the parameters that you usually use for your cluster system, and modify the cluster configuration file accordingly. For example, if you need an additional argument such as ``-A`` (which stands for the *group* you are in for a SLURM-based system), simply add ``-A {cluster.group}``  to the command line call and add a ``group`` parameter to the ``__default__`` section (see also the note below).
 
 .. _FAQs:
 
