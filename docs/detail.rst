@@ -508,7 +508,29 @@ FOLDER ``Analysis``
 In this folder, the final output files are stored. Most users want to examine the files in here for further analysis.
 
 
-Sub-folder ``diff_peak{regionExtension}``
+Sub-folder ``clustering_analysis``
+----------------------------------------------
+
+Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`). In the following, the files are ordered by significance or relevance for interpretation an downstream analyses.
+
+.. note:: In all output files, in the column ``permutation``, 0 always refers to the non-permuted, real data, while permutations > 0 reflect real permutations.
+
+
+Sub-folder ``differential_peaks``
+----------------------------------------------
+
+Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`). In the following, the files are ordered by significance or relevance for interpretation an downstream analyses.
+
+.. note:: In all output files, in the column ``permutation``, 0 always refers to the non-permuted, real data, while permutations > 0 reflect real permutations.
+
+Sub-folder ``logs``
+----------------------------------------------
+
+Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`). In the following, the files are ordered by significance or relevance for interpretation an downstream analyses.
+
+.. note:: In all output files, in the column ``permutation``, 0 always refers to the non-permuted, real data, while permutations > 0 reflect real permutations.
+
+Sub-folder ``preprocessed_files``
 ----------------------------------------------
 
 Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`). In the following, the files are ordered by significance or relevance for interpretation an downstream analyses.
