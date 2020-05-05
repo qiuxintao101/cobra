@@ -314,7 +314,7 @@ Details
   
   .. code-block:: Bash
   
-     samples:
+     bam:
        sample1: ./XX1.bam
        sample2: ./XX2.bam
 
@@ -520,8 +520,6 @@ Sub-folder ``clustering_analysis``
 
 Stores results related to Principal Component Analysis (PCA) plot, Sample-sample correlation and Sample-Feature clustering plot.
 
-.. note:: In all output subfolder for unsupervised anlaysis, paramaters being used is in the folder name.
-
 
 Sub-folder ``differential_peaks``
 ----------------------------------------------
@@ -540,28 +538,45 @@ FOLDER ``preprocessed_files``
 
 Stores temporary and intermediate files. Since they are usually not relevant for the user, they are explained only very briefly here.
 
-Sub-folder ``SortedBAM``
+Sub-folder ``bam``
 ------------------------------
 
-Stores sorted versions of the original *BAMs* that are optimized for fast count retrieval using *featureCounts*. Only present if data are paired-end.
+Stores sorted versions of the *BAMs* that are optimized for fast count.
 
-- ``{basenameBAM}.bam`` for each input *BAM* file: Produced in rule ``resortBAM``. Resorted *BAM* file
 
-Sub-folder ``extension{regionExtension}``
+Sub-folder ``bed``
 ----------------------------------------------
 
-Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`)
+Stores all original and union bed files, the union peaks are seperate by enahcner and promoter bed files.
 
-- ``{comparisonType}.allTFBS.peaks.bed.gz``: Produced in rule ``intersectPeaksAndTFBS``. *BED* file containing all TFBS from all TF that overlap with the peaks after motif extension
-- ``conditionComparison.rds``: Produced in rule ``DiffPeaks``. Stores the condition comparison as a string. Some steps in *CoBRA* need this file as input.
-- ``{comparisonType}.motifs.coord.permutation{perm}.bed.gz`` and ``{comparisonType}.motifs.coord.nucContent.permutation{perm}.bed.gz`` for each permutation ``{perm}``: Produced in rule ``calcNucleotideContent``, and needed subsequently for the binning. Temporary and result file of *bedtools nuc*, respectively. The latter contains the GC content for all TFBS.
-- ``{comparisonType}.checkParameterValidity.done``: temporary flag file
-- ``{TF}_TFBS.sorted.bed`` for each TF ``{TF}``: Produced in rule ``sortTFBSParallel``. Coordinate-sorted version of the input TFBS. Only "regular" chromosomes starting with "chr" are kept, while sex chromosomes (chrX, chrY), chrM and unassembled contigs such as chrUn are additionally removed.
-- ``{comparisonType}.allTFBS.peaks.bed.gz``: Produced in rule ``intersectPeaksAndTFBS``. *BED* file containing all TFBS from all TF that overlap with the peaks before motif extension
+
+Sub-folder ``bigwig``
+------------------------------
+
+Stores all bigwig files for all samples.
+
+
+Sub-folder ``read_counts``
+------------------------------
+
+Stores sample-peak count for each sample and merged sample-peak count matrix.
 
 
 FOLDER ``clustering_analysis``
 =============================================
+
+
+Sub-folder ``rpkm.{}_num_sample.{}_scale.{}_fliter.cov.{}``
+------------------------------
+
+Stores unsupervised anlaysis results that paramaters used for filter the read counts is indicated in the folder name.
+
+For example, the folder name 'rpkm.2_num_sample.3_scale.q_fliter.cov.2' means that the unsupervised analysis under this folder is filter by the following criteria.
+
+- ``rpkm.2_num_sample.3`` - at least three samples in the data set have minmal rpkm 2 
+
+- ``scale.q_fliter.cov.2`` - the normalization method is quantile-normalized, fliter metric in feature selection is Coefficient of Variation, the top 2 percent of peaks are being selected.
+
 
 
 FOLDER ``differential_peaks``
