@@ -507,359 +507,35 @@ FOLDER ``Analysis``
 
 In this folder, the final output files are stored. Most users want to examine the files in here for further analysis.
 
+Sub-folder ``preprocessed_files``
+----------------------------------------------
+
+Stores results related to bam, bed, bigwig, read counts.
+
+.. note:: Output files in this folder do not need to examine unless itermidate output files are interested to the user.
+
 
 Sub-folder ``clustering_analysis``
 ----------------------------------------------
 
-Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`). In the following, the files are ordered by significance or relevance for interpretation an downstream analyses.
+Stores results related to Principal Component Analysis (PCA) plot, Sample-sample correlation and Sample-Feature clustering plot.
 
-.. note:: In all output files, in the column ``permutation``, 0 always refers to the non-permuted, real data, while permutations > 0 reflect real permutations.
+.. note:: In all output subfolder for unsupervised anlaysis, paramaters being used is in the folder name.
 
 
 Sub-folder ``differential_peaks``
 ----------------------------------------------
 
-Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`). In the following, the files are ordered by significance or relevance for interpretation an downstream analyses.
+Stores results related to differential peaks calling, motif, GSEA and cistrome toolkit analyses.
 
-.. note:: In all output files, in the column ``permutation``, 0 always refers to the non-permuted, real data, while permutations > 0 reflect real permutations.
 
 Sub-folder ``logs``
 ----------------------------------------------
 
-Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`). In the following, the files are ordered by significance or relevance for interpretation an downstream analyses.
+Stores results related to all logs that is created by the pipeline .Each log file is produced by the corresponding rule and contains debugging information as well as warnings and errors:
 
-.. note:: In all output files, in the column ``permutation``, 0 always refers to the non-permuted, real data, while permutations > 0 reflect real permutations.
 
-Sub-folder ``preprocessed_files``
-----------------------------------------------
-
-Stores results related to the user-specified extension size (``regionExtension``, :ref:`parameter_regionExtension`). In the following, the files are ordered by significance or relevance for interpretation an downstream analyses.
-
-.. note:: In all output files, in the column ``permutation``, 0 always refers to the non-permuted, real data, while permutations > 0 reflect real permutations.
-
-
-FILES ``{comparisonType}.summary.volcano.pdf`` and ``{comparisonType}.summary.volcano.q*.pdf``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Summary
-  A visual summary of the results in the form of a Volcano plot. If you run the classification mode, multiple files are created, as follows:
-
-    - ``{comparisonType}.summary.volcano.pdf``. This file intentionally empty, see the other files below
-    - ``{comparisonType}.summary.volcano.q{X}.pdf``, with {X} being 0.001, 0.01, 0.05, and 0.1, corresponding to different stringencies of the classification. Thus, only the classification (i.e, coloring of the data points) differs among the 4 PDF files.
-
-  If you run only the basic mode, only the file ``{comparisonType}.summary.volcano.pdf`` is created.
-
-  Each PDF contains multiple pages, essentially showing the same data but with different filters, and the structure is as follows:
-
-  - Basic mode (10 pages in total)
-    - Pages 1-5: Volcano plot for different values for the adjusted p-value, starting from the most stringent, 0.001, to 0.01, 0.05, 0.1 and finally the least stringent 0.2
-    - Pages 6-10: Same as pages 1-5, just with the raw p-value
-  - Classification mode (30 pages in total)
-    - Pages 1:15: Volcano plot for different values for the adjusted p-value, starting from the most stringent, 0.001, to 0.01, 0.05, 0.1 and finally the least stringent 0.2. For each of these values, 3 pages are shown: 1: all four classes, 2: excluding not-expressed TFs, 3: only showing activator and repressor TFs (see also the legend)
-    - Pages 16-30: Same as pages 1-15, just with the raw p-value
-
-  Generally, each page shows a Volcano plot of the differential TF activity (labeled as *weighted mean difference*) between the two conditions you run the analysis for (x-axis) and the corresponding significance (y-axis, adjusted for multiple testing and -log10 transformed). Each point is a TF. The significance threshold is indicated with a dotted line. TFBS is the number of predicted TF binding site that overlap the peak regions and upon which the weighted mean difference is based on. If the classification mode was run, the lgend also shows the TF classification, and points are colored accordingly. Note that different sets of classification classes are shown on each page, see above.
-
-
-FILE ``{comparisonType}.summary.tsv.gz``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Summary
-  The final summary table with all *CoBRA* results. This table is also used for the final Volcano plot visualization. The number of columns may vary and depends on the mode you run *CoBRA* for (i.e., only basic mode or also classification mode, analytical or permutation-based approach).
-
-Details
-  The following columns are always present and relevant:
-
-  - *TF*: name of the TF
-  - *weighted_meanDifference*: This is the TF activity value that captures the difference in accessibility between the two conditions. More precisely, it is the difference of the real and background distribution, calculated as the weighted mean across all CG bins (see the publication or :ref:`workflow` for a graphical depiction of how this works put plot how this is calculated). In the Volcano plot, this is the x-axis. Higher values in either positive and negative direction indicate a larger TF activity in one of the two conditions (i.e., the predicted TF binding sites for this TFs are more accessible). Positive and negative values denote whether the value was bigger in one or the other condition, see the Volcano plot for easier interpretation as well as the notes for :ref:``conditionComparison``.
-  - *weighted_CD*: An alternative measure for the effect size that can be seen as alternative for the *weighted_meanDifference* but that we provide nevertheless. It is calculated in a similar fashion as the *weighted_meanDifference*, but instead of taking the difference in the means of the log2 fold-change values from foreground and background, it represents the Cohen's d measure of effect size (as calculated by the ``cohensD`` function from the *lsr* package), weighted by CG bin as for the *weighted_meanDifference*.
-  - *TFBS*: The number of predicted TF binding sites for the particular TF that overlap with the peaks and that the analysis was based on.
-  - *pvalue*: The p-value assesses the significance of the obtained *weighted_meanDifference*. The exact calculation depends on whether permutations are used (permutation-based approach) or not (analytical approach) and is fully described in the *STAR* methods of the publication, section "Estimation of significance for differential activity for each TF"
-  - *pvalueAdj*: adjusted p-values using Benjamini-Hochberg
-
-  The following columns are only relevant if you run the analytical mode:
-
-  - *weighted_Tstat* and *variance*: These columns are only relevant for the analytical version. See the section "Estimation of significance for differential activity for each TF" in the  *STAR* methods for details. The resulting p-value is based on these columns and we provide them for the sake of completeness.
-
-  The following columns are only relevant if you run the classification mode:
-
-  - *median.cor.tfs*: The median value for the RNA-ATAC correlations from the foreground (i.e., peaks with a predicted TFBS for the particular TF)
-  - *classification_\**: The columns are explained below, but for each of them, a TF is either classified as *activator*, *undetermined*, *repressor* or *not-expressed*). For details how TFs are classified, see the *STAR* methods, section "Classification of TFs into activator and repressors". Note that the current implementation uses a two-step process to classify TFs. We provide the classifications for both steps for clarity, and they are further subdivided into different classification stringencies (e.g., for more stringent classifications, i.e. smaller values, more TFs are classified as undetermined and only the strongest activators and repressors will be classified as such). These values denote the particular percentiles of the background distribution across the background values for all TF as a threshold for activators and repressors and are used to distinguish real correlations from noise (i.e., activator/repressor from undetermined). The classification stringency goes from 0.001 (most stringent), 0.01, 0.05 to 0.1 (least stringent).
-
-    - classification_q0.\* (without final): TF classifications after step 1
-    - classification_distr_rawP: The raw p-value of the one-sided Wilcoxon rank sum test for step 2. For TFs that were classified as either repressor or activator after step 1 but for which the raw p value of the Wilcoxon rank sum test was not significant, we changed their classification to undetermined, thereby removing TF classifications with weak support
-    - classification_q0.\*_final*: TF classifications after step 2 (final, this is what is shown in the Volcano plot)
-
-
-
-FILES ``{comparisonType}.diagnosticPlotsClassification1.pdf`` and ``{comparisonType}.diagnosticPlotsClassification2.pdf``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Summary
-  Diagnostic plots related to the classification mode.
-
-  File ``{comparisonType}.diagnosticPlotsClassification1.pdf``:
-
-   - Pages 1-4: Median Pearson correlation for all TFs, ordered from bottom (lowest) to top (highest). Each dot is one TF, and the color of the dot indicates the TF classification (red: repressor, black/gray: undetermined, green: activator). Each page shows the stringency on which the classification is based for this particular threshold as annotated vertical lines, inside of which TFs are classified as undetermined and outside of it as either repressor (left) or activator (right). The more stringent (i.e., smaller values, see the title), the more the two lines move towards the outside, thereby increasing the width of the "undetermined" area.
-   - Page 5: Summary density heatmap for each TF and for all classifications across stringencies, sorted by the median Pearson correlation (from the most negative one at the bottom to the most positive one at the top). The heatmap visualizes the correlation across all TFBS, in an alternative representation as compared to the previous pages, summarized in one plot. Colors in or closer to red indicate higher densities and therefore an accumulation of values, while ble or close to blue colors indicate the opposite. Thus, repressors will typically have an enrichment of red colors for negative correlation values, while activators have an enrichment for positive values. TFs will low or conflicting signal will be placed in the middle, classified as undetermined. The left part shows the classification of the TFs for all classification stringencies, sorted from left to right by stringency. The first number refers to the stringency as in other plots and files, but here depicted as per cent (i.e., 0.1% refers to the 0.001 stringency as referred to elsewhere). For each stringency, there are two classifications, referring to the two-step procedure as explained above (columns *classification* for the file ``{comparisonType}.summary.tsv.gz``). If the signal is strong, the difference between the final and non-final column should be small, while for low-signal classifications, pseudo-significant results will not be significant for the *final* column.
-
-  File ``{comparisonType}.diagnosticPlotsClassification2.pdf``:
-
-    - Pages 1-12: Correlation plots of the TF activity (weighted mean differences, x-axis) from the ATAC-Seq for all TF and the log2 foldâˆ’changes of the corresponding TF genes from the RNAâˆ’seq data (y-axis). Each TF is a point, the size of the point reflects the normalized base mean of the TF gene according to the RNA-Seq data. In addition, the glm regression line is shown, colored by the classification. The correlation plots are shown for different classification stringencies
-
-    activator: R=0.9/0.77, pâˆ’value 0.000032/0.0029
-    (Pearson/Spearman, stringency: 0.1)
-
-    starting from the most stringent, 0.001, to 0.01, 0.05, 0.1 and finally the least stringent 0.2
-
-    - Page 13-14: Regular (13) and MA plot based shrunken log2 fold-changes (14) of the RNA-Seq counts based on the ``DESeq2`` analysis. Both show the log2 fold changes attributable to a given variable over the mean of normalized counts for all samples, while the latter removes the noise associated with log2 fold changes from low count genes without requiring arbitrary filtering thresholds. Points are colored red if the adjusted p-value is less than 0.1. Points which fall out of the window are plotted as open triangles pointing either up or down. For more information, see `here <http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#ma-plot>`__.
-    - Pages 15-18: Densities of nonâˆ’normalized (15) and normalized (16) mean log counts for the different samples of the RNA-Seq data, as well their respective empircal cummulative distribution functions (ECDF, pages 17 and 18 for nonâˆ’normalized and normalized mean log counts, respectively).  Since most of the genes are (heavily) affected by the experimental conditions, a successful normalization will lead to overlapping densities. The ECDFs can be thought of as integrals of the densities and give the probability of observing a certain number of counts equal to x or less given the data. For more information, see `here <https://www.huber.embl.de/users/klaus/Teaching/DESeq2Predoc2014.html/>`__.
-    - Page 19: Mean SD plot (row standard deviations versus row means)
-    - Page 20-end: Density plots for the TFs bla
-
-
-For the other plots, already documented? To further assess systematic differences between the samples, we can also plot pairwise meanâ€“average plots: We plot the average of the logâ€“transformed counts vs the fold change per gene for each of the sample pairs.
-
-FILE ``{comparisonType}.diagnosticPlots.pdf``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Summary
-  Various diagnostic plots for the final TF activity values, mostly related to the permutation-based approach.
-
-Details
-  If the permutation-based approach has been used, the structure is as follows:
-
-    - Page 1: Density plot of the weighted mean difference (TF activity) values from the permutations (black) and the real values (red) across all TF. Note that the number of points in the permuted data contains more values - if 1000 permutations have been used for 640 TF, it contains 640 * 1000 values, while the red distribution only contains 640 values. This plot summaries the overall signal: if the red and black curve show little difference, it generally indicates that the observed weighted mean difference (TF activity) values across all TF are very similar to permuted values and therefore, noise. Importantly, however, there might well be individual TFs that show a large signal, which should be visible also in the red line by having outlier values towards the more extreme values. Permuted values, however, usually cluster strongly around 0, which is the expected difference between the conditions if the data are permuted.
-    - Page 2 onward: Density plot for the weighted mean difference (TF activity) values from the permutations (one value per permutation, black) vs the single real value (red vertical line). The significance that is shown in the Volcano plot is based on the comparison of the permuted vs the real value (see methods for details). In brief, it is calculated as an empirical two-sided p-value per TF by comparing the real value with the distribution from the permutations and calculating the proportion of permutations for which the absolute differential TF activity is larger. For example, the p-value is small if the real value (i.e., the red line) is outside of the distribution or close to the corner of the permuted values. The p-value is consequently large, however, if the real value falls well within the distribution of the permuted values.
-    - Rest: Various summary plots for different variables
-
-  If the analytical mode has been run, the plots related to the permutations are missing from the PDF.
-
-FILE ``{comparisonType}.allMotifs.tsv.gz``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Summary
-  Summary table for each TFBS. This file contains summary data for each TF and each TFBS and allows a more in-depth investigation.
-
-Details
-  Columns are as follows:
-
-  - *permutation*: Permutation number. This is always 0 and can therefore be ignored
-  - *TF*: name of the TF
-  - *chr*, *MSS*, *MES*, *strand*, *TFBSID*: Genomic location and identifier of the (extended) TFBS
-  - *peakID*:  Genomic location and annotation of the overlapping peak region
-  - *l2FC*, *pval*, *pval_adj*: Results from the *limma* or *DESeq2* analysis, see the respective documentation for details (see below for links and further explanation). These column names are shared between *limma* and *DESeq2*. l2FC are interpreted as described in the ``conditionComparison`` ( :ref:`parameter_conditionComparison`)
-  - *DESeq_baseMean*, *DESeq_ldcSE*, *DESeq_stat*: Results from the *DESeq2* analysis, see the *DESeq2* documentation for details (e.g., *?DESeq2::results*). If *DESeq2* was not run for calculating log2 fold-changes (i.e., if the value for the ``nPermutations`` ( :ref:`parameter_regionExtension`) is >0), these columns are set to NA.
-  - *limma_avgExpr*, *limma_B*, *limma_t_stat*: Results from the *limma* analysis, see the *limma* documentation for details (e.g., *??topTable*). If *limma* was not run (i.e., if the value for the ``nPermutations`` ( :ref:`parameter_regionExtension`) is 0), these columns are set to NA.
-
-
-FILE ``{comparisonType}.TF_vs_peak_distribution.tsv.gz``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Summary
-  This summary table contains various results regarding TFs, their log2 fold change distribution across all TFBS and differences between all TFBS and the peaks
-
-Details
-  See the description of the file ``{TF}.{comparisonType}.summary.rds``. This file aggregates the data for all TF and adds the following additional columns:
-  - *pvalue_adj*: adjusted (fdr aka BH) p-value (based on *pvalue_raw*)
-  - *Diff_mean*, *Diff_median*, *Diff_mode*, *Diff_skew*: Difference of the mean, median, mode, and skewness between the log2 fold-change distribution across all TFBS and the peaks, respectively
-
-
-FOLDER ``diff_peaks``
-=============================================
-
-Stores peak-associated files.
-
-
-FILES ``{comparisonType}.consensusPeaks.filtered.sorted.bed``
-----------------------------------------------------------------------------------------------
-
-Summary
-  Produced in rule ``filterSexChromosomesAndSortPeaks``. Filtered and sorted consensus peaks (see below). the *CoBRA* analysis is based on this set of peaks.
-
-Details
-  Filtered consensus peaks (removal of peaks from one of the following chromosomes: chrX, chrY, chrM, chrUn\*, and all contig names that do not start with "chr" such as \*random* or \*hap|_gl\*
-
-
-FILE ``{comparisonType}.allBams.peaks.overlaps.bed.gz``
---------------------------------------------------------
-
-Summary
-  Produced in rule ``intersectPeaksAndBAM``. Counts for each consensus peak with each of the input *BAM* files.
-
-Details
-  No further details provided yet. Please let us know if you need more details.
-
-FILE ``{comparisonType}.sampleMetadata.rds``
------------------------------------------------
-
-Summary
-  Produced in rule ``DiffPeaks``. Stores data for the input data (similar to the input sample table), for both the real data and the permutations.
-
-Details
-  No further details provided yet. Please let us know if you need more details.
-
-
-FILE ``{comparisonType}.peaks.rds``
---------------------------------------------
-
-Summary
-  Produced in rule ``DiffPeaks``. Internal file. Stores all peaks that will be used in the analysis in rds format.
-
-Details
-  No further details provided yet. Please let us know if you need more details.
-
-FILE ``{comparisonType}.peaks.tsv.gz``
---------------------------------------------
-
-Summary
-  Produced in rule ``DiffPeaks``. Stores the results of the differential accessibility analysis for the peaks.
-
-Details
-  No further details provided yet. Please let us know if you need more details.
-
-FILE ``{comparisonType}.normFacs.rds``
---------------------------------------------
-
-Summary
-  Produced in rule ``DiffPeaks``. Gene-specific normalization factors for each sample and peak.
-
-Details
-  This file is produces after the differential accessibility analysis for the peaks. The normalization factors are used for the TF-specific differential accessibility analysis.
-
-
-FILES ``{comparisonType}.diagnosticPlots.peaks.pdf``
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Summary
-  Produced in rule ``DiffPeaks``. Various diagnostic plots for the differential accessibility peak analysis for the real data.
-
-Details
-  The pages are as follows:
-
-  (1) Density plots of non-normalized (page 1) and normalized (page 2) mean log counts as well their respective empirical cumulative distribution functions (ECDF, pages 3 and 4 for nonâˆ’normalized and normalized mean log counts, respectively)
-  (2) pairwise mean-average plots (average of the log-transformed counts vs the fold-change per peak) for each of the sample pairs. This can be useful to further assess systematic differences between the samples. Note that only a maximum of 20 different pairwise plots are shown for time and efficacy reasons.
-  (3) mean SD plots (row standard deviations versus row means, last page)
-
-
-FILE ``{comparisonType}.DESeq.object.rds``
---------------------------------------------
-
-Summary
-  Produced in rule ``DiffPeaks``. The *DESeq2* object from the differential accessibility peak analysis.
-
-Details
-  No further details provided yet. Please let us know if you need more details.
-
-FOLDER ``data``
-=============================================
-
-Stores TF-specific files. For each TF ``{TF}``, a separate sub-folder ``{TF}`` is created by the pipeline. Within this folder, the following structure is created:
-
-Sub-folder ``extension{regionExtension}``
-----------------------------------------------
-
-FILES ``{TF}.{comparisonType}.allBAMs.overlaps.bed.gz`` and ``{TF}.{comparisonType}.allBAMs.overlaps.bed.summary``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Summary
-  Overlap and *featureCounts* summary file of read counts across all TFBS for all input *BAM* files.
-
-Details
-  For more details, see the documentation of *featureCounts*.
-
-
-FILE ``{TF}.{comparisonType}.output.tsv.gz``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Summary
-  Produced in rule ``analyzeTF``. A summary table for the differential accessibility analysis.
-
-Details
-  See the file ``{comparisonType}.allMotifs.tsv.gz`` in the ``FINAL_OUTPUT`` folder for a column description.
-
-
-FILE ``{TF}.{comparisonType}.outputPerm.tsv.gz``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Summary
-  Produced in rule ``analyzeTF``. A subset of the file ``{TF}.{comparisonType}.output.tsv.gz`` that stores only the necessary permutation-specific results for subsequent steps.
-
-Details
-  This file has the following columns (see the description for the file ``{TF}.{comparisonType}.output.tsv.gz`` for details):
-  - *TF*
-  - *TFBSID*
-  - *log2fc_perm* columns, which store the permutation-specific log2 fold-changes of the particular TFBS. Permutation 0 refers to the real data
-
-FILE ``{TF}.{comparisonType}.summary.rds``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Summary
-   Produced in rule ``analyzeTF``. A summary table for the log2 fold-changes across all TFBS *limma* results.
-
-Details
-  This file summarizes the TF-specific results for the differential accessibility analysis and has the following columns:
-  - *TF*: name of the TF
-  - *permutation*: The number of the permutation.
-  - *Pos_l2FC*, *Mean_l2FC*, *Median_l2FC*, *sd_l2FC*, *Mode_l2FC*, *skewness_l2FC*: fraction of positive values, mean, median, standard deviation, mode value and Bickel's measure of skewness of the log2 fold change distribution across all TFBS
-  - *pvalue_raw* and *pvalue_adj*: raw and adjusted (fdr aka BH) p-value of the t-test
-  - *T_statistic*: the value of the T statistic from the t-test
-  - *TFBS_num*: number of TFBS
-
-
-FILES ``{TF}.{comparisonType}.diagnosticPlots.pdf``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Summary
-  Produced in rule ``analyzeTF``. Various diagnostic plots for the differential accessibility TFBS analysis for the real data.
-
-Details
-  See the description of the file ``{comparisonType}.diagnosticPlots.peaks.pdf`` in the ``PEAKS`` folder, which has an identical structure. Here, the second last page shows two density plots of the log2 fold-changes for the specific pairwise comparson that *CoBRA* run for, one for the peak log2 fold-changes (independent of any TF) and one for the TF-specific one (i.e., across all TFBS from the subset of peaks with a TFBS for this TF). The last page shows the same but in a cumulative representation.
-
-
-FILE ``{TF}.{comparisonType}.permutationResults.rds``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Summary
-  Produced in rule ``binningTF``. Contains a data frame that stores the results of bin-specific results.
-
-Details
-  No further details provided yet. Please let us know if you need more details.
-
-FILE ``{TF}.{comparisonType}.permutationSummary.tsv.gz``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Summary
-  Produced in rule ``binningTF``. A final summary table that summarizes the results across bins by calculating weighted means.
-
-Details
-  The data of this table are used for the final visualization.
-
-
-FILE ``{TF}.{comparisonType}.covarianceResults.rds``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Summary
-  Produced in rule ``binningTF``. Contains a data frame that stores the results of the pairwise bin covariances and the bin-specific weights.
-
-Details
-  .. note:: Covariances are only computed for the real data but not the permuted ones.
-
-
-FOLDER ``rpkm.1_num_sample.0_scale.q_fliter.cov.2``
-=============================================
-
-Stores various log and error files.
-
-- ``*.log`` files from R scripts: Each log file is produced by the corresponding R script and contains debugging information as well as warnings and errors:
-
-  - ``checkParameterValidity.R.log``
-  - ``produceConsensusPeaks.R.log``
-  - ``diffPeaks.R.log``
-  - ``analyzeTF.{TF}.R.log`` for each TF ``{TF}``
-  - ``summary1.R.log``
-  - ``binningTF.{TF}.log``  for each TF ``{TF}``
-  - ``summaryFinal.R.log``
-
-- ``*.log`` summary files: Summary logs for user convenience, produced at very end of the pipeline only. They should contain all errors and warnings from the pipeline run.
-
-  - ``all.errors.log``
-  - ``all.warnings.log``
-
-FOLDER ``attic``
+FOLDER ``preprocessed_files``
 =============================================
 
 Stores temporary and intermediate files. Since they are usually not relevant for the user, they are explained only very briefly here.
@@ -882,6 +558,36 @@ Stores results related to the user-specified extension size (``regionExtension``
 - ``{comparisonType}.checkParameterValidity.done``: temporary flag file
 - ``{TF}_TFBS.sorted.bed`` for each TF ``{TF}``: Produced in rule ``sortTFBSParallel``. Coordinate-sorted version of the input TFBS. Only "regular" chromosomes starting with "chr" are kept, while sex chromosomes (chrX, chrY), chrM and unassembled contigs such as chrUn are additionally removed.
 - ``{comparisonType}.allTFBS.peaks.bed.gz``: Produced in rule ``intersectPeaksAndTFBS``. *BED* file containing all TFBS from all TF that overlap with the peaks before motif extension
+
+
+FOLDER ``clustering_analysis``
+=============================================
+
+
+FOLDER ``differential_peaks``
+=============================================
+
+
+FOLDER ``logs``
+=============================================
+
+Stores various log and error files.
+
+- ``*.log`` files from R scripts: Each log file is produced by the corresponding R script and contains debugging information as well as warnings and errors:
+
+  - ``checkParameterValidity.R.log``
+  - ``produceConsensusPeaks.R.log``
+  - ``diffPeaks.R.log``
+  - ``analyzeTF.{TF}.R.log`` for each TF ``{TF}``
+  - ``summary1.R.log``
+  - ``binningTF.{TF}.log``  for each TF ``{TF}``
+  - ``summaryFinal.R.log``
+
+- ``*.log`` summary files: Summary logs for user convenience, produced at very end of the pipeline only. They should contain all errors and warnings from the pipeline run.
+
+  - ``all.errors.log``
+  - ``all.warnings.log``
+
 
 .. _workingWithPipeline:
 
