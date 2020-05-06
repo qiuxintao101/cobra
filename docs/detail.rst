@@ -452,7 +452,7 @@ Input metadata
 
   .. warning:: Make sure that the line endings are correct. Different operating systems use different characters to mark the end of line, and the line ending character must be compatible with the operating system in which you run *CoBRA*. For example, if you created the file in MAC, but you run it in a Linux environment (e.g., a cluster system), you may have to convert line endings to make them compatible with Linux. For more information, see `here <https://blog.shvetsov.com/2012/04/covert-unix-windows-mac-line-endings.html>`__ .
 
-  Make the  ``metasheet`` file in excel, and save it as a .txt or .csv, It doesn’t matter what it is named as long as it is called in the  ``config`` in the spot marked  ``metasheet`` see the  ``config`` section if confused. The format should be something like the following:
+  Make the  ``metasheet`` file in excel, and save it as a .csv, It doesn’t matter what it is named as long as it is called in the  ``config`` in the spot marked  ``metasheet`` see the  ``config`` section if confused. The format should be something like the following:
 
   +--------+------+------------+-----------+------------+--------------------------+
   | Sample | Cell | Condition  | Treatment | Replicates | comp_MCF7_DOX_over_NoDox | 
