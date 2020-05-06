@@ -671,12 +671,15 @@ Frequently asked questions (FAQs)
 
 Here a few typical use cases, which we will extend regularly in the future if the need arises:
 
-1. I received an error, and the pipeline did not finish.
+1. Why the CoBRA need to use an config.yaml, metasheet.csv to setup the run? Why not just simply use the command to setup the run?
 
   As explained in Section :ref:`docs-errors`, you first have to identify and fix the error. Rerunning then becomes trivially easy: just restart *Snakemake*, it will start off where it left off: at the step that produced that error.
 
-2. I received an error, and I do not see any error message.
+2. I received an error, what should I do?
 
+  If see 
+  
+  
   First, check the cluster output and error files if you run *CoBRA* in cluster mode. They mostly contain an actual error message or at least the print the exact command that resulted in an error. If you executed locally or still cannot find the error message, see below for guidelines.
 
 3. I want to rerun a specific part of the pipeline only.
@@ -686,33 +689,6 @@ Here a few typical use cases, which we will extend regularly in the future if th
 4. I want to modify the workflow.
 
   Simply add or modify rules to the Snakefile, it is as easy as that.
-
-5. *CoBRA* finished successfully, but nothing is significant.
-
-  This can and will happen, depending on the analysis. The following list provides some potential reasons for this:
-
-    - The two conditions are in fact very similar and there is no signal that surpasses the significance threshold. You could, for example, check in a PCA plot based on the peaks that are used as input for *CoBRA* whether they show a clear signal and separation.
-    - There is a confounding factor (like age) that dilutes the signal. One solution is to add the confounding variable into the design model, see above fo details. Again, check in a PCA plot whether samples cluster also according to another variable.
-    - You have a small number of samples or one of the groups contains a small number of samples. In both cases, if you run the permutation-based approach, the number of permutations is small, and there might not be enough permutations to achieve significance. For example, if you run an analysis with only 10 permutations, you cannot surpass the 0.05 significance threshold. As a solution, you may switch to the analytical version. Be aware that this requires to rerun large parts of the pipeline from the *diffPeaks* step onwards.
-    - You have a very small number of peaks and therefore also a small number of TF binding sites within the peaks, resulting in many TFs to be skipped in the analysis due to an insufficient number of binding sites. As a solution, try increasing the number of peaks or verify that the predicted binding sites are not too stringent (if done independently, therefore not using our TFBS collection that was produced with *PWMScan* and *HOCOMOCO*). We recommend having at least a few thousand peaks, but this can hardly be generalized and depends too much on the biology, the size of the peaks etc.
-    - You run the (usually more stringent) permutation-based approach. If the number of permutations is too low, p-values may not be able to reach significance. For more details, see :ref:`parameter_nPermutations`. You may want to rerun the analysis using the analytical approach or using more permutations (if the number of samples makes this possible at all); however, the problems raised above may still apply.
-
-
-6. *CoBRA* finished successfully, but almost everything is significant.
-
-  This can also happen and is usually a good sign. The following list provides some potential reasons for this:
-
-    - If you run the analytical mode, consider running the permutation-based approach in addition. The permutation-based approach tends to be more stringent and usually results in fewer TFs being significant. However, as explained in the paper and here, it can only be used if the number of samples is sufficiently high.
-    - If too many TFs are significant, you have multiple choices that can of course also be combined: First, you may use a more stringent adjusted p-value threshold. Keep in mind that the Volcano plot PDF shows only a few selected thresholds, and you can always be even more stringent when working with the final result table that is also written to the  ``FINAL_OUTPUT`` folder. Second, you may further filter them by additional criteria such as the number of binding sites (e.g., filtering TFs with a very small number of binding sites, a TF activity that is not large enough, or by their predicted mode of action if you used the classification mode). Third, you may further subdivide them into families and subsequently focus, for example, only one particular TF family.  Alternatively, you can classify the TFs into "known" and "novel" for the particular comparison.
-
-
-7. I want to change the value of a parameter.
-
-  If you want to do this, please contact us, and we help and then update the FAQ here.
-
-
-**If you feel that a particular use case is missing, let us know and we will add it here!**
-
 
 
 .. _docs-errors:
