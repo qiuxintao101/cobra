@@ -725,14 +725,11 @@ We here provide a list of some of the errors that can happen and that users repo
 
   .. code-block:: Bash
 
-    *** caught segfault ***
-    ...
-KeyError in line 9 of Snakefile:
-'XXX'
-  File "Snakefile", line 9, in <module>
-  File "metasheet_setup.py", line 19, in updateMeta
-  File "metasheet_setup.py", line 19, in <dictcomp>
-    ...
+    *** KeyError in line 9 of Snakefile ***
+    File "Snakefile", line 9, in <module>
+    File "metasheet_setup.py", line 19, in updateMeta
+    File "metasheet_setup.py", line 19, in <dictcomp>
+  ..
 
   .. note:: This particular message normally related to an mismatch between the sample names in ``config.yaml`` and ``metasheet.csv``.
 
