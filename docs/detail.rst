@@ -712,67 +712,8 @@ Here a few typical use cases, which we will extend regularly in the future if th
 Handling errors
 ************************************************************
 
-Error types
-==============================
 
-Errors occur during the *Snakemake* run can principally be divided into:
-
-- Temporary errors (often when running in a cluster setting)
-
-  * might occur due to temporary problems such as bad nodes, file system issues or latencies
-  * rerunning usually fixes the problem already. Consider using the option ``--restart-times`` in *Snakemake*.
-
-- Permanent errors
-
-  * indicates a real error related to the specific command that is executed
-  * rerunning does not fix the problem as they are systematic (such as a missing tool, a library problem in R)
-
-
-From our experience, most errors occur due to the following issues:
-
-- Software-related problems such as R library issues, non-working conda installation etc. Consider using the Docker-enhanced version of *CoBRA* (version 1.2 and above) that immediately solves these issues.
-- issues arising from the data itself. Here, it is more difficult to find the cause. We tried to cover all cases for which *CoBRA* may fail, so please post an issue on our `Bitbucket Issue Tracker <https://bitbucket.org/chrarnold/CoBRA>`_ if you believe you found a new problem.
-
-
-Identify the cause
-==============================
-
-To troubleshoot errors, you have to first locate the exact error. Depending on how you run *Snakemake* (i.e., in a cluster setting or not), check the following places:
-
-- in locale mode: the *Snakemake* output appears on the console. Check the output before the line "Error in rule", and try to identify what went wrong.  Errors from R script should in addition be written to the corresponding R log files in the in the ``LOGS_AND_BENCHMARKS`` directory. Sometimes, no error message might be displayed, and the output may look like this:
-
-  .. code-block:: Bash
-
-    Error in rule intersectTFBSAndBAM:
-            jobid: 1287
-            output: output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed, output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed.gz, output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.HXA10.allTFBS.peaks.extension.saf
-    RuleException:
-    CalledProcessError in line 493 of /mnt/data/bioinfo_tools_and_refs/bioinfo_tools/CoBRA/src/Snakefile:
-    Command ' set -euo pipefail;   ulimit -n 4096 &&
-                zgrep "HXA10_TFBS\." output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.allTFBS.peaks.extension.bed.gz | awk 'BEGIN { OFS = "\t" } {print $4"_"$2"-"$3,$1,$2,$3,$6}' | sort -u -k1,1  >output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.HXA10.allTFBS.peaks.extension.saf &&
-                featureCounts             -F SAF             -T 4             -Q 10                          -a output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.HXA10.allTFBS.peaks.extension.saf             -s 0             -O              -o output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed              /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-WT-ProB-1.bam /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-WT-ProB-2.bam /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-WT-ProB-3.bam /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-Ebf1-KO-ProB-1.bam /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-Ebf1-KO-ProB-2.bam /mnt/data/common/tobias/CoBRA/ATAC-bam-files/FL-Ebf1-KO-ProB-3.bam &&
-                gzip -f < output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed > output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/HXA10/extension100/FL-WTvsFL-EKO.all.HXA10.allBAMs.overlaps.bed.gz ' returned non-zero exit status 1.
-      File "/mnt/data/bioinfo_tools_and_refs/bioinfo_tools/CoBRA/src/Snakefile", line 493, in __rule_intersectTFBSAndBAM
-      File "/opt/anaconda3/lib/python3.6/concurrent/futures/thread.py", line 56, in run
-    Removing output files of failed job intersectTFBSAndBAM since they might be corrupted:
-    output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.HXA10.allTFBS.peaks.extension.saf
-    Removing temporary output file output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TF-SPECIFIC/FLI1/extension100/FL-WTvsFL-EKO.all.FLI1.allBAMs.overlaps.bed.
-    Removing temporary output file output-FL-WT-vs-EKO-ATAC-distal-Linj-activ/TEMP/extension100/FL-WTvsFL-EKO.all.FLI1.allTFBS.peaks.extension.saf.
-
-  Finding the exact error can be troublesome, and we recommend the following:
-
-  * execute the exact command as pasted above in a stepwise fashion. The command above consists of several commands that are chained together with *&&*, so copy and paste the individual parts, starting with the first part, execute it locally, and see if you receive any error message.
-  * once you have an error message, you can start troubleshooting it. The first step is always to actually see and understand the error.
-
-- in cluster mode: either error, output or log file of the corresponding rule that threw the error in the ``LOGS_AND_BENCHMARKS`` directory. If you are unsure in which file to look, identify the rule name that caused the error and search for files that contain the rule name in it.
-
-In both cases, you can check the log file that is located in ``.snakemake/log``. Identify the latest log file (check the date), and then either open the file or use something along the lines of:
-
-.. code-block:: Bash
-
-  grep -C 5 "Error in rule" .snakemake/log/2018-07-25T095519.371892.snakemake.log
-
-This is particularly helpful if the *Snakemake* output is long and you have troubles identifying the exact step in which an error occurred.
+We tried to cover all cases for which *CoBRA* may fail, so please post an issue on our `Bitbucket Issue Tracker <https://bitbucket.org/cfce/cobra/issues>`_ if you believe you found a new problem.
 
 
 Common errors
@@ -780,25 +721,26 @@ Common errors
 
 We here provide a list of some of the errors that can happen and that users reported to us. This list will be extended whenever a new problem has been reported.
 
-1. R related problems
-
-  Many errors are R related. R and *Bioconductor* use a quite complex system of libraries and dependencies, and you may receive errors that are related to R, *Bioconductor*, or specific libraries.
+1. KeyError in ``metasheet_setup.py``
 
   .. code-block:: Bash
 
     *** caught segfault ***
     ...
-    Segmentation fault
+KeyError in line 9 of Snakefile:
+'XXX'
+  File "Snakefile", line 9, in <module>
+  File "metasheet_setup.py", line 19, in updateMeta
+  File "metasheet_setup.py", line 19, in <dictcomp>
     ...
 
-  .. note:: This particular message may also be related to an incompatibility of the *DiffBind* and *DESeq2* libraries. See the :ref:`changelog` for details, as this has been addressed in version 1.1.5.
+  .. note:: This particular message normally related to an mismatch between the sample names in ``config.yaml`` and ``metasheet.csv``.
 
 
-  More generally, however, such messages point to a problem with your R and R libraries installation and have per se nothing to do with *CoBRA*. In such cases, we advise to reinstall the latest version of *Bioconductor* and ask someone who is experienced with this to help you. Unfortunately, this issue is so general that we cannot provide any specific solutions. To troubleshoot and identify exactly which library or function causes this, you may run the R script that failed in debug mode and go through it line by line. See the next section for more details.
+  Simply check if the names are matched would solve this error.
 
-  .. note:: We strongly recommend running the *Docker* version of *CoBRA* (version 1.2 and above) that immediately solves these issues. See the :ref:`changelog` for more details and the section :ref:`docs-quickstart`
 
-2. Docker-related errors
+2. rule ``heatmapSS_plot``
 
   Although *Docker* errors are rare (up until now), it might happen that you receive an error that is related to it. Up until now, these were either of temporary nature (so trying again a while after fixes it) or related to the system you are running *Docker* on (e.g., a misconfiguration of some sort), among others.
 
