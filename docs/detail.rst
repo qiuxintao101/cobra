@@ -577,6 +577,24 @@ For example, the folder name 'rpkm.2_num_sample.3_scale.q_fliter.cov.2' means th
 
 - ``scale.q_fliter.cov.2`` - the normalization method is quantile-normalized, fliter metric in feature selection is Coefficient of Variation, the top 2 percent of peaks are being selected.
 
+FILES ``plots/pca_plot.pdf``
+----------------------------------------------------------------------------------------------
+
+Details
+  Produced in rule ``pca_plot``. PCA is mostly used as a tool in exploratory data analysis. It is often used to visualize  distance and relatedness between samples. 
+
+FILES ``plots/heatmapSS_plot.pdf``
+----------------------------------------------------------------------------------------------
+
+Details
+  Produced in rule ``heatmapSS_plot``. Sample similarity was determined by hierarchical clustering using the Spearman correlation between samples. 
+
+FILES ``plots/heatmapSF_plot.pdf``
+----------------------------------------------------------------------------------------------
+
+Details
+  Produced in rule ``heatmapSF_plot``. Peaks from all study samples were merged to create a union set of sites. Each column is a sample, and each row is a peak. K-means clustering were applied to the peak sets, cluster information can be locate in the file "heatmapSF_plot.txt".
+
 
 
 FOLDER ``differential_peaks``
@@ -673,14 +691,11 @@ Here a few typical use cases, which we will extend regularly in the future if th
 
 1. Why the CoBRA need to use an config.yaml, metasheet.csv to setup the run? Why not just simply use the command to setup the run?
 
-  As explained in Section :ref:`docs-errors`, you first have to identify and fix the error. Rerunning then becomes trivially easy: just restart *Snakemake*, it will start off where it left off: at the step that produced that error.
+  The unsupervised and supervised anlaysis of ChIP/ATAC-seq experiment need to have many paramaters, and could be very different from different experiement. The config.yaml and metasheet.csv allow user to save all paramaters that have been used in this run and allow others to reproduce the analysis when needed.
 
-2. I received an error, what should I do?
+2. I have a problem running docker?
 
-  If see 
-  
-  
-  First, check the cluster output and error files if you run *CoBRA* in cluster mode. They mostly contain an actual error message or at least the print the exact command that resulted in an error. If you executed locally or still cannot find the error message, see below for guidelines.
+  Please try to go https://docs.docker.com/toolbox/faqs/troubleshoot/ to get the docker running.
 
 3. I want to rerun a specific part of the pipeline only.
 
