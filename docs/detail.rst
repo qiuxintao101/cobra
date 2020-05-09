@@ -721,7 +721,26 @@ Common errors
 
 We here provide a list of some of the errors that can happen and that users reported to us. This list will be extended whenever a new problem has been reported.
 
-1. KeyError in ``metasheet_setup.py``
+1. Error in rule ``bedtools_intersect``
+
+  .. code-block:: Bash
+
+    Error in rule bedtools_intersect:
+
+    jobid: 86
+
+    output: ananlysis/preprocessed_files/sample_counts/sample1.total_count,
+    ananlysis/preprocessed_files/read_counts/sample_counts/sample1.count
+
+    log: analysis/logs/read_coutns/samle1.log
+    RuleException:
+         CalledProcessError in line 154 of Snakefile:
+  ..
+
+  .. note:: This particular message normally related to set the bam files being sorted when it is not. CoBRA require bam files and bed files to have the same sorting order in ``config.yaml`` set the ``bam_sort`` option to be ``false`` will solve the problem.
+
+
+2. KeyError in ``metasheet_setup.py``
 
   .. code-block:: Bash
 
@@ -737,7 +756,7 @@ We here provide a list of some of the errors that can happen and that users repo
   Simply check if the names are matched would solve this error.
 
 
-2. rule ``heatmapSS_plot`` duplicate 'row.names' are not allowed
+3. rule ``heatmapSS_plot`` duplicate 'row.names' are not allowed
 
  
   .. code-block:: Bash
@@ -755,18 +774,11 @@ We here provide a list of some of the errors that can happen and that users repo
 
   This error normally happens when you have duplicate sample names in the metasheet.csv, the CoBRA do not allow duplicate smples names in the config.yaml and metasheet.csv.
 
-  If you do not know what the error is, post an Issue in the `Bitbucket Issue Tracker <https://bitbucket.org/chrarnold/CoBRA>`_ tracker and we are hopefully able to help you quickly.
-
-3. Data-specific errors
-
-  Errors can also be due to incompatible data. For example, if a BAM file contains both single-end and paired-end reads (which is unusual, lots of programs may exit with errors for such data) and in the configuration file the parameter *pairedEnd* is set to true, the *repair* step from *Subread* will fail with an error message. In such a case, the single-end reads should either be removed from the BAM file (this is the preferred option, unless the majority of reads are single-end) or *pairedEnd* is set to false, the latter of which then treats all reads to be single-end (with the consequence that then, not fragments are counted, but just individual reads, which may result in different results due to altered number of counts).
 
 
 Fixing the error
 ==============================
 
-General guidelines
---------------------
 After locating the error, fix it accordingly. We here provide some guidelines of different error types that may help you fixing the errors you receive:
 
 - Errors related to erroneous input: These errors are easy to fix, and the error message should be indicative. If not, please let us know, and we improve the error message in the pipeline.
@@ -774,55 +786,48 @@ After locating the error, fix it accordingly. We here provide some guidelines of
 - Errors related to *Snakemake*: In rare cases, the error can be due to *Snakemake* (corrupt metadata, missing files, etc). If you suspect this to be the case, you may delete the hidden ``.snakemake`` directory in the folder from which you started the analysis. *Snakemake* will regenerate it the next time you invoke it then.
 - Errors related to the input data: Error messages that indicate the problem might be located in the data are more difficult to fix, and we cannot provide guidelines here. Feel free to contact us.
 
-Debugging R scripts to identify the cause of an error
---------------------------------------------------------------------
-If an R script fails with a technical error such as ``caught segfault`` (a segmentation fault), you may want to identify the library or function call that causes the message in order to figure out which library to reinstall. To do so, open the R script that fails in *RStudio*, and execute the script line by line until you identify the line that causes the issue. Importantly, read the instructions in the section at the beginning of the script that is called ``SAVE SNAKEMAKE S4 OBJECT THAT IS PASSED ALONG FOR DEBUGGING PURPOSES``. Briefly, you simply have to make the *snakemake* object available in your R workspace, which contains all necessary information to execute the R script properly. Normally, *Snakemake* automatically loads that when executing a script. To do so, simply execute the line that is pasted there in R, it is something like this:
-
-.. code-block:: R
-
-  snakemake = readRDS("{outputFolder}/LOGS_AND_BENCHMARKS/checkParameters.R.rds")
-
-Replace ``{outputFolder}`` by the folder you used for the analysis, and adjust the ``checkParameters`` part also accordingly. Essentially, you just have to provide the path to the corresponding file that is located in the ``LOGS_AND_BENCHMARKS`` subdirectly within the specified output directory.
-
 Rerunning *Snakemake*
 ----------------------
 After fixing the error, rerun *Snakemake*. *Snakemake* will continue at the point at which the error message occurred, without rerunning already successfully computed previous steps (unless specified otherwise).
+
+
+If you do not know what the error is, post an Issue in the `Bitbucket Issue Tracker <https://bitbucket.org/cfce/cobra/issues>`_ tracker and we are hopefully able to help you quickly.
 
 
 
 Understanding and interpreting results
 ****************************************
 
-Having results is exciting; however, as with most software, now the maybe even harder part starts: Understanding and interpreting the results. Let's first remind ourselves: The main goal of *CoBRA* is to aid in formulating testable hypotheses and ultimately improve the understanding of regulatory mechanisms that are driving the differences on a system-wide scale.
+Having results is exciting; however, as with most software, now the maybe even harder part starts: Understanding and interpreting the results. Let's first remind ourselves: The main goal of *CoBRA* is to perform unsupervised analyses, differential peak calling, and downstream pathway analysis for ChIP/ATAC‐seq experiemnt.
 
 General notes
 =================
 
-  - Irrespective of whether or not you also used the classification mode, we recommend that the first thing to check is the Volcano plot PDF.
-  - If a specific question is not addressed here, feel free to contact us. We ill then add it here.
-  - Note that *CoBRA* captures differential accessibility, which does not necessarily imply a functional difference. See the publication for more discussion and details.
-  - the significance as calculated by the empirical or analytical approach should not be over-interpreted from our point of view. We find the TF activity to be the more important measure.
+  - Irrespective of whether or not you also used the differential analysis, we recommend that the first thing to check is the pca_plot and heatmapSS_plot pdf.
+  - If a specific question is not addressed here, feel free to contact us. We will then add it here.
+  - Note that *CoBRA* captures differential peaks, which may need use different cut-off for significance accross different experiement.
 
 
-Specifics for the basic mode
+
+Specifics for the unsupervised analysis
 =================================
 
 The following procedure may be useful as a rough guideline:
-  - Start with the most stringent adjusted p-value threshold (0.01)
-  - Categorize into one of the 3 following cases:
-    - (a) There are no or almost none TFs significant: You may simply use a less stringent adjusted p-value threshold. If the least stringent adjusted p-value threshold (0.2) does also not have any or only very few significant TFs,  see the :ref:`FAQs` for possible explanations. In such a (rare) case, it might be worthwhile then to check the raw p-values instead of the adjusted ones.
-    - (b) A few TFs are significant: You hit the sweet spot! Try to characterize and understand the TFs and whether they make biological sense for you. See also the notes for (c) below.
-    - (c) A lot or the majority of TFs are significant (say more than 50 to 100): See the :ref:`FAQs` for possible explanations and how to best proceed.
+  - Start with deafult paramaters
+  - Handling the paramaters as the following:
+    - (a) Adjust the ``filter-percent`` to 20 or 100, this will change how many top percent of peaks that will go into the unsupervised analysis.
+    - (b) Adjust ``num_kmeans_clust`` to change the heatmapSF_plot result for observations in different group of clustering.
+    - (c) Quantile-normalize for ``Scale method`` and Coefficient of Variation for ``filter-opt`` is often recommended.
 
 
-
-Specifics for the classification mode
+Specifics for the supervised analysis
 ==========================================
 
-- be aware of the limitations, see below
+The following procedure may be useful as a rough guideline:
+  - Start with the default adjusted p-value threshold (0.05)
+  - Categorize into one of the 2 following cases:
+    - (a) There are no or almost none TFs significant: You may use a less stringent adjusted p-value threshold. You may check the GSEA result even if the there are very few differential peaks, the GSEA analysis the enrichment of all nearby genes by the ranking of log2fold change in all peaks. Some times the subtle change in the peaks may not reach the significant threshold, but the overal ranking of the peak may help idenify the changes accorss the perturbation. 
+    - (B) A lot peaks are significant (say more than 10000): You may use a more stringent adjusted p-value and log2 fold change threshold. Check the deeptools heatmap may have more confidence about the differential peaks that is being called in CoBRA.
 
-Limitations
--------------
 
-As written in the publication, we note that *CoBRA* is prone to mis-classifying TFs that (1) act bifunctionally as activators and repressors in different genomic contexts or along with different co-factors, (2) are heavily regulated post-translationally, or (3) show little variation in RNA expression across the samples. Some of these mis-classifications may represent interesting subjects for future investigations.
-Furthermore, if two TFs have similar motifs, which makes it difficult to distinguish them, *CoBRA* may have difficulties in classifying them correctly. Thus, for distinguishing the functional roles of TFs from the same motif-family, further biochemical experiments are needed.
+
