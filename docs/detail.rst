@@ -737,17 +737,23 @@ We here provide a list of some of the errors that can happen and that users repo
   Simply check if the names are matched would solve this error.
 
 
-2. rule ``heatmapSS_plot``
+2. rule ``heatmapSS_plot`` duplicate 'row.names' are not allowed
 
-  Although *Docker* errors are rare (up until now), it might happen that you receive an error that is related to it. Up until now, these were either of temporary nature (so trying again a while after fixes it) or related to the system you are running *Docker* on (e.g., a misconfiguration of some sort), among others.
-
-  For example, in July 2019, DockerHub was down for a few days due to a single user misusing the service, which had to be shutdown because of that. When trying to download the *CoBRA* Docker images in that time period, the error message was:
-
+ 
   .. code-block:: Bash
 
-    FATAL: Failed to get manifest from Shub: No response received from Docker hub
+     Rscript --default-packages=methods,utils scripts/heatmapSS_plot.R
+     analysis/rpkm.1_num_sample.10_scale.q_fliter.cov.100/read_counts/read.counts.rpkm.threshold.scale.fliter.csv
+     metasheet.csv 20000000 analysis/rpkm.1_num_sample.10_scale.q_fliter.cov.100/plots/heatmapSS_plot_100_percent.pdf
+     analysis/rpkm.1_num_sample.10_scale.q_fliter.cov.100/plots/heatmapSS_100_percent.txt ChIP_seq
+     analysis/rpkm.1_num_sample.10_scale.q_fliter.cov.100/plots/images/heatmapSS_plot_100_percent/
+     There were 24 warnings (use warnings() to see them)
+     Error in read.table(file = file, header = header, sep = sep, quote = quote,  : 
+     duplicate 'row.names' are not allowed
+     Calls: heatmapSS_plot -> read.csv -> read.table
+     Execution halted
 
-  Another common error is related to not including paths for the ``bind`` option, resulting in "Directory not found" errors, see :ref:`docs-DockerNotes` for details!
+  This error normally happens when you have duplicate sample names in the metasheet.csv, the CoBRA do not allow duplicate smples names in the config.yaml and metasheet.csv.
 
   If you do not know what the error is, post an Issue in the `Bitbucket Issue Tracker <https://bitbucket.org/chrarnold/CoBRA>`_ tracker and we are hopefully able to help you quickly.
 
