@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'CoBRA'
-copyright = '2020, Avery Feit'
-author = 'Avery Feit'
+copyright = '2020, CFCE'
+author = 'Xintao Qiu'
 
 # The full version, including alpha/beta/rc tags
 release = '0.0.1'
