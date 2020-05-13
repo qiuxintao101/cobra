@@ -1,13 +1,10 @@
-.. diffTF documentation master file
+.. CoBRA documentation master file
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-=========================================
-Welcome to the documentation of *CoBRA*!
-=========================================
 
 =========================================
-CoBRA: Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis
+*CoBRA*: Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis
 =========================================
 
 CoBRA - Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis
