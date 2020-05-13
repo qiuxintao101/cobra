@@ -91,13 +91,13 @@ Principally, there are two ways of installing *CoBRA* and the proper tools:
 
 .. _docs-prerequisites:
 
-Prerequisites for the "easy" way
+Dependencies for "quick" installation
 ==================================
 
-The only prerequisite here is that ``Docker`` must be installed on the system you want to run *CoBRA*. See above for details with respect to the supported versions etc.
+The only dependency here is that ``Docker`` must be installed on the system you want to run *CoBRA*. See above for details with respect to the supported versions etc.
 
 
-Prerequisites for the "manual" way
+Dependencies for "manual" installation
 =====================================
 
 Note that most of this section is only relevant if you use *CoBRA* without ``Docker``. This section lists the required software and how to install them. As outlined in Section :ref:`docs-quickstart`, the easiest way is to install all of them via ``conda``. However, it is of course also possible to install the tools separately.
