@@ -1,6 +1,6 @@
 .. _workflow:
 
-Workflow
+Pipeline Overview
 ************************************************************
 For more details, please see out pre-print (linked here: :ref:`citation`).
 
