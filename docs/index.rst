@@ -6,9 +6,9 @@ Welcome to the documentation of *CoBRA*!
 =========================================
 
 
-=========================================
-*CoBRA*: Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis
-=========================================
+
+** *CoBRA*: Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis **
+
 
 CoBRA - Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis
 
