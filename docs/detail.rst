@@ -54,7 +54,7 @@ Input
 ************************************************************
 
 
-Summary
+Outline
 ==============================
 
 The following files are needed to run *CoBRA* on your own experiment:
@@ -444,7 +444,7 @@ Details
 .. _section_metadata:
 
 
-Input metadata
+Metadata
 =============================================
 
   This file summarizes the data and corresponding available metadata  that should be used for the analysis. The format is flexible and may contain additional columns that are ignored by the pipeline, so it can be used to capture all available information in a single place. Importantly, the file must be saved as comma-separated, the exact name does not matter as long as it is correctly specified in the configuration file.
