@@ -2,20 +2,20 @@
 
 Workflow
 ************************************************************
-For full information, please see the latest publication (linked here: :ref:`citation`).
+For more details, please see out pre-print (linked here: :ref:`citation`).
 
+*CoBRA's* conceptual idea and schematic is illustrated here. The first figure introduces the biological motivation. 
 
-The workflow and conceptual idea behind *CoBRA* is illustrated by the following three Figures. First, we give a high-level conceptual overview and a biological motivation:
 
    .. figure:: workflow.png
          :scale: 30 %
          :alt: CoBRA schematics
          :align: center
 
-         Conceptual idea and workflow of *CoBRA*, the input and the output
+         Conceptual idea and schematic of *CoBRA*, the input and the output
 
-
- Next, we show a schematic of the *CoBRA* workflow from a more technical perspective by showing the actual steps that are performed:
+ 
+ The second figure shows a technical schematic of the *CoBRA* workflow:
 
 
    .. figure:: Cobra_workflow.png
@@ -23,19 +23,19 @@ The workflow and conceptual idea behind *CoBRA* is illustrated by the following 
       :alt: Schematic of the CoBRA workflow and the GC binning
       :align: center
 
-      Summary workflows for data processing and methodological details for *CoBRA* (for more details, see Suppl. Figure 1 in the publication).
+      Detailed workflow for bioinformatics data processing
 
-
-We now show which rules are executed by *Snakemake* for a specific example (see the caption of the image):
+The following is a directed acyclic graph that shows sequence of processes executed by *Snakemake*:
          
    .. figure:: dag.png
          :scale: 20 %
          :alt: Directed acyclic graph of an example workflow
          :align: center
          
-         Exact workflow (a so-called directed acyclic graph, or DAG) that is executed. Each node represents a rule name as defined in the Snakefile, and each arrow a dependency.
+         A directed acyclcic graph (DAG). Each *Snakemake* rule is represented by a box, and each dependency is represented by an arrow.
 
-*CoBRA* is currently implemented as a *Snakemake* pipeline. For a gentle introduction about *Snakemake*, see Section :ref:`workingWithPipeline`. As you can see, the workflow consists of the following steps or *rules*:
+
+*Snakemake* was used to implement *CoBRA*. For documentation detailing *Snakemake*, see Section :ref:`workingWithPipeline`. As illustrated in the DAG above, *CoBRA* consists of the following rules: 
 
 - ``merge_bed``: Using the bedops to get the union set of peaks that is exist in sample sets
 - ``bed_enhancer_promoter``:  Filter the union peaks with ±1kb of TSS to get enhancer and promoter sites
@@ -57,22 +57,21 @@ Input
 Summary
 ==============================
 
-As input for *CoBRA* for your own analysis, the following data are needed:
+The following files are needed to run *CoBRA* on your own experiment:
 
 - *BAM* file with aligned reads for each sample (see :ref:`parameter_BamFile`)
 - *BED* file with called peaks for each sample (see :ref:`parameter_BedFile`)
 - *BIGWIG* file with compressed, indexed, binary format for genome-wide signal data for calculations (see :ref:`parameter_BigwigFile`)
 - Optionally: corresponding CNV data (see :ref:`parameter_CNVFile`)
 
-In addition, the following files are need, all of which we provide already for human hg19, hg38 and mouse mm9, mm10:
+Additionally, reference files are all precompiled and are automatically downloaded as needed. These include hg19, hg38,mm9, mm10.
 
 - genome & genome_dict (see :ref:`parameter_RefGenome`)
 - refseqGenes (see :ref:`parameter_RefGene`)
 - lift chain files (see :ref:`parameter_LiftChain`)
 - Cistrome DB in giggle format (see :ref:`parameter_CistromeGiggle`)
 
-
-Lastly, some metadata files are needed that specify *CoBRA*-specific and Snakemake-specific parameters. They are explained in detail in the next sections. If this sounds complicated, don't worry, just take the example analysis, and you will understand within a few minutes what these files are:
+Metadata and config files must be filled out by the user to run *CoBRA* on your own experiment:
 
 - a general configuration file (:ref:`configurationFile`)
 - a metadata file for the samples (:ref:`section_metadata`)
@@ -80,7 +79,7 @@ Lastly, some metadata files are needed that specify *CoBRA*-specific and Snakema
 
 .. _configurationFile:
 
-General configuration file
+Configuration file
 ==============================
 
 To run the pipeline, a configuration file that defines various parameters of the pipeline is required.
