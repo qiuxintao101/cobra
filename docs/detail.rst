@@ -379,7 +379,7 @@ Summary
 Details
   For user convenience, CoBRA will automatic download this file if it has not been downloaded. However, you may also manually create this file to run *CoBRA* on a new species.
 
-  .. Warning:: Chromosome order must correspond to the following files. 
+  .. Warning:: Chromosome order must correspond to the following files :download:`chr_order.txt <chr_order.txt>` file.. 
 
 
 ``TSS.plus.minus.1kb``
