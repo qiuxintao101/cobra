@@ -37,16 +37,16 @@ The following is a directed acyclic graph that shows sequence of processes execu
 
 *Snakemake* was used to implement *CoBRA*. For documentation detailing *Snakemake*, see Section :ref:`workingWithPipeline`. As illustrated in the DAG above, *CoBRA* consists of the following rules: 
 
-- ``merge_bed``: Using the bedops to get the union set of peaks that is exist in sample sets
-- ``bed_enhancer_promoter``:  Filter the union peaks with ±1kb of TSS to get enhancer and promoter sites
-- ``bedtools_intersect``: Count all reads for peak regions across all bam files
-- ``pca_plot``: R script that plot all samples in a two dimensional space with PC1 and PC2
-- ``heatmapSS_plot``: R script that calculate pair-wise sample-sample correlation and plot all samples with hierarchical clustering
+- ``merge_bed``: Using the bedops package to get the union set of peaks of all samples
+- ``bed_enhancer_promoter``:  Filter the union set of peaks within ±1kb of TSS to get enhancer and promoter sites
+- ``bedtools_intersect``: Count reads in peak regions for all bam files
+- ``pca_plot``: R script that plots all samples in a two dimensional space including PC1 and PC2
+- ``heatmapSS_plot``: R script that calculates pair-wise sample-sample correlation and plots all samples with hierarchical clustering
 - ``heatmapSF_plot``: R script that performs k-means/hierarchical clustering for the most variable peaks
-- ``limma_and_deseq``: R script that performs a differential accessibility analysis for the peak regions based on deseq and limma
-- ``deseq_motif``: HOMER to performs the know as well as de novo motif enrichment analysis with GC content mathced back ground
-- ``GSEA``: GESA analysis on the preranked peak lists, gene are assigned to the nearist peaks
-- ``cistrome_tookit``: Calcuate the giggle socre compare the differential peaks to the existing TF ChIP-seq data avaiable on Cistrome DB
+- ``limma_and_deseq``: R script that performs a differential peak analysis using deseq and limma
+- ``deseq_motif``: HOMER performs the known as well as de novo motif enrichment analysis with GC content mathced back ground
+- ``GSEA``: GESA analysis on the preranked peak lists. Peaks are assigned to the nearest Gene.
+- ``cistrome_tookit``: Calcuate the giggle score to compare the differential peaks to the existing TF ChIP-seq data avaiable on Cistrome DB
 
 
 
@@ -73,7 +73,7 @@ Additionally, reference files are all precompiled and are automatically download
 
 Metadata and config files must be filled out by the user to run *CoBRA* on your own experiment:
 
-- a general configuration file (:ref:`configurationFile`)
+- a configuration file (:ref:`configurationFile`)
 - a metadata file for the samples (:ref:`section_metadata`)
 
 
@@ -87,12 +87,9 @@ A configuration file that defines various parametrs is needed to run *CoBRA*.
 .. note:: Please pay attention to the following requirements:
 
   - Header names should not be changed
-  - Absolute and relative paths are acceptable in the config file. When using *Docker*, all input files must be mounted in the container. Please refer to Section 
-  - For parameters that specify a directory, there should be no trailing slash.
-  - the name of this file is irrelevant, but it must be in the right format (JSON) and it must be referenced correctly when calling *Snakemake* (via the ``--configfile`` parameter). We recommend naming it ``config.yaml``
+  - Absolute and relative paths are acceptable in the config file. When using *Docker*, all input files must be mounted in the container. Please refer to section :ref:`docs-DockerNotes`.
   
-In the following, we explain all parameters in detail, organized by section names.
-
+All parameters are organized by section. See the following for details:
 
 SECTION ``par_general``
 --------------------------------------------
@@ -104,10 +101,10 @@ SECTION ``par_general``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default "ChIP_seq". The name will be use for pca, sample-sample, sample-feature plot titles.
+  String. Default "ChIP_seq". The name will be use for pca, sample-sample, and sample-feature plot titles.
 
 Details
-  Please use "_" to seperate different words.
+  Please use "_" to seperate different words, as spaces are not allowed.
 
 
 
@@ -139,7 +136,7 @@ Summary
   String. Default ""scripts/ref.yaml".
 
 Details
-  Specifies the location of ref.yaml that will be used. Most of reference files that will not need to be changed commonly are in the ref.yaml.
+  Specifies the location of ref.yaml that will be used. Most of reference files that will not need to be changed are in the ref.yaml.
 
 
 ``assembly``
@@ -156,10 +153,10 @@ Details
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  Number. Default 1. This provide threshold that can apply to filter for all unspuervised analysis.
+  Number. Default 1. This provide a threshold that can be applied to filter the union peak set for all downstream unsupervised analysis.
   
 Details
-  At least mini_num_sample should have RPKM > rpkm_threshold
+  At least ``mini_num_sample`` should have RPKM > ``rpkm_threshold``
 
 
 ``mini_num_sample``
@@ -169,17 +166,17 @@ Summary
   Number. Default 1. This paramter toghter with rpkm_threshold provide threshold that can apply to filter for all unspuervised analysis.
   
 Details
-  At least mini_num_sample should have RPKM > rpkm_threshold
+  At least ``mini_num_sample`` should have RPKM > ``rpkm_threshold``
 
 
 ``scale``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Default q. The scale method for the nomalize counts among samples.
+  String. Default q. The scale method used to nomalize counts for downstream unsupervised analysis.
 
 Details
-  The scale method for the normaliztion: z- z-score, q- quantile-normalize, l- log-transform
+  The scale method for the normalization options: z- z-score, q- quantile-normalize, l- log-transform
 
 
 ``filter-opt``
@@ -189,17 +186,17 @@ Summary
   String. Default cov. Fliter metric in feature selection.
 
 Details
-  Metric in feature selection: sd- Standard deviation, cov- Coefficient of Variation, av- mean
+  Metric in feature selection options: sd- Standard deviation, cov- Coefficient of Variation, av- mean
 
 
 ``filter-percent``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  Integer >=  0. Default 100. Top percent cutoff that will apply with the filter metric.
+  Integer >=  0. Default 100. Top percent cutoff that is aplied with ``filter-opt``.
 
 Details
-  Top filter-percent of filter-opt peaks will be use for the un-supervised analysis.
+  Top ``filter-percent`` of ``filter-opt`` peaks will be use for the unsupervised analysis.
 
 
 ``SSpeaks``
@@ -209,7 +206,7 @@ Summary
   Integer > 0. Default 20000000. 
 
 Details
-  This parameter sets the Maxium peaks can be used for Sample-Sample correlation plot.
+  This parameter sets the Maxium number of peaks can be used for the Sample-Sample correlation plot.
   
 
 ``SFpeaks``
@@ -219,7 +216,7 @@ Summary
   Integer > 0. Default 20000000. 
 
 Details
-  This parameter sets the Maxium peaks can be used for Sample-Feature plot.
+  This parameter sets the Maxium number of peaks can be used for the Sample-Feature plot.
 
 
 ``num_kmeans_clust``
@@ -229,7 +226,7 @@ Summary
   Integer > 0. Default 6. 
 
 Details
-  This parameter sets the number of clusters that will be used in the k-means clustering.
+  This parameter sets the number of clusters that will be used in the k-means clustering for Sample-Feature plot.
 
 
 ``Padj``
@@ -255,30 +252,30 @@ Details
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String, deafult 'false'.
+  String, default 'false'.
 
 Details
-  This parameter is use to decide the on and off for the motif enrichement and clustering analysis.
+  This parameter is use to determine if motif enrichement and clustering analysis is performed.
 
 
 ``bam_sort``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String, deafult 'true'.
+  String, default 'true'.
 
 Details
-  This parameter is to flag if the bam files provied for input are sorted or not.
+  This parameter is needed to flag if the bam files provieded input are sorted or not. If set to 'false', *CoBRA* will automatically sort and reorder the bam files.
 
 
 ``CNV_correction``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String, deafult 'false'.
+  String, default 'false'.
 
 Details
-  This parameter is to flag if the CNV correction should be perfomed or not.
+  This parameter is required to flag if CNV correction should be perfomed or not.
 
 
 
@@ -294,7 +291,7 @@ Summary
   Paths to the bed files.
 
 Details
-  Path to a bed file that summarizes the peak information for the data. Following is an example:
+  Path to a bed file that summarizes the called peaks for each sample. The following is an example:
   
   .. code-block:: Bash
   
@@ -309,7 +306,7 @@ Summary
   Paths to the bam files.
 
 Details
-  Path to a bam file for each sample. Following is an example:
+  Path to a bam file for each sample. The following is an example:
   
   .. code-block:: Bash
   
@@ -324,7 +321,7 @@ Summary
   Paths to the bigwig files.
 
 Details
-  Path to a bigwig file for each sample. Following is an example:
+  Path to a bigwig file for each sample. The following is an example:
   
   .. code-block:: Bash
   
@@ -345,7 +342,7 @@ Summary
   Paths to the igv files for CNV analysis.
 
 Details
-  Path to a igv file for each sample. Following is an example:
+  Path to an igv file for each sample. The following is an example:
   
   .. code-block:: Bash
   
@@ -380,17 +377,16 @@ Summary
   String. Default hg19.fasta. Path to the reference genome *fasta* file.
 
 Details
-  For user convenience, CoBRA will automatic download this file if it is not been downloaded. However, you may also manually create this file to apply to new species.
-  .. warning:: You need write access to the directory in which the *fasta* file is stored, make sure this is the case or copy the *fasta* file to a different directory. The reason is that the pipeline produces a *fasta* index file, which is put in the same directory as the corresponding *fasta* file. This is a limitation of *samtools faidx* and not our pipeline.
+  For user convenience, CoBRA will automatic download this file if it has not been downloaded. However, you may also manually create this file to run *CoBRA* on a new species.
 
-  .. note:: This file has to be in concordance with the input data; that is, the exact same genome assembly version must be used. In the first step of the pipeline, this is checked explicitly, and any mismatches will result in an error.
+  .. Warning:: Chromosome order must correspond to the following files. 
 
 
 ``TSS.plus.minus.1kb``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Path to the refGene plus minus 1kb bed file are stored.
+  String. Path where the refGene plus minus 1kb bed file are stored.
 
 Details
   Each file must be a valid *BED* file with 5 columns, as follows:
@@ -401,7 +397,7 @@ Details
   4. strand
   5. Gene_ID
 
-  For user convenience, CoBRA will automatic download this file if it is not been downloaded. However, you may also manually create this file to apply to new species.
+  For user convenience, CoBRA will automatic download this file if it has not been downloaded. However, you may also manually create this file to apply to new species.
 
 
 ``refseqGenes``
@@ -416,7 +412,7 @@ Details
   4. Gene_ID
   5. Gene_Name
 
-  For user convenience, CoBRA will automatic download this file if it is not been downloaded. However, you may also manually create this file to apply to new species.
+  For user convenience, CoBRA will automatic download this file if it has not been downloaded. However, you may also manually create this file to apply to new species.
 
 
 
@@ -427,17 +423,17 @@ Summary
   String. Path to the lift.chain.gz.
 
 Details
-  For user convenience, CoBRA will automatic download this file if it is not been downloaded.
+  For user convenience, CoBRA will automatic download this file if it has not been downloaded. This file is used for hg19 and mm9 analysis. It can lift-over coordinates to hg38 and mm10.
 
 
 ``giggle``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
-  String. Path to the giggle.tar.gz, that can be use for cistrome toolkit analysis for finding similar ChIP-seq data that compare to the peaks of interested.
+  String. Path to the giggle.tar.gz that can be use for cistrome toolkit analysis for finding similar ChIP-seq data that compare to the peaks of interest.
 
 Details
-  For user convenience, CoBRA will automatic download this file if it is not been downloaded. Can also be downloaded `here <http://cistrome.org/~chenfei/MAESTRO/giggle.tar.gz>`__.
+  For user convenience, CoBRA will automatic download this file if it has not been downloaded. It can also be downloaded `here <http://cistrome.org/~chenfei/MAESTRO/giggle.tar.gz>`__.
 
  
  
@@ -447,11 +443,12 @@ Details
 Metadata
 =============================================
 
-  This file summarizes the data and corresponding available metadata  that should be used for the analysis. The format is flexible and may contain additional columns that are ignored by the pipeline, so it can be used to capture all available information in a single place. Importantly, the file must be saved as comma-separated, the exact name does not matter as long as it is correctly specified in the configuration file.
+  
+  The metadata file is a comma separated file that contains the annotation and differential comparisson information. The sample names must match those in the configuration file. *CoBRA* can perform as many differential peak analyses as are indicated in the metadata file.
+  
+  .. warning:: Make sure that end of line characters match default of the operating system. Please convert all line endings to unix format. Please see `here <https://blog.shvetsov.com/2012/04/covert-unix-windows-mac-line-endings.html>`__ .
 
-  .. warning:: Make sure that the line endings are correct. Different operating systems use different characters to mark the end of line, and the line ending character must be compatible with the operating system in which you run *CoBRA*. For example, if you created the file in MAC, but you run it in a Linux environment (e.g., a cluster system), you may have to convert line endings to make them compatible with Linux. For more information, see `here <https://blog.shvetsov.com/2012/04/covert-unix-windows-mac-line-endings.html>`__ .
-
-  Make the  ``metasheet`` file in excel, and save it as a .csv, It doesn’t matter what it is named as long as it is called in the  ``config`` in the spot marked  ``metasheet`` see the  ``config`` section if confused. The format should be something like the following:
+  Make the  ``metasheet`` file in excel, and save it as a .csv, It doesn’t matter what it is named as long as it is called in the  ``config`` in the section marked  ``metasheet``. See the  ``config`` section for details. The format should be something like the following:
 
   +--------+------+------------+-----------+------------+--------------------------+
   | Sample | Cell | Condition  | Treatment | Replicates | comp_MCF7_DOX_over_NoDox | 
@@ -467,23 +464,22 @@ Metadata
 
 
 
-  The first column should always be sample names that exactly match the sample names used in config.yaml
-  The samples that you want to perform a Differential Peak Calling (DE) on using limma and deseq should be marked by the  ``comp`` columns more on this below
+  The first column should always contain the sample names that exactly match the sample names used in the config.yaml file.
+  The samples that you want to perform a Differential Peak Calling (DE) on using limma and deseq should be marked by the  ``comp`` columns. More on this below.
 
   .. warning:: This is important! The  ``control`` should be marked with a 1, and the  ``treatment`` should be marked with a 2.
 
-  It is recommended that if you should have a “replicates” column to denote different samples, it is a good idea to not only have each of the sample names be unique, but also make sure that the associated metadata is unique as well to each sample.
-  The rest of the  metadata columns are up to the user to write. Sample must always be first, and you are allowed to have as many ``comp_XXXX`` columns as you want at the end. All of the middle columns are your metadata (for this example, this is cell, condition, treatment, replicates)
+  The remaining metadata columns are up to the user to write. Sample must always be first, and you are allowed to have as many ``comp_XXXX`` columns as you want at the end. All of the middle columns are your metadata (for this example, this is cell, condition, treatment, replicates).
 
-  Again, make this in excel so that all of the spacing is done correctly and save it out as a .txt or .csv file. This is the most common bug, so please follow this.
+  Again, make this in excel so that all of the spacing is done correctly and save it out as a .csv file. This is the most common bug, so please follow this.
   
-  .. warning:: Common Problems with  ``metasheet`` Characters to avoid: ("-", "(", ")", " ", "/", "$") To avoid bugs, the only punctuation that should be used is the underscore “_”. Dashes, periods, etc, could cause a bug because there is a lot of table formatting and manipulation, or they are invalid characters in R. 
+  .. warning:: Common Problems with  ``metasheet`` Characters to avoid: ("-", "(", ")", " ", "/", "$"). To avoid bugs, the only punctuation that should be used is the underscore “_”. Dashes, periods, etc, could cause a bug because there is a lot of table formatting and manipulation, or they are invalid characters in R. 
   
-  .. note:: CoBRA parses the meta file and will convert MOST of these invalid characters into '.'--dollarsigns will just be dropped.  The CoBRA parser will also convert between dos/mac files to unix format.
+  .. note:: CoBRA parses the metadata file and will convert MOST of these invalid characters into '.'--dollarsigns will just be dropped.  The CoBRA parser will also convert between dos/mac files to unix format.
   
-  .. note:: It is very important that you know that samples ``A`` is what you mark with 1, and samples ``B`` is what you mark with a 2. You should name your output following this format as well  ``comp_B_over_A`` This will let the reader know what the output DE files refer to. Deseq:  ``baseMeanA`` refers to samples ``A``, which follows condition 1 and ``baseMeanB`` refers to samples ``B`` which follows condition 2. logfc is ``B/A``
+  .. note:: It is very important that you know that samples ``A`` is what you mark with 1, and samples ``B`` is what you mark with a 2. You should name your output following this format as well  ``comp_B_over_A`` This will let the reader know what the output DE files refer to. Deseq:  ``baseMeanControl`` refers to samples ``A``, which follows condition 1 and ``baseMeanTreatment`` refers to samples ``B`` which follows condition 2. logfc is ``B/A``
 
-  .. warning:: Do not change the samples data after you started an analysis. You may introduce inconsistencies that will result in error messages. If you need to alter the sample data, we strongly advise to recalculate all steps in the pipeline.
+  .. warning:: Do not change the samples data after you started an analysis. You may introduce inconsistencies that will result in error messages. If you need to alter the sample data, we strongly advise you to rerun all steps in the pipeline.
 
 
 Output
