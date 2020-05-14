@@ -82,15 +82,15 @@ Metadata and config files must be filled out by the user to run *CoBRA* on your 
 Configuration file
 ==============================
 
-To run the pipeline, a configuration file that defines various parameters of the pipeline is required.
+A configuration file that defines various parametrs is needed to run *CoBRA*.
 
-.. note:: Please note the following important points:
+.. note:: Please pay attention to the following requirements:
 
-  - the name of this file is irrelevant, but it must be in the right format (JSON) and it must be referenced correctly when calling *Snakemake* (via the ``--configfile`` parameter). We recommend naming it ``config.yaml``
-  - neither section nor parameter names must be changed.
-  - For parameters that specify a path, both absolute and relative paths are possible.  We recommend specifying an absolute path. Relative paths must be specified relative to the *Snakemake* working directory.
+  - Header names should not be changed
+  - Absolute and relative paths are acceptable in the config file. When using *Docker*, all input files must be mounted in the container. Please refer to Section 
   - For parameters that specify a directory, there should be no trailing slash.
-
+  - the name of this file is irrelevant, but it must be in the right format (JSON) and it must be referenced correctly when calling *Snakemake* (via the ``--configfile`` parameter). We recommend naming it ``config.yaml``
+  
 In the following, we explain all parameters in detail, organized by section names.
 
 
@@ -708,7 +708,7 @@ Here a few typical use cases, which we will extend regularly in the future if th
 .. _docs-errors:
 
 
-Handling errors
+Troubleshooting
 ************************************************************
 
 
@@ -775,7 +775,7 @@ We here provide a list of some of the errors that can happen and that users repo
 
 
 
-Fixing the error
+Bug solutions
 ==============================
 
 After locating the error, fix it accordingly. We here provide some guidelines of different error types that may help you fixing the errors you receive:
@@ -794,12 +794,12 @@ If you do not know what the error is, post an Issue in the `Bitbucket Issue Trac
 
 
 
-Understanding and interpreting results
+Customized analysis
 ****************************************
 
 Having results is exciting; however, as with most software, now the maybe even harder part starts: Understanding and interpreting the results. Let's first remind ourselves: The main goal of *CoBRA* is to perform unsupervised analyses, differential peak calling, and downstream pathway analysis for ChIP/ATAC‐seq experiemnt.
 
-General notes
+Summary
 =================
 
   - Irrespective of whether or not you also used the differential analysis, we recommend that the first thing to check is the pca_plot and heatmapSS_plot pdf.
