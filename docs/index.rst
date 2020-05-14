@@ -5,14 +5,11 @@
 Welcome to the documentation of *CoBRA*!
 =========================================
 
+===========================
+ *CoBRA*: Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis
+===========================
 
-
-** *CoBRA*: Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis **
-
-
-CoBRA - Containerized Bioinformatics workflow for Reproducible ChIP/ATAC-seq Analysis
-
-CoBRA is a comprehensive ChIP/ATAC‐seq analysis tool built using snakemake and Docker which allows for a scalable, reproducible, portable and easy-to-use pipeline.
+CoBRA is a comprehensive ChIP/ATAC‐seq analysis workflow built using snakemake and Docker which allows for a scalable, reproducible, portable and easy-to-use pipeline.
 
 CoBRA combines the use of several dozen ChIP/ATAC‐seq tools, suites, and packages to create a complete pipeline that takes ChIP/ATAC‐seq data and produces unsupervised analyses, differential peak calling, and downstream pathway analysis. In addition, CoBRA has been outfitted with several recently published tools that allow for better normalziation and CNV correction. The results are compiled in a simple and highly organized output format containing key figures and tables.
 
