@@ -687,21 +687,18 @@ The following are commonly asked questions:
 
 3. How can I rerun a specific part of the pipeline?
 
-   This can be accomplished by running *Snakemake* with the rule name of interest. For example, to produce a new PCA plot, the following command can be invoked:
+   This can be accomplished by running *Snakemake* with the rule name of interest. For example, to produce a new PCA plot or sample-sample heatmap, the following commands can be invoked:
      .. code-block:: Bash
 
          snakemake pca_plot -f
+         
+         snakemake heatmapSS_plot -f
 
      ..
    
+4. How can I modify the workflow?
 
-
-   
-  This common scenario is also easy to solve: Just invoke *Snakemake* with ``--forcerun {rulename}``, where ``{rulename}`` is the name of the rule as defined in the Snakefile. *Snakemake* will then rerun the  specified run and all parts downstream of the rule. If you want to avoid rerunning downstream parts (think carefully about it, as there might be changes from the rerunning that might have consequences for downstream parts also), you can combine ``--forcerun`` with ``--until`` and specify the same rule name for both.
-
-4. I want to modify the workflow.
-
-  Simply add or modify rules to the Snakefile, it is as easy as that.
+  The Snakefile can be modified to change current rules or to accomodate additional ones.
 
 
 .. _docs-errors:
@@ -710,14 +707,13 @@ The following are commonly asked questions:
 Troubleshooting
 ************************************************************
 
-
-We tried to cover all cases for which *CoBRA* may fail, so please post an issue on our `Bitbucket Issue Tracker <https://bitbucket.org/cfce/cobra/issues>`_ if you believe you found a new problem.
+If an issue running *CoBRA* is encountered and you do not find a solution here, please post an issue on our `Bitbucket Issue Tracker <https://bitbucket.org/cfce/cobra/issues>`_ .
 
 
 Common errors
 ================
 
-We here provide a list of some of the errors that can happen and that users reported to us. This list will be extended whenever a new problem has been reported.
+Here are some common errors that users have encountered and reported. 
 
 1. Error in rule ``bedtools_intersect``
 
@@ -735,7 +731,7 @@ We here provide a list of some of the errors that can happen and that users repo
          CalledProcessError in line 154 of Snakefile:
   ..
 
-  .. note:: This particular message normally related to set the bam files being sorted when it is not. CoBRA require bam files and bed files to have the same sorting order in ``config.yaml`` set the ``bam_sort`` option to be ``false`` will solve the problem.
+  .. note:: This particular message is normally encountered when the user indicates in the config file that the bam files are sorted when they are not. CoBRA requires that bam files and bed files have the same sorting order. To solve the problem, set the ``bam_sort`` option in the  ``config`` file to ``false``.
 
 
 2. KeyError in ``metasheet_setup.py``
@@ -748,10 +744,10 @@ We here provide a list of some of the errors that can happen and that users repo
     File "metasheet_setup.py", line 19, in <dictcomp>
   ..
 
-  .. note:: This particular message normally related to an mismatch between the sample names in ``config.yaml`` and ``metasheet.csv``.
+  .. note:: This particular message appears when a mismatch between the sample names in the ``config`` and ``metasheet`` files exists.
 
 
-  Simply check if the names are matched would solve this error.
+  Simply check if the names are matched to solve this error.
 
 
 3. rule ``heatmapSS_plot`` duplicate 'row.names' are not allowed
@@ -770,50 +766,46 @@ We here provide a list of some of the errors that can happen and that users repo
      Calls: heatmapSS_plot -> read.csv -> read.table
      Execution halted
 
-  This error normally happens when you have duplicate sample names in the metasheet.csv, the CoBRA do not allow duplicate smples names in the config.yaml and metasheet.csv.
+  This error is normally encountered when you have duplicate sample names in the metasheet.csv. *CoBRA* does not allow duplicate sample names in the ``config`` and ``metasheet`` files.
 
 
 
 Bug solutions
 ==============================
 
-After locating the error, fix it accordingly. We here provide some guidelines of different error types that may help you fixing the errors you receive:
+When an error is encountered, see the log file that corresponds to the failing *Snakemake* rule. Do a dry run to assess which command must be run. Running the command outside of the workflow will provide a more detailed error message. It is also recommended to check the intermediate files (such as the input and output files of the rule) ensure that they are correct.
 
-- Errors related to erroneous input: These errors are easy to fix, and the error message should be indicative. If not, please let us know, and we improve the error message in the pipeline.
-- Errors of technical nature: Errors related to memory, missing programs, R libraries etc can be fixed easily by making sure the necessary tools are installed and by executing the pipeline in an environment that provides the required technical requirements. For example, if you receive a memory-related error, try to increase the available memory. In a cluster setting, adjust the cluster configuration file accordingly by either increasing the default memory or (preferably) or by overriding the default values for the specific rule.
-- Errors related to *Snakemake*: In rare cases, the error can be due to *Snakemake* (corrupt metadata, missing files, etc). If you suspect this to be the case, you may delete the hidden ``.snakemake`` directory in the folder from which you started the analysis. *Snakemake* will regenerate it the next time you invoke it then.
-- Errors related to the input data: Error messages that indicate the problem might be located in the data are more difficult to fix, and we cannot provide guidelines here. Feel free to contact us.
-
-Rerunning *Snakemake*
+Resuming *Snakemake* run
 ----------------------
-After fixing the error, rerun *Snakemake*. *Snakemake* will continue at the point at which the error message occurred, without rerunning already successfully computed previous steps (unless specified otherwise).
+
+After debugging, run *Snakemake* again. It will automatically continue from the rule at which the error occured.
 
 
-If you do not know what the error is, post an Issue in the `Bitbucket Issue Tracker <https://bitbucket.org/cfce/cobra/issues>`_ tracker and we are hopefully able to help you quickly.
-
+If you do encounter an error and are unable to find a solution in the FAQ, post an Issue in the `Bitbucket Issue Tracker <https://bitbucket.org/cfce/cobra/issues>`_ tracker.
 
 
 Customized analysis
 ****************************************
 
-Having results is exciting; however, as with most software, now the maybe even harder part starts: Understanding and interpreting the results. Let's first remind ourselves: The main goal of *CoBRA* is to perform unsupervised analyses, differential peak calling, and downstream pathway analysis for ChIP/ATAC‐seq experiemnt.
+*CoBRA* is capable of performing unsupervised analyses, differential peak calling, and downstream pathway analysis for ChIP/ATAC‐seq experiemnt. Running *CoBRA* with the default setup is helpful. However, sometimes you may want to further customize the analysis. 
+
 
 Summary
 =================
 
-  - Irrespective of whether or not you also used the differential analysis, we recommend that the first thing to check is the pca_plot and heatmapSS_plot pdf.
-  - If a specific question is not addressed here, feel free to contact us. We will then add it here.
-  - Note that *CoBRA* captures differential peaks, which may need use different cut-off for significance accross different experiement.
+  - Regardless of whether or not differntial analysis was conducted, we recommend that you first check the pca_plot and heatmapSS_plot pdf.
+  - If a specific question is not addressed here, feel free to contact us.
+  - *CoBRA* calls differential peaks, which may need different cutoffs for significance for different experiements.
 
 
 
 Specifics for the unsupervised analysis
 =================================
 
-The following procedure may be useful as a rough guideline:
-  - Start with deafult paramaters
-  - Handling the paramaters as the following:
-    - (a) Adjust the ``filter-percent`` to 20 or 100, this will change how many top percent of peaks that will go into the unsupervised analysis.
+The following steps are a good starting point:
+  - Start with default paramaters
+  - Handling the paramaters in the following way:
+    - (a) Adjust the ``filter-percent`` to 20 or 100, this will change the percent of the most variable peaks that will go into the unsupervised analysis.
     - (b) Adjust ``num_kmeans_clust`` to change the heatmapSF_plot result for observations in different group of clustering.
     - (c) Quantile-normalize for ``Scale method`` and Coefficient of Variation for ``filter-opt`` is often recommended.
 
@@ -821,11 +813,10 @@ The following procedure may be useful as a rough guideline:
 Specifics for the supervised analysis
 ==========================================
 
-The following procedure may be useful as a rough guideline:
+The following steps are a good starting point:
   - Start with the default adjusted p-value threshold (0.05)
-  - Categorize into one of the 2 following cases:
-    - (a) There are no or almost none TFs significant: You may use a less stringent adjusted p-value threshold. You may check the GSEA result even if the there are very few differential peaks, the GSEA analysis the enrichment of all nearby genes by the ranking of log2fold change in all peaks. Some times the subtle change in the peaks may not reach the significant threshold, but the overal ranking of the peak may help idenify the changes accorss the perturbation. 
-    - (B) A lot peaks are significant (say more than 10000): You may use a more stringent adjusted p-value and log2 fold change threshold. Check the deeptools heatmap may have more confidence about the differential peaks that is being called in CoBRA.
-
+  - The following are examples of common occurences when conducting differential analysis:
+    - (a) There are very few or 0 significant differential peaks: You may use a less stringent adjusted p-value threshold. You may check the GSEA result even if the there are very few differential peaks, the GSEA analysis provides the enrichment of all nearby genes using the ranking of log2fold change in all peaks. Sometimes the subtle change in the peaks may not reach the significant threshold, but the overal ranking of the peaks may help identify pathways that reflect changes accross the perturbation. 
+    - (B) A lot peaks are significant (say more than 10000): You may use a more stringent adjusted p-value and log2fold change threshold. Check the deeptools heatmap to see if called differential peaks are truly differential. 
 
 
