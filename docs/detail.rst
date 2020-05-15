@@ -485,11 +485,11 @@ Metadata
 Output
 ************************************************************
 
-The pipeline produces quite a large number of output files, only some of which are however relevant for the regular user.
+*CoBRA* generates output files that are produced after each of step of the pipeline.
 
-.. note:: In the following, the directory structure and the files are briefly outlined. As some directory or file names depend on specific parameters in the configuration file, curly brackets will be used to denote that the filename depends on a particular parameter or name. For example, ``{comparisonType}`` and ``{regionExtension}`` refer to ``comparisonType`` (:ref:`parameter_comparisonType`) and ``regionExtension`` ( :ref:`parameter_regionExtension`) as specified in the configuration file.
+.. note:: Some output folder names are dependent on parameters and comparisons set by the user in the metasheet and config file. Major output filetype and folder structure is described below. 
 
-Most files have one of the following file formats:
+Common output files can be found in the following formats:
 
 - .bed (bed file)
 - .csv (file with comma as column separators)
@@ -500,14 +500,14 @@ Most files have one of the following file formats:
 FOLDER ``Analysis``
 =============================================
 
-In this folder, the final output files are stored. Most users want to examine the files in here for further analysis.
+The final output results are stored here.
 
 Sub-folder ``preprocessed_files``
 ----------------------------------------------
 
 Stores results related to bam, bed, bigwig, read counts.
 
-.. note:: Output files in this folder do not need to examine unless itermidate output files are interested to the user.
+.. note:: Output files in this folder do not need to be examined unless itermediate output files are of interest to the user.
 
 
 Sub-folder ``clustering_analysis``
@@ -519,19 +519,19 @@ Stores results related to Principal Component Analysis (PCA) plot, Sample-sample
 Sub-folder ``differential_peaks``
 ----------------------------------------------
 
-Stores results related to differential peaks calling, motif, GSEA and cistrome toolkit analyses.
+Stores results related to differential peak calling, motif enrichment, GSEA and cistrome toolkit analyses.
 
 
 Sub-folder ``logs``
 ----------------------------------------------
 
-Stores results related to all logs that is created by the pipeline .Each log file is produced by the corresponding rule and contains debugging information as well as warnings and errors:
+Stores all log files that are created by the pipeline. Each log file is produced by the corresponding rule and contains debugging information as well as warnings and errors.
 
 
 FOLDER ``preprocessed_files``
 =============================================
 
-Stores temporary and intermediate files. Since they are usually not relevant for the user, they are explained only very briefly here.
+Stores temporary and intermediate files. Since they are usually not relevant for the user, they are explained in brief.
 
 Sub-folder ``bam``
 ------------------------------
@@ -542,19 +542,19 @@ Stores sorted versions of the *BAMs* that are optimized for fast count.
 Sub-folder ``bed``
 ----------------------------------------------
 
-Stores all original and union bed files, the union peaks are seperate by enahcner and promoter bed files.
+Stores all original and union bed files, the union peaks are seperated by enhancer and promoter bed files.
 
 
 Sub-folder ``bigwig``
 ------------------------------
 
-Stores all bigwig files for all samples.
+Stores bigwig files for all samples.
 
 
 Sub-folder ``read_counts``
 ------------------------------
 
-Stores sample-peak count for each sample and merged sample-peak count matrix.
+Stores sample-peak counts for each sample and merged sample-peak count matrix.
 
 
 FOLDER ``clustering_analysis``
@@ -564,9 +564,9 @@ FOLDER ``clustering_analysis``
 Sub-folder ``rpkm.{}_num_sample.{}_scale.{}_fliter.cov.{}``
 ------------------------------
 
-Stores unsupervised anlaysis results that paramaters used for filter the read counts is indicated in the folder name.
+Stores unsupervised anlaysis results. Paramaters used for filtering the read counts file is indicated in the folder name.
 
-For example, the folder name 'rpkm.2_num_sample.3_scale.q_fliter.cov.2' means that the unsupervised analysis under this folder is filter by the following criteria.
+For example, the folder name 'rpkm.2_num_sample.3_scale.q_fliter.cov.2' means that the unsupervised analysis under this folder is filter by the following criteria:
 
 - ``rpkm.2_num_sample.3`` - at least three samples in the data set have minmal rpkm 2 
 
@@ -576,19 +576,19 @@ FILES ``plots/pca_plot.pdf``
 ----------------------------------------------------------------------------------------------
 
 Details
-  Produced in rule ``pca_plot``. PCA is mostly used as a tool in exploratory data analysis. It is often used to visualize  distance and relatedness between samples. 
+  Produced in rule ``pca_plot``. PCA is mostly used as a tool in exploratory data analysis. It is often used to visualize distance and relatedness between samples. 
 
 FILES ``plots/heatmapSS_plot.pdf``
 ----------------------------------------------------------------------------------------------
 
 Details
-  Produced in rule ``heatmapSS_plot``. Sample similarity was determined by hierarchical clustering using the Spearman correlation between samples. 
+  Produced in rule ``heatmapSS_plot``. Sample similarity as determined by hierarchical clustering based on the Spearman correlation between samples. 
 
 FILES ``plots/heatmapSF_plot.pdf``
 ----------------------------------------------------------------------------------------------
 
 Details
-  Produced in rule ``heatmapSF_plot``. Peaks from all study samples were merged to create a union set of sites. Each column is a sample, and each row is a peak. K-means clustering were applied to the peak sets, cluster information can be locate in the file "heatmapSF_plot.txt".
+  Produced in rule ``heatmapSF_plot``. Peaks from all study samples were merged to create a union set of sites. Each column is a sample, and each row is a peak. K-means clustering is applied to the peak sets. Cluster information can be found in the file "heatmapSF_plot.txt".
 
 
 
@@ -598,64 +598,67 @@ FOLDER ``differential_peaks``
 Sub-folders ``{comparsion_defined_in_metasheet}``
 ------------------------------
 
-Stores differential anlaysis results that was defined by user in the metasheet.csv. Following are files inside the folder:
+Stores differential anlaysis results that was defined by user in the metasheet. The following are files that can be found in the folder:
 
-- ``{comparsion_defined_in_metasheet}.deseq.csv`` - differential peaks list based on the union peaks, log2FoldChange, padj for each peak is in the list. 
+- ``{comparsion_defined_in_metasheet}.deseq.csv`` - differential peaks list based on the union peaks. In the file, log2FoldChange and padj for the comparisson of each peak can be found. 
 
-- ``{comparsion_defined_in_metasheet}.deseq.with.Nearby.Gene.csv`` - in addition to the differential peak list, the nearby gene is annotate for each peak.
+- ``{comparsion_defined_in_metasheet}.deseq.with.Nearby.Gene.csv`` - in addition to the differential peak list, the nearby gene is annotated for each peak.
 
-- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.up.bed`` - treatment enriched peaks based on the Padj and log2FoldChange cut off defined in the config.yaml.
+- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.up.bed`` - treatment enriched peaks based on the Padj and log2FoldChange cutoff defined in the config file.
 
-- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.-{}.down.bed`` - control enriched peaks based on the Padj and log2FoldChange cut off defined in the config.yaml.
+- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.-{}.down.bed`` - control enriched peaks based on the Padj and log2FoldChange cutoff defined in the config file.
 
-- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.pdf`` - heatmap that showing the differential peaks between the treatment and control group
+- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.pdf`` - heatmap showing the differential peaks between the treatment and control groups.
 
-- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.up.bed_motif`` - motif enrichedment results for treatment enriched motifs, both know and denovo results are included
+- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.up.bed_motif`` - motif enrichment results for treatment enriched motifs. Both known and de novo results are included.
 
-- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.-down.bed_motif`` - motif enrichedment results for control enriched motifs, both know and denovo results are included
+- ``{comparsion_defined_in_metasheet}.deseq.Padj{}.LG2FC.{}.-down.bed_motif`` - motif enrichment results for control enriched motifs. Both known and de novo results are included.
 
-- ``GSEA`` - GSEA analysis result based on the log2FoldChange for each nearby genes in the differential peak list
+- ``GSEA`` - GSEA analysis result based on the log2FoldChange for each nearby gene in the differential peak list.
 
-- ``cistrome_toolkit`` - cistrome_toolkit analysis result based on the treatment and control enriched differential peaks
+- ``cistrome_toolkit`` - cistrome_toolkit analysis result based on the treatment and control enriched differential peaks.
 
-- ``DEseq.normalized.counts.csv`` - DEseq normalized counts for each sample and each peak
+- ``DEseq.normalized.counts.csv`` - DEseq normalized counts for each sample and each peak.
 
 
 FOLDER ``logs``
 =============================================
 
-Stores various log and error files.
+Folder contains log files with errors for each step of the pipeline.
 
-- ``*.log`` files from bam file sorting and cleaing: Each log file is produced by the corresponding rule and contains debugging information as well as warnings and errors:
+- ``*.log`` A log file is produced for each rule. They contain warnings, errors, and debugging information.
 
   - ``clean_bam`` logs for picard bam clean 
   - ``remove_duplicates`` logs for picard remove duplicate 
   - ``reorder`` logs for reorder the bam files
-  - ``read_coutns`` for bedtools intersect to get the sample-peak count matrix
+  - ``read_counts`` for bedtools intersect to get the sample-peak count matrix
 
 .. _workingWithPipeline:
 
 Running *CoBRA*
 ******************
 
-General remarks
+General notes
 ==============================
 
-*CoBRA* is programmed as a *Snakemake* pipeline. *Snakemake* is a bioinformatics workflow manager that uses workflows that are described via a human readable, Python based language. It offers many advantages to the user because each step can easily be modified, parts of the pipeline can be rerun, and workflows can be seamlessly scaled to server, cluster, grid and cloud environments, without the need to modify the workflow definition or only minimal modifications. However, with great flexibility comes a price: the learning curve to work with the pipeline might be a bit higher, especially if you have no *Snakemake* experience. For a deeper understanding and troubleshooting errors, some knowledge of *Snakemake* is invaluable.
+We present a new pipeline, Containerized workflows for ChIP/ATAC‐seq Experiments (*CoBRA*), that is fast, efficient, portable, customizable and reproducible. The workflow builds upon the ongoing effort to make computational research reproducible using Docker containers. *CoBRA* allows users of varying levels of technical skill to quickly process and analyze new data from ChIP-seq and ATAC-seq experiments. It is the authors’ hope that *CoBRA* can be a starting point for others to build upon and improve *CoBRA* as a tool and extend its ability to analyze the cistrome. 
 
-Simply put, *Snakemake* executes various *rules*. Each *rule* can be thought of as a single *recipe* or task such as sorting a file, running an R script, etc. Each rule has, among other features, a name, an input, an output, and the command that is executed. You can see in the ``Snakefile`` what these rules are and what they do. During the execution, the rule name is displayed, so you know exactly at which step the pipeline is at the given moment. Different rules are connected through their input and output files, so that the output of one rule becomes the input for a subsequent rule, thereby creating *dependencies*, which ultimately leads to the directed acyclic graph (*DAG*) that describes the whole workflow. You have seen such a graph in Section :ref:`workflow`.
+The *CoBRA* workflow is implemented into a snakemake workflow management system (Köster and Rahmann 2012). Workflows are described via a human-readable, Python-based language. It can be seamlessly scaled to server, cluster, grid and cloud environments, without the need to modify the workflow definition. For ChIP-seq and ATAC-seq experiments, *CoBRA* provides both unsupervised and supervised analyses. 
+
+Further, to make *CoBRA* more easily deployable on any system, it is distributed as a Docker container, which can be used on any machine as long as Docker is installed. Docker containers provide a tool for packaging bioinformatics software. It encapsulates all of the supporting software and libraries, eliminates the possibility of conflicting dependencies, and facilitates the installation of required software. As a result, *CoBRA* is reproducible, portable and easy to deploy.
+
 
 
 .. _timeMemoryRequirements:
 
-Executing *CoBRA* - Running times and memory requirements
+Running *CoBRA* - Computation time and memory usage
+
 ===============================================================
 
-*CoBRA* can be computationally demanding depending on the sample size and the number of peaks. In the following, we discuss various issues related to time and memory requirements and we provide some general guidelines that worked well for us.
+*CoBRA* can be computationaly intensive if ``Bam`` files are not sorted. Analyses with a larger sample size and peak number generally take longer. 
 
-.. warning:: We generally advise to run *CoBRA* in a cluster environment. For small analysis, a local analysis on your machine might work just fine (see the example analysis in the Git repository), but running time increases substantially due to limited amount of available cores.
 
-Analysis size
+Sample size
 ---------------
 
 We now provide a *very rough* classification into small, medium and large with respect to the sample size and the number of peaks:
@@ -663,6 +666,11 @@ We now provide a *very rough* classification into small, medium and large with r
 - Small: Fewer than 10-15 samples, number of peaks not exceeding 50,000-80,000, normal read depth per sample
 - Large: Number of samples larger than say 20 or number of peaks clearly exceeds 100,000, or very high read depth per sample
 - Medium: Anything between small and large
+
+Sample size
+---------------
+
+*Cobra* can handle a large number of samples as well as small datasets. In general, experiments with fewer than 10-15 samples take 
 
 
 Total running time
