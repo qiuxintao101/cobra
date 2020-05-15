@@ -687,12 +687,13 @@ The following are commonly asked questions:
 
 3. How can I rerun a specific part of the pipeline?
 
-   This can be accomplished by running *Snakemake* with the rule name of interest. For example, to produce a new PCA plot or sample-sample heatmap, the following commands can be invoked:
+  This can be accomplished by running *Snakemake* with the rule name of interest. For example, to produce a new PCA plot or sample-sample heatmap, the following commands can be invoked:
+  
      .. code-block:: Bash
 
-         snakemake pca_plot -f
+        snakemake pca_plot -f
          
-         snakemake heatmapSS_plot -f
+        snakemake heatmapSS_plot -f
 
      ..
    
