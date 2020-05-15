@@ -655,33 +655,18 @@ Running *CoBRA* - Computation time and memory usage
 
 ===============================================================
 
-*CoBRA* can be computationaly intensive if ``Bam`` files are not sorted. Analyses with a larger sample size and peak number generally take longer. 
+*CoBRA* can be computationaly intensive if ``Bam`` files are not sorted. Analyses with a larger sample size (100+ samples) and peak number (10,0000+) generally take longer.
 
 
-Sample size
----------------
-
-We now provide a *very rough* classification into small, medium and large with respect to the sample size and the number of peaks:
-
-- Small: Fewer than 10-15 samples, number of peaks not exceeding 50,000-80,000, normal read depth per sample
-- Large: Number of samples larger than say 20 or number of peaks clearly exceeds 100,000, or very high read depth per sample
-- Medium: Anything between small and large
-
-Sample size
----------------
-
-*Cobra* can handle a large number of samples as well as small datasets. In general, experiments with fewer than 10-15 samples take 
-
-
-Total running time
+Running time
 --------------------
 
-Some notes regarding the total running time:
+Details about total time consumption:
 
-- the total running time is based on the number of samples, their read depth, the number of peaks, and the number of TF included in the analysis
-- for small analysis such as the example analysis in the Git repository, running times are roughly 30 minutes with 2 cores for sorted bam files
-- for large analysis, running time will be up to 2 hrs or so when executed on a cluster machine
-- for the motif anslysis, running time will add 1 hr in additional to the running time above
+- the running time is based on the number of samples and the number of peaks.
+- for typical analyses in which the sample size is less than 15, running times are roughly 30 minutes with 2 cores for sorted bam files.
+- for a large number of samples, running time will be up to 2 hrs or so when executed on a cluster machine.
+- if motif analysis is turned on, add 1 additional hour to the running time listed above.
 
 
 
@@ -690,18 +675,28 @@ Some notes regarding the total running time:
 Frequently asked questions (FAQs)
 ****************************************
 
-Here a few typical use cases, which we will extend regularly in the future if the need arises:
+The following are commonly asked questions:
 
-1. Why the CoBRA need to use an config.yaml, metasheet.csv to setup the run? Why not just simply use the command to setup the run?
+1. Why does *CoBRA* need to use a config file and metasheet file to setup the run? Why not just simply use the command to setup the run?
 
-  The unsupervised and supervised anlaysis of ChIP/ATAC-seq experiment need to have many paramaters, and could be very different from different experiement. The config.yaml and metasheet.csv allow user to save all paramaters that have been used in this run and allow others to reproduce the analysis when needed.
+  The unsupervised and supervised anlaysis of ChIP/ATAC-seq experiment requires many paramaters, and could vary from one experiement to another. The config and metasheet files allow the user to save all paramaters that have been used in this run and allow others to reproduce the analysis when needed.
 
-2. I have a problem running docker?
+2. Have a problem running docker?
 
-  Please try to go https://docs.docker.com/toolbox/faqs/troubleshoot/ to get the docker running.
+  Please go to https://docs.docker.com/toolbox/faqs/troubleshoot/ to get docker running.
 
-3. I want to rerun a specific part of the pipeline only.
+3. How can I rerun a specific part of the pipeline?
 
+   This can be accomplished by running *Snakemake* with the rule name of interest. For example, to produce a new PCA plot, the following command can be invoked:
+     .. code-block:: Bash
+
+         snakemake pca_plot -f
+
+     ..
+   
+
+
+   
   This common scenario is also easy to solve: Just invoke *Snakemake* with ``--forcerun {rulename}``, where ``{rulename}`` is the name of the rule as defined in the Snakefile. *Snakemake* will then rerun the  specified run and all parts downstream of the rule. If you want to avoid rerunning downstream parts (think carefully about it, as there might be changes from the rerunning that might have consequences for downstream parts also), you can combine ``--forcerun`` with ``--until`` and specify the same rule name for both.
 
 4. I want to modify the workflow.
