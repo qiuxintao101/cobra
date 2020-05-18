@@ -652,8 +652,7 @@ Further, to make *CoBRA* more easily deployable on any system, it is distributed
 .. _timeMemoryRequirements:
 
 Running *CoBRA* - Computation time and memory usage
-
-===============================================================
+--------------------
 
 *CoBRA* can be computationaly intensive if ``Bam`` files are not sorted. Analyses with a larger sample size (100+ samples) and peak number (10,0000+) generally take longer.
 
