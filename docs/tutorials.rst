@@ -1,63 +1,47 @@
 
 .. _docs-quickstart:
 
-Try it out now!
+Tutorial - GR_ChIP Dataset
 ============================================================
 
-When using ``Docker``, *CoBRA* functions independent of the operating system. It runs on Linux, macOS and Windows as long as Docker is installed. This guide summarizes the steps needed to install and use the pipeline.
+####Background####
 
-We provide two ways of installing *CoBRA* and its dependencies:
+Our first tutorial includes an in depth analysis of the sample GR_ChIP dataset.
 
-1a. **The quick way**: Using ``Docker`` and our preconfigured *CoBRA* container that includes all necessary tools and packages.
-
-  You only need to install ``Docker``. *CoBRA* supports Docker in Versions >=1.8. You can check whether you already have ``Docker`` installed by typing
-
-  .. code-block:: Bash
-
-    docker --version
-
-  If docker is not installed, please install `docker <https://docs.docker.com/install/>`_ on your platform first. Once docker is installed, you can simply type following command to pull and run the CoBRA image.
+1. **Initiate Environment**: 
   
-
-  .. code-block:: Bash
-
-    docker run --rm -v $PWD:/cobra -it cfce/cobra:latest
-  
-  .. note:: Make to read the section :ref:`docs-DockerNotes` properly!
-
-1b. **The manual way**:  Install the dependency tools (*Snakemake*, *samtools*, *bedtools*, *Homer*, *R*, and other packages).
-
-  .. note:: Note that most tools in CoBRA are avaiable via conda.
-
-  We recommend installing all tools via conda, in which case the installation then becomes as easy as downloading the :download:`environment.yml <environment.yml>` file. Then run the following command:
-
-  .. code-block:: Bash
-
-     conda env create -f environment.yml -n cobra
-
-  If you do not have conda installed, follow the `installation instructions <https://conda.io/docs/user-guide/install/index.html>`_. Make sure to restart the terminal after installation, so that *conda* is available.
-
-  In addition, CoBRA requires the following packages that are outside of the conda framework. See the following instructions for each of the tools: `giggle  <https://github.com/ryanlayer/giggle>`_, `liftover <http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver>`_.
-
-2. **Activate cobra conda environment:**
-
-  Once you have installed ``Cobra`` using docker or conda, you can use the following command to activate the environment
+  Use the following command to activate the cobra environment:
   
   .. code-block:: Bash
 
-     source activate cobra
-  
-  .. note:: If you install the cobra environemnt using docker, please read the :ref:`docs-DockerNotes` properly! Especially taking not of the instructions to mount the current folder inside the containter.
+    source activate cobra
 
 
-3. **Clone the Git repository:**
+2. **Retrieve the Latest Version of Cobra:**
 
-  If installed using docker, please run the following command to change the working directory:
+  If installed using docker, run the following command to change the working directory. Otherwise, skip to next command:
    
-
   .. code-block:: Bash
    
      cd cobra
+   
+  Create a new directory, change to the new working directory and pull the latest version of CoBRA using ``git clone`` :
+
+  .. code-block:: Bash
+
+     mkdir gr_chip
+     git clone https://bitbucket.org/cfce/cobra.git .
+
+  If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
+
+
+3. **Download the GR_ChIP sample dataset:**
+
+  Please use the following command to download the GR_ChIP sample dataset. This dataset is of moderate size (3.9 G) and may take 5-10 minutes to download. 
+
+  .. code-block:: Bash
+   
+     snakemake download_example_GR_ChIP
    
   The following command will pull the most recent version code that is required to run cobra. This command must be run in a empty directory:
 
