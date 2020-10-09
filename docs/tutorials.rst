@@ -1,7 +1,13 @@
 
 .. _docs-quickstart:
 
-Tutorial - GR_ChIP Dataset
+*****
+Tutorials
+*****
+
+The three tutorials below gives you a taste of different capabilities of our CoBRA workflow. The data sets we used are, a GR ChIP-seq data set from the ENCODE project, a set of H3K27ac ChIP-seq data from colon cancer cell lines, and an ATAC-seq experiment on HL-60 promyelocytes differentiating into macrophages, each of which demonstrate a subfield of expertise of our CoBRA pipeline. 
+
+GP_ChIP Tutorial
 ============================================================
 
 ####Background####
