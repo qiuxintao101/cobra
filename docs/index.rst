@@ -28,3 +28,9 @@ The documentation is organized into the following two sections:
 
    detail.rst
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Tutorials
+
+   tutorials.rst
+
