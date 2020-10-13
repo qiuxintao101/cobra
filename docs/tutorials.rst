@@ -94,7 +94,7 @@ Step-By-Step Analysis
        snakemake pca_plot -f
     
     
-    .. figure:: tutorial1_heatmapSF_6_plot.png
+    .. figure:: tutorial1_pca_plot_Treatment.nM..png
          :scale: 30 %
          :alt: CoBRA schematics
          :align: center
