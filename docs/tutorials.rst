@@ -92,6 +92,14 @@ Step-By-Step Analysis
     .. code-block:: Bash
 
        snakemake pca_plot -f
+    
+    
+    .. figure:: workflow.png
+         :scale: 30 %
+         :alt: CoBRA schematics
+         :align: center
+
+         Conceptual idea and schematic of *CoBRA*, the input and the output
   
   This command produces the ``pca_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. The first page of the file is a color-coded Principal component analysis (PCA) plot that depicts how samples are separated in the first two principal components (those with the largest variance). The second page includes a scree plot indicating the percentage of variance captured by each principal component.
 
