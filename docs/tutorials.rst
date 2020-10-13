@@ -1,18 +1,22 @@
 
 .. _docs-quickstart:
 
-*****
+********
 Tutorials
-*****
+********
 
-The three tutorials below gives you a taste of different capabilities of our CoBRA workflow. The data sets we used are, a GR ChIP-seq data set from the ENCODE project, a set of H3K27ac ChIP-seq data from colon cancer cell lines, and an ATAC-seq experiment on HL-60 promyelocytes differentiating into macrophages, each of which demonstrate a subfield of expertise of our CoBRA pipeline. 
+The three tutorials below gives you a taste of different capabilities of our CoBRA workflow. The data sets you will be exploring are, 
+1) a glucocorticoid receptor (GR) ChIP-seq data set from the ENCODE project, 
+2) a set of H3K27ac ChIP-seq data from colon cancer cell lines, and
+3) an ATAC-seq experiment on HL-60 promyelocytes differentiating into macrophages. 
 
-GP_ChIP Tutorial
-============================================================
+Each of the tutorials wiil demonstrate a subfield of expertise of our CoBRA pipeline. 
 
-####Background####
 
-Our first tutorial includes an in depth analysis of the sample GR_ChIP dataset.
+Setup
+=====
+
+In preparation for the tutorials, please use the following steps to set up the cobra environment and retrieve the latest version of our pipeline:
 
 1. **Initiate Environment**: 
   
@@ -22,7 +26,6 @@ Our first tutorial includes an in depth analysis of the sample GR_ChIP dataset.
 
     source activate cobra
 
-
 2. **Retrieve the Latest Version of Cobra:**
 
   If installed using docker, run the following command to change the working directory. Otherwise, skip to next command:
@@ -31,7 +34,7 @@ Our first tutorial includes an in depth analysis of the sample GR_ChIP dataset.
    
      cd cobra
    
-  Create a new directory, change to the new working directory and pull the latest version of CoBRA using ``git clone`` :
+  Create a new directory for the tutorial (ex: gr_chip), change to the new working directory and pull the latest version of CoBRA using ``git clone`` :
 
   .. code-block:: Bash
 
@@ -41,29 +44,25 @@ Our first tutorial includes an in depth analysis of the sample GR_ChIP dataset.
   If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
 
 
-3. **Download the GR_ChIP sample dataset:**
+GP_ChIP Tutorial
+================
+
+Background
+**********
+This tutorial makes use of a publicly available glucocorticoid receptor (GR) ChIP-seq data (`GSE32465 <https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE32465>`) from a lung adenocarcinoma cell line (A549) at 3 different concentrations of dexamethasone, a potent GR agonist.
+Our first tutorial includes an in depth analysis of the sample GR_ChIP dataset. In the experiment, samples were treated with 0.5nM, 5nM, or 50nM of dexamethasone.
+
+
+Download and run the GR_ChIP sample dataset
+***********************************
 
   Please use the following command to download the GR_ChIP sample dataset. This dataset is of moderate size (3.9 G) and may take 5-10 minutes to download. 
 
   .. code-block:: Bash
    
      snakemake download_example_GR_ChIP
-   
-  The following command will pull the most recent version code that is required to run cobra. This command must be run in a empty directory:
-
-  .. code-block:: Bash
-
-     git clone https://bitbucket.org/cfce/cobra.git .
-
-  If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
-
-4. **To run CoBRA with an example ChIP-Seq / ATAC-seq dataset, execute the following steps (see section**  :ref:`exampleDataset` **for details)**:
-
-  Download the example data for the GR-ChIP experiement. This command will download all bam, bigwig and bed files that are needed to run the example:
-
-  .. code-block:: Bash
-
-     snakemake download_example_GR_ChIP
+  
+  When the data set is downloaded, we can proceed to run the analysis. Usually for running CoBRA on a new experiment, the two config files ``config.yaml`` and ``metasheet.csv`` would need to be set up acccordingly. In this tutorial, they have been filled already.
 
   To check if the setup is correct, begin a dry run via the following command:
 
