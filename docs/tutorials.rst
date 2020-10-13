@@ -95,13 +95,15 @@ Step-By-Step Analysis
   
   This command produces the ``pca_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. The first page of the file is a color-coded Principal component analysis (PCA) plot that depicts how samples are separated in the first two principal components (those with the largest variance). The second page includes a scree plot indicating the percentage of variance captured by each principal component.
 
-  .. image:: tutorial1_pca_plot_Treatment.nM..png
+
+
+.. figure:: tutorial1_pca_plot_Treatment.nM..png
       :alt: tutorial 1 pca plot
       :align: center
       
       As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further    separates the sample replicates.
  
-   .. image:: tutorial1_pca_plot_scree.png
+.. figure:: tutorial1_pca_plot_scree.png
       :scale: 30 %
       :alt: tutorial 1 pca scree
       :align: center
@@ -116,14 +118,40 @@ Step-By-Step Analysis
   
   This command produces the ``heatmapSS_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It provides information on the clustering result based on the Pearson correlation coefficient, and illustrates the similarity between all samples in a pairwise fashion.
   
-  .. image:: tutorial1_heatmapSS_plot.png
+.. figure:: tutorial1_heatmapSS_plot.png
       :scale: 30 %
       :alt: tutorial 1 ss heatmap
       :align: center
       
       As illustrated in the SS correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be dissimilar to samples treated with 5nM or 50nM dexamethasone.
  
+3. **Unsupervised Analysis - Sample-Feature Heatmap**: 
 
+    .. code-block:: Bash
+
+       snakemake heatmapSF_plot -f
+  
+  This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis.
+  
+.. figure:: tutorial1_heatmapSF_6_plot.png
+      :scale: 30 %
+      :alt: tutorial 1 sf heatmap
+      :align: center
+ 
+
+4. **Supervised Analysis - Sample-Feature Heatmap**: 
+
+    .. code-block:: Bash
+
+       snakemake heatmapSF_plot -f
+  
+  This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis.
+  
+.. figure:: tutorial1_heatmapSF_6_plot.png
+      :scale: 30 %
+      :alt: tutorial 1 sf heatmap
+      :align: center
+      
 
 Tutorial 2: H3K27ac ChIP-seq Data Set
 ================
