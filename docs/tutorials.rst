@@ -103,9 +103,8 @@ Step-By-Step Analysis
          Conceptual idea and schematic of *CoBRA*, the input and the output
 
   .. figure:: tutorial1_pca_plot_Treatment.nM..png
-         :scale: 30 %
-         :alt: tutorial 1 pca plot
-         :align: center
+      :alt: tutorial 1 pca plot
+      :align: center
       
       As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further    separates the sample replicates.
  
@@ -124,10 +123,10 @@ Step-By-Step Analysis
   
   This command produces the ``heatmapSS_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It provides information on the clustering result based on the Pearson correlation coefficient, and illustrates the similarity between all samples in a pairwise fashion.
   
-  .. figure:: tutorial1_heatmapSS_plot.png
-         :scale: 30 %
-         :alt: tutorial 1 ss heatmap
-         :align: center
+  .. image::tutorial1_heatmapSS_plot.png
+      :scale: 30 %
+      :alt: tutorial 1 ss heatmap
+      :align: center
       
       As illustrated in the SS correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be dissimilar to samples treated with 5nM or 50nM dexamethasone.
  
