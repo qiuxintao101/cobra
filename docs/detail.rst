@@ -37,7 +37,7 @@ The following is a directed acyclic graph that shows sequence of processes execu
 
 *Snakemake* was used to implement *CoBRA*. For documentation detailing *Snakemake*, see Section :ref:`workingWithPipeline`. As illustrated in the DAG above, *CoBRA* consists of the following rules: 
 
-- ``merge_bed``: Using the bedops package to get the union set of peaks of all samples
+- ``merged_bed``: Using the bedops package to get the union set of peaks of all samples
 - ``bed_enhancer_promoter``:  Filter the union set of peaks within ±1kb of TSS to get enhancer and promoter sites
 - ``bedtools_intersect``: Count reads in peak regions for all bam files
 - ``pca_plot``: R script that plots all samples in a two dimensional space including PC1 and PC2
