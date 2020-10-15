@@ -233,76 +233,56 @@ Step-By-Step Analysis
 
   While the CoBRA pipeline is designed to be fast and efficient, easily-excuetable with just a few lines of commands, it is possible to produce the analysis in a step-wise fashion by running specific parts of the pipeline.
 
-1. **Unsupervised Analysis - PCA Plot**: 
+1. **Unsupervised Analysis - PCA Plot, Sample-Sample Correlation Plot, Sample-Feature Heatmap, etc.**: 
 
     .. code-block:: Bash
 
        snakemake pca_plot -f
+       snakemake heatmapSS_plot -f
+       snakemake heatmapSF_plot -f
   
-  This command produces the ``pca_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. The first page of the file is a color-coded Principal component analysis (PCA) plot that depicts how samples are separated in the first two principal components (those with the largest variance). The second page includes a scree plot indicating the percentage of variance captured by each principal component
+  Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
 
 .. figure:: ./tutorial_figures/case2/pca.png
       :scale: 30 %
       :alt: tutorial 2 pca plot
       :align: center
       
-  As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further    separates the sample replicates.
- 
 .. figure:: ./tutorial_figures/case2/pca_scree.png
       :scale: 30 %
       :alt: tutorial 2 pca scree
       :align: center
 
-      As illustrated in the scree plot, PC1 captures over 40% of the variance explained, and PC2 captures about 19%.
-
-2. **Unsupervised Analysis - Sample-Sample Correlation Plot**: 
-
-    .. code-block:: Bash
-
-       snakemake heatmapSS_plot -f
-  
-  This command produces the ``heatmapSS_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It provides information on the clustering result based on the Pearson correlation coefficient, and illustrates the similarity between all samples in a pairwise fashion.
-  
 .. figure:: ./tutorial_figures/case2/heatmapSS.png
       :scale: 30 %
       :alt: tutorial 2 ss heatmap
       :align: center
-      
-  As illustrated in the SS correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be dissimilar to samples treated with 5nM or 50nM dexamethasone.
- 
-3. **Unsupervised Analysis - Sample-Feature Heatmap**: 
 
-    .. code-block:: Bash
-
-       snakemake heatmapSF_plot -f
-  
-  This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis.
-  
 .. figure:: ./tutorial_figures/case2/heatmapSF.png
       :scale: 30 %
       :alt: tutorial 2 sf heatmap
       :align: center
  
 
-4. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
+2. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
 
     .. code-block:: Bash
 
        snakemake limma_and_deseq -f
   
   This command produces a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm`` folder, including the following:
-  - ``c50nm_vs_0.5nm.limma.csv``: a differentail peaks analysis table produced by Limma
-  - ``c50nm_vs_0.5nm.deseq.csv``: a differentail peaks analysis table produced by DESeq2
-  - ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.up.bed`` and ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.-0.down.bed``: bed files of peaks that are differentially up- and down-regulated, respectively
-  - ``c50nm_vs_0.5nm.deseq.sum.csv``: a table including total number of differential peaks under different thresholds
-  - ``c50nm_vs_0.5nm.t.test.csv``: a t-test table of the differential peaks
+  - ``MSS_vs_MSI.limma.csv``: a differentail peaks analysis table produced by Limma
+  - ``MSS_vs_MSI.deseq.csv``: a differentail peaks analysis table produced by DESeq2
+  - ``MSS_vs_MSI.deseq.Padj0.05.LG2FC.0.up.bed`` and ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.-0.down.bed``: bed files of peaks that are differentially up- and down-regulated, respectively
+  - ``MSS_vs_MSI.deseq.sum.csv``: a table including total number of differential peaks under different thresholds
+  - ``MSS_vs_MSI.t.test.csv``: a t-test table of the differential peaks
   - ``MA_plot.pdf``: a MA plot comparing the two treatment samples
   
 .. figure:: ./tutorial_figures/case2/maplot.png
       :scale: 30 %
       :alt: tutorial 2 ma plot
       :align: center
- 
+  
   
   Intensity measurement of the differnetial peaks can be done using the following command
   
@@ -320,16 +300,87 @@ Step-By-Step Analysis
   As illustrated in the heatmap above, there only exist upregulated peaks in 50nM dexamethasone treated samples as compared to 0.5 nM dexamethasone treated samples, and intensity goes as high as 1.75.
 
 
-5. **Comparison of Up and Down-regulated Site: Cistrome Toolkit**: 
+3. **GSEA**: 
 
-  *CoBRA* has built-in features that allows for comparison of up and down-regulated sites to a comprehesnive database of ChIP/ATAC and DNase data. 
+  *CoBRA* has built-in features to do the Gene Set Enrichment analysis is performed on the ranked list of genes produced.. 
   
     .. code-block:: Bash
 
-       snakemake cistrome_tookit -f
+       snakemake GSEA -f
   
   Using the command above, *CoBRA* outputs a series of 
 
 
+
+Case Study 3: ATAC-seq from HL-60 promyelocytes differentiating into macrophages
+================
+
+Background
+**********
+This tutorial makes use of ATAC-seq from HL-60 promyelocytes differentiating into macrophages. The samples were taken utilized a five-day time course (0hr, 3hr, 24hr, 96hr, and 120hr) to profile accessible chromatin of HL-60 promyelocytes ddifferentiating into macrophages. Here *CoBRA* results shows investigation of the differentiation of macrophages through changes
+in the landscape of accessible chromatin. 
+
+Download and set-up for running the Macrophage_atac sample dataset
+**********************************************************
+
+  Please use the following command to download the Macrophage ATAC-seq sample dataset. 
+
+  .. code-block:: Bash
+   
+     snakemake download_example_Macrophage_atac
+  
+  When the data set is downloaded, we can proceed to set up for the run. 
+
+
+  To check if the setup is correct, begin a dry run via the following command:
+
+  .. code-block:: Bash
+
+     snakemake all -np
+
+Quick One-Step Analysis
+**********************************************************
+
+  Once the dry run completes without errors, run the pipeline using the following command (using 6 cores).
+
+  .. code-block:: Bash
+
+     snakemake all --cores 6
+
+  
+Step-By-Step Analysis
+**********************************************************
+
+  While the CoBRA pipeline is designed to be fast and efficient, easily-excuetable with just a few lines of commands, it is possible to produce the analysis in a step-wise fashion by running specific parts of the pipeline.
+
+1. **Unsupervised Analysis - PCA Plot, Sample-Sample Correlation Plot, Sample-Feature Heatmap, etc.**: 
+
+    .. code-block:: Bash
+
+       snakemake pca_plot -f
+       snakemake heatmapSS_plot -f
+       snakemake heatmapSF_plot -f
+  
+  Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
+
+.. figure:: ./tutorial_figures/case3/pca.png
+      :scale: 30 %
+      :alt: tutorial 3 pca plot
+      :align: center
+      
+.. figure:: ./tutorial_figures/case3/pca_scree.png
+      :scale: 30 %
+      :alt: tutorial 3 pca scree
+      :align: center
+
+.. figure:: ./tutorial_figures/case3/heatmapSS.png
+      :scale: 30 %
+      :alt: tutorial 3 ss heatmap
+      :align: center
+
+.. figure:: ./tutorial_figures/case2/heatmapSF.png
+      :scale: 30 %
+      :alt: tutorial 2 sf heatmap
+      :align: center
 
 
