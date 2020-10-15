@@ -259,7 +259,7 @@ Step-By-Step Analysis
       :alt: tutorial 2 ss heatmap
       :align: center
 
-.. figure:: ./tutorial_figures/2_SF.png
+.. figure:: ./tutorial_figures/2_SF
       :scale: 30 %
       :alt: tutorial 2 sf heatmap
       :align: center
