@@ -95,14 +95,14 @@ Step-By-Step Analysis
   
   This command produces the ``pca_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. The first page of the file is a color-coded Principal component analysis (PCA) plot that depicts how samples are separated in the first two principal components (those with the largest variance). The second page includes a scree plot indicating the percentage of variance captured by each principal component
 
-.. figure:: ./tutorial_figures/case1/pca.png
+.. figure:: ./tutorial_figures/1_pca.png
       :scale: 30 %
       :alt: tutorial 1 pca plot
       :align: center
       
   As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further    separates the sample replicates.
  
-.. figure:: ./tutorial_figures/case1/pca_scree.png
+.. figure:: ./tutorial_figures/1_pca_scree.png
       :scale: 30 %
       :alt: tutorial 1 pca scree
       :align: center
@@ -117,7 +117,7 @@ Step-By-Step Analysis
   
   This command produces the ``heatmapSS_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It provides information on the clustering result based on the Pearson correlation coefficient, and illustrates the similarity between all samples in a pairwise fashion.
   
-.. figure:: ./tutorial_figures/case1/heatmapSS.png
+.. figure:: ./tutorial_figures/1_SS.png
       :scale: 30 %
       :alt: tutorial 1 ss heatmap
       :align: center
@@ -132,7 +132,7 @@ Step-By-Step Analysis
   
   This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis.
   
-.. figure:: ./tutorial_figures/case1/heatmapSF.png
+.. figure:: ./tutorial_figures/1_SF.png
       :scale: 30 %
       :alt: tutorial 1 sf heatmap
       :align: center
@@ -152,7 +152,7 @@ Step-By-Step Analysis
   - ``c50nm_vs_0.5nm.t.test.csv``: a t-test table of the differential peaks
   - ``MA_plot.pdf``: a MA plot comparing the two treatment samples
   
-.. figure:: ./tutorial_figures/case1/maplot.png
+.. figure:: ./tutorial_figures/1_maplot.png
       :scale: 30 %
       :alt: tutorial 1 ma plot
       :align: center
@@ -166,7 +166,7 @@ Step-By-Step Analysis
   
   It produces ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.pdf`` which illustrates the peak intensity of the differentially up and downregulated peaks. 
 
-.. figure:: ./tutorial_figures/case1/peaks.png
+.. figure:: ./tutorial_figures/1_peaks.png
       :scale: 30 %
       :alt: tutorial 1 diff peats
       :align: center
@@ -184,7 +184,7 @@ Step-By-Step Analysis
   
   Using the command above, *CoBRA* outputs a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm/cistrome_toolkit`` folder, including a plot of most similar samples ranked by their giggle score.
   
-.. figure:: ./tutorial_figures/case1/cistrome.png
+.. figure:: ./tutorial_figures/1_cistrome.png
       :scale: 30 %
       :alt: tutorial 1 cistrome result
       :align: center
@@ -243,22 +243,22 @@ Step-By-Step Analysis
   
   Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
 
-.. figure:: ./tutorial_figures/case2/pca.png
+.. figure:: ./tutorial_figures/2_pca.png
       :scale: 30 %
       :alt: tutorial 2 pca plot
       :align: center
       
-.. figure:: ./tutorial_figures/case2/pca_scree.png
+.. figure:: ./tutorial_figures/2_pca_scree.png
       :scale: 30 %
       :alt: tutorial 2 pca scree
       :align: center
 
-.. figure:: ./tutorial_figures/case2/heatmapSS.png
+.. figure:: ./tutorial_figures/2_SS.png
       :scale: 30 %
       :alt: tutorial 2 ss heatmap
       :align: center
 
-.. figure:: ./tutorial_figures/case2/heatmapSF.png
+.. figure:: ./tutorial_figures/2_SF
       :scale: 30 %
       :alt: tutorial 2 sf heatmap
       :align: center
@@ -278,7 +278,7 @@ Step-By-Step Analysis
   - ``MSS_vs_MSI.t.test.csv``: a t-test table of the differential peaks
   - ``MA_plot.pdf``: a MA plot comparing the two treatment samples
   
-.. figure:: ./tutorial_figures/case2/maplot.png
+.. figure:: ./tutorial_figures/2_maplot.png
       :scale: 30 %
       :alt: tutorial 2 ma plot
       :align: center
@@ -292,7 +292,7 @@ Step-By-Step Analysis
   
   It produces ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.pdf`` which illustrates the peak intensity of the differentially up and downregulated peaks. 
 
-.. figure:: ./tutorial_figures/case2/peaks.png
+.. figure:: ./tutorial_figures/2_peaks.png
       :scale: 30 %
       :alt: tutorial 2 diff peats
       :align: center
@@ -310,7 +310,7 @@ Step-By-Step Analysis
   
   Using the command above, *CoBRA* outputs a series of GSEA analysis results. See an example below
 
-.. figure:: ./tutorial_figures/case2/gsea1.png
+.. figure:: ./tutorial_figures/2_gsea1.png
       :scale: 30 %
       :alt: tutorial 2 GSEA
       :align: center
@@ -366,25 +366,5 @@ Step-By-Step Analysis
        snakemake heatmapSF_plot -f
   
   Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
-
-.. figure:: ./tutorial_figures/case3/pca.png
-      :scale: 30 %
-      :alt: tutorial 3 pca plot
-      :align: center
-      
-.. figure:: ./tutorial_figures/case3/pca_scree.png
-      :scale: 30 %
-      :alt: tutorial 3 pca scree
-      :align: center
-
-.. figure:: ./tutorial_figures/case3/heatmapSS.png
-      :scale: 30 %
-      :alt: tutorial 3 ss heatmap
-      :align: center
-
-.. figure:: ./tutorial_figures/case2/heatmapSF.png
-      :scale: 30 %
-      :alt: tutorial 3 sf heatmap
-      :align: center
 
 
