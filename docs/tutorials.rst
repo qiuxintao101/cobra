@@ -95,16 +95,16 @@ Step-By-Step Analysis
   
   This command produces the ``pca_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. The first page of the file is a color-coded Principal component analysis (PCA) plot that depicts how samples are separated in the first two principal components (those with the largest variance). The second page includes a scree plot indicating the percentage of variance captured by each principal component
 
-  
-|case 1 pca| and |case 1 scree|
 
-  .. |case 1 pca|   figure:: ./tutorial_figures/1_pca.png
-      :scale: 15%
+  .. figure:: ./tutorial_figures/1_pca.png
+      :scale: 25%
       :alt: case 1 pca plot
+      :align: center
 
-  .. |case 1 scree| figure:: ./tutorial_figures/1_pca_scree.png
-      :scale: 15 %
+  .. figure:: ./tutorial_figures/1_pca_scree.png
+      :scale: 25 %
       :alt: case 1 pca scree
+      :align: center
 
 
   As illustrated in the PCA plot and scree plot above, PC1 (capturing 40.8% of variance explained) separates the samples with different treatment concentration of dexamethasone, while PC2 (18.7% variance) further separates the sample replicates.
@@ -119,8 +119,8 @@ Step-By-Step Analysis
   This command produces the ``heatmapSS_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It provides information on the clustering result based on the Pearson correlation coefficient, and illustrates the similarity between all samples in a pairwise fashion.
   
   .. figure:: ./tutorial_figures/1_SS.png
-      :scale: 30 %
-      :alt: tutorial 1 ss heatmap
+      :scale: 25 %
+      :alt: case 1 ss heatmap
       :align: center
       
   As illustrated in the SS correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be dissimilar to samples treated with 5nM or 50nM dexamethasone.
@@ -134,8 +134,8 @@ Step-By-Step Analysis
   This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis.
   
   .. figure:: ./tutorial_figures/1_SF.png
-      :scale: 30 %
-      :alt: tutorial 1 sf heatmap
+      :scale: 25 %
+      :alt: case 1 sf heatmap
       :align: center
  
 
@@ -155,11 +155,11 @@ Step-By-Step Analysis
   
   .. figure:: ./tutorial_figures/1_maplot.png
       :scale: 30 %
-      :alt: tutorial 1 ma plot
+      :alt: case 1 ma plot
       :align: center
- 
-  
-  Intensity measurement of the differnetial peaks can be done using the following command
+
+
+Intensity measurement of the differnetial peaks can be done using the following command
   
     .. code-block:: Bash
 
