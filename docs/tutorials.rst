@@ -44,7 +44,7 @@ In preparation for the tutorials, please use the following steps to set up the c
   If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
 
 
-Tutorial 1: GR ChIP-set Data Set
+Case Study 1: GR ChIP-set Data Set
 ================
 
 Background
@@ -138,23 +138,44 @@ Step-By-Step Analysis
       :align: center
  
 
-4. **Supervised Analysis - Sample-Feature Heatmap**: 
+4. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
 
     .. code-block:: Bash
 
-       snakemake heatmapSF_plot -f
+       snakemake limma_and_deseq -f
   
-  This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis.
+  This command produces a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm`` folder, including the following:
+  - ``c50nm_vs_0.5nm.limma.csv``: a differentail peaks analysis table produced by Limma
+  - ``c50nm_vs_0.5nm.deseq.csv``: a differentail peaks analysis table produced by DESeq2
+  - ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.up.bed`` and ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.-0.down.bed``: bed files of peaks that are differentially up- and down-regulated, respectively
+  - ``c50nm_vs_0.5nm.deseq.sum.csv``: a table including total number of differential peaks under different thresholds
+  - ``c50nm_vs_0.5nm.t.test.csv``: a t-test table of the differential peaks
+  - ``MA_plot.pdf``: a MA plot comparing the two treatment samples
   
-.. figure:: tutorial1_heatmapSF_6_plot.png
+.. figure:: ./tutorial_figures/case1/maplot.png
       :scale: 30 %
-      :alt: tutorial 1 sf heatmap
+      :alt: tutorial 1 ma plot
       :align: center
       
+      
+  
+    .. code-block:: Bash
+
+       snakemake snakemake deeptools_diff_peaks -f
+  
+.. figure:: ./tutorial_figures/case1/peaks.png
+      :scale: 30 %
+      :alt: tutorial 1 diff peats
+      :align: center
+       
+  
+  
+
+5. **Cistrome Toolkit**: 
 
 
 
-Tutorial 2: H3K27ac ChIP-seq Data Set
+Case Study 2: H3K27ac ChIP-seq Data Set
 ================
 
 Background
