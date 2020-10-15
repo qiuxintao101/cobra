@@ -95,12 +95,17 @@ Step-By-Step Analysis
   
   This command produces the ``pca_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. The first page of the file is a color-coded Principal component analysis (PCA) plot that depicts how samples are separated in the first two principal components (those with the largest variance). The second page includes a scree plot indicating the percentage of variance captured by each principal component
 
-  .. figure:: ./tutorial_figures/1_pca.png
-      :width: 45%
-      :alt: tutorial 1 pca plot
-  .. figure:: ./tutorial_figures/1_pca_scree.png
-      :scale: 45 %
-      :alt: tutorial 1 pca scree
+  
+|case 1 pca| and |case 1 scree|
+
+  .. |case 1 pca|   figure:: ./tutorial_figures/1_pca.png
+      :scale: 15%
+      :alt: case 1 pca plot
+
+  .. |case 1 scree| figure:: ./tutorial_figures/1_pca_scree.png
+      :scale: 15 %
+      :alt: case 1 pca scree
+
 
   As illustrated in the PCA plot and scree plot above, PC1 (capturing 40.8% of variance explained) separates the samples with different treatment concentration of dexamethasone, while PC2 (18.7% variance) further separates the sample replicates.
 
