@@ -100,7 +100,7 @@ Step-By-Step Analysis
       :alt: tutorial 1 pca plot
       :align: center
       
-      As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further    separates the sample replicates.
+  As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further    separates the sample replicates.
  
 .. figure:: ./tutorial_figures/case1/pca_scree.png
       :scale: 30 %
@@ -122,7 +122,7 @@ Step-By-Step Analysis
       :alt: tutorial 1 ss heatmap
       :align: center
       
-      As illustrated in the SS correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be dissimilar to samples treated with 5nM or 50nM dexamethasone.
+  As illustrated in the SS correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be dissimilar to samples treated with 5nM or 50nM dexamethasone.
  
 3. **Unsupervised Analysis - Sample-Feature Heatmap**: 
 
@@ -157,22 +157,30 @@ Step-By-Step Analysis
       :alt: tutorial 1 ma plot
       :align: center
       
-      
+ 
+  Intensity measurement of the differnetial peaks can be done using the following command
   
-    .. code-block:: Bash
+.. code-block:: Bash
 
-       snakemake snakemake deeptools_diff_peaks -f
+       snakemake deeptools_diff_peaks -f
   
+  It produces ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.pdf`` which illustrates the peak intensity of the differentially up and downregulated peaks. 
+
 .. figure:: ./tutorial_figures/case1/peaks.png
-      :scale: 30 %
+      :scale: 20 %
       :alt: tutorial 1 diff peats
       :align: center
        
-  
-  
+  As illustrated in the heatmap above, there only exist upregulated peaks in 50nM dexamethasone treated samples as compared to 0.5 nM dexamethasone treated samples, and intensity goes as high as 1.75.
 
-5. **Cistrome Toolkit**: 
 
+5. **Comparison of Up and Down-regulated Site: Cistrome Toolkit**: 
+
+  
+.. code-block:: Bash
+
+       snakemake cistrome_tookit -f
+  
 
 
 Case Study 2: H3K27ac ChIP-seq Data Set
