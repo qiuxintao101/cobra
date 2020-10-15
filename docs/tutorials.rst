@@ -308,8 +308,12 @@ Step-By-Step Analysis
 
        snakemake GSEA -f
   
-  Using the command above, *CoBRA* outputs a series of 
+  Using the command above, *CoBRA* outputs a series of GSEA analysis results. See an example below
 
+.. figure:: ./tutorial_figures/case2/gsea1.png
+      :scale: 30 %
+      :alt: tutorial 2 GSEA
+      :align: center
 
 
 Case Study 3: ATAC-seq from HL-60 promyelocytes differentiating into macrophages
@@ -380,7 +384,7 @@ Step-By-Step Analysis
 
 .. figure:: ./tutorial_figures/case2/heatmapSF.png
       :scale: 30 %
-      :alt: tutorial 2 sf heatmap
+      :alt: tutorial 3 sf heatmap
       :align: center
 
 
