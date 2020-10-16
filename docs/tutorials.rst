@@ -93,8 +93,7 @@ Step-By-Step Analysis
 
        snakemake pca_plot -f
   
-  This command produces the ``pca_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. The first page of the file is a color-coded Principal component analysis (PCA) plot that depicts how samples are separated in the first two principal components (those with the largest variance). The second page includes a scree plot indicating the percentage of variance captured by each principal component
-
+  This command produces the ``pca_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. The first page of the file is a color-coded Principal component analysis (PCA) plot that depicts how samples are separated in the first two principal components (those with the largest variance). The second page includes a scree plot indicating the percentage of variance captured by each principal component.
 
   .. figure:: ./tutorial_figures/1_pca.png
       :scale: 25%
@@ -106,8 +105,7 @@ Step-By-Step Analysis
       :alt: case 1 pca scree
       :align: center
 
-
-  As illustrated in the PCA plot and scree plot above, PC1 (capturing 40.8% of variance explained) separates the samples with different treatment concentration of dexamethasone, while PC2 (18.7% variance) further separates the sample replicates.
+  As illustrated in the PCA plot and scree plot above, PC1 (capturing 40.8% of variance explained) separates the samples with different treatment concentration of dexamethasone - namely 0.5nM from 5nM and 50nM, while PC2 (18.7% variance) further separates the sample replicates.
 
 
 2. **Unsupervised Analysis - Sample-Sample Correlation Plot**: 
@@ -119,34 +117,38 @@ Step-By-Step Analysis
   This command produces the ``heatmapSS_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It provides information on the clustering result based on the Pearson correlation coefficient, and illustrates the similarity between all samples in a pairwise fashion.
   
   .. figure:: ./tutorial_figures/1_SS.png
-      :scale: 25 %
+      :scale: 28 %
       :alt: case 1 ss heatmap
       :align: center
       
-  As illustrated in the SS correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be dissimilar to samples treated with 5nM or 50nM dexamethasone.
- 
+  As illustrated in the Sample-Sample correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be far different from samples treated with 5nM or 50nM dexamethasone.
+
+
 3. **Unsupervised Analysis - Sample-Feature Heatmap**: 
 
     .. code-block:: Bash
 
        snakemake heatmapSF_plot -f
   
-  This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis.
+  This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis. It presents patterns of peaks across samples and identifies the clusters that are enriched in a subset of samples.
   
   .. figure:: ./tutorial_figures/1_SF.png
-      :scale: 25 %
+      :scale: 28 %
       :alt: case 1 sf heatmap
       :align: center
+ 
+ As illustrated in the Sample-Sample correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be far different from samples treated with 5nM or 50nM dexamethasone.
  
 
 4. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
 
+  The key inquiry to be satisfied for any ChIP-seq/ATAC-seq analysis is what the differential sites are between sample groups of interest. In *CoBRA*, this analysis is done by incorporating differential peak callin gby DESeq2 while using sequencing depth as a scale factor, and thus significantly reducing false positive differential peak-calling.
+  
     .. code-block:: Bash
 
        snakemake limma_and_deseq -f
   
   This command produces a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm`` folder, including the following:
-  - ``c50nm_vs_0.5nm.limma.csv``: a differentail peaks analysis table produced by Limma
   - ``c50nm_vs_0.5nm.deseq.csv``: a differentail peaks analysis table produced by DESeq2
   - ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.up.bed`` and ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.-0.down.bed``: bed files of peaks that are differentially up- and down-regulated, respectively
   - ``c50nm_vs_0.5nm.deseq.sum.csv``: a table including total number of differential peaks under different thresholds
@@ -154,12 +156,13 @@ Step-By-Step Analysis
   - ``MA_plot.pdf``: a MA plot comparing the two treatment samples
   
   .. figure:: ./tutorial_figures/1_maplot.png
-      :scale: 30 %
+      :scale: 50 %
       :alt: case 1 ma plot
       :align: center
-
-
-Intensity measurement of the differnetial peaks can be done using the following command
+  
+  The MA plot above shows that the 50nM treatment samples have significant numbers of upregulated peaks called by DESeq2 and no downregulated peaks.
+  
+  Intensity measurement of the differnetial peaks can be done using the following command
   
     .. code-block:: Bash
 
@@ -168,29 +171,31 @@ Intensity measurement of the differnetial peaks can be done using the following 
   It produces ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.pdf`` which illustrates the peak intensity of the differentially up and downregulated peaks. 
 
   .. figure:: ./tutorial_figures/1_peaks.png
-      :scale: 30 %
-      :alt: tutorial 1 diff peats
+      :scale: 50 %
+      :alt: case 1 diff peats
       :align: center
        
-  As illustrated in the heatmap above, there only exist upregulated peaks in 50nM dexamethasone treated samples as compared to 0.5 nM dexamethasone treated samples, and intensity goes as high as 1.75.
+  The peak-intensity heatmap above further illustrates taht there only exist differentially upregulated peaks in 50nM treatment samples as compared to 0.5 nM dexamethasone treated samples, and intensity goes as high as 1.75.
 
 
 5. **Comparison of Up and Down-regulated Site: Cistrome Toolkit**: 
 
-  *CoBRA* has built-in features that allows for comparison of up and down-regulated sites to a comprehesnive database of ChIP/ATAC and DNase data, and outline a series of most similar samples  in terms of genomic interval overlaps with the differential sites located in the Cistrome database.
+  *CoBRA* has a built-in feature that compares up and down-regulated sites to a comprehesnive database of ChIP/ATAC and DNase data, and outline a series of most similar samples in terms of genomic interval overlaps with the differential sites located in the Cistrome database. This feature allows researchers to pin-point those similar data set of interest and download for further investigation. It can provide unique insight into gained or lost sites such as identifying which transcription factor potentially binds to a differential peak set after a perturbation and in investigating similar cellular systems.
   
     .. code-block:: Bash
 
        snakemake cistrome_tookit -f
   
-  Using the command above, *CoBRA* outputs a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm/cistrome_toolkit`` folder, including a plot of most similar samples ranked by their giggle score.
+  Using the command above, *CoBRA* outputs a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm/cistrome_toolkit`` folder, including:
+  - a plot of most similar samples ranked by their giggle score, and
+  - two tables of cistrome toolkit result, each include a list of GEO accession numbers corresponding to all ChIP-seq data with similarity to the differential peak set (up or down-regulated)
   
   .. figure:: ./tutorial_figures/1_cistrome.png
-      :scale: 30 %
-      :alt: tutorial 1 cistrome result
+      :scale: 40 %
+      :alt: case 1 cistrome result
       :align: center
 
-  As show in the plot above, for the gained GR binding sites in the dexamethasone treatment, the NR3C1 in Lung is the most similar ChIP-seq in the cistrome database to this GR data set.
+  As show in the plot above, for the gained GR binding sites in the dexamethasone treatment, the NR3C1 factor in Lung is the most similar ChIP-seq in the Cistrome database to this GR data set.
 
 
 Case Study 2: H3K27ac ChIP-seq Data Set
@@ -244,23 +249,26 @@ Step-By-Step Analysis
   
   Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
 
-.. figure:: ./tutorial_figures/2_pca.png
-      :scale: 30 %
+  .. figure:: ./tutorial_figures/2_pca.png
+      :scale: 28 %
       :alt: tutorial 2 pca plot
       :align: center
       
-.. figure:: ./tutorial_figures/2_pca_scree.png
-      :scale: 30 %
+  .. figure:: ./tutorial_figures/2_pca_scree.png
+      :scale: 28 %
       :alt: tutorial 2 pca scree
       :align: center
 
-.. figure:: ./tutorial_figures/2_SS.png
-      :scale: 30 %
+  As illustrated in the PCA plot and scree plot above, PC1 (capturing 44% of variance explained) separates the 
+  
+  
+  .. figure:: ./tutorial_figures/2_SS.png
+      :scale: 28 %
       :alt: tutorial 2 ss heatmap
       :align: center
 
-.. figure:: ./tutorial_figures/2_SF
-      :scale: 30 %
+  .. figure:: ./tutorial_figures/2_SF.png
+      :scale: 28 %
       :alt: tutorial 2 sf heatmap
       :align: center
  
@@ -279,8 +287,8 @@ Step-By-Step Analysis
   - ``MSS_vs_MSI.t.test.csv``: a t-test table of the differential peaks
   - ``MA_plot.pdf``: a MA plot comparing the two treatment samples
   
-.. figure:: ./tutorial_figures/2_maplot.png
-      :scale: 30 %
+  .. figure:: ./tutorial_figures/2_maplot.png
+      :scale: 50 %
       :alt: tutorial 2 ma plot
       :align: center
   
@@ -293,8 +301,8 @@ Step-By-Step Analysis
   
   It produces ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.pdf`` which illustrates the peak intensity of the differentially up and downregulated peaks. 
 
-.. figure:: ./tutorial_figures/2_peaks.png
-      :scale: 30 %
+  .. figure:: ./tutorial_figures/2_peaks.png
+      :scale: 50 %
       :alt: tutorial 2 diff peats
       :align: center
        
@@ -311,8 +319,8 @@ Step-By-Step Analysis
   
   Using the command above, *CoBRA* outputs a series of GSEA analysis results. See an example below
 
-.. figure:: ./tutorial_figures/2_gsea1.png
-      :scale: 30 %
+  .. figure:: ./tutorial_figures/2_gsea1.png
+      :scale: 50 %
       :alt: tutorial 2 GSEA
       :align: center
 
