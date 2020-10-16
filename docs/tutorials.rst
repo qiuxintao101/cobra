@@ -237,8 +237,6 @@ Quick One-Step Analysis
 Step-By-Step Analysis
 **********************************************************
 
-  While the CoBRA pipeline is designed to be fast and efficient, easily-excuetable with just a few lines of commands, it is possible to produce the analysis in a step-wise fashion by running specific parts of the pipeline.
-
 1. **Unsupervised Analysis - PCA Plot, Sample-Sample Correlation Plot, Sample-Feature Heatmap, etc.**: 
 
     .. code-block:: Bash
@@ -259,7 +257,7 @@ Step-By-Step Analysis
       :alt: tutorial 2 pca scree
       :align: center
 
-  As illustrated in the PCA plot and scree plot above, PC1 (capturing 44% of variance explained) separates the 
+  As illustrated in the PCA plot and scree plot above, PC1 (capturing 44.5% of variance explained) clearly separates the f
   
   
   .. figure:: ./tutorial_figures/2_SS.png
