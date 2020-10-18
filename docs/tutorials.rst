@@ -130,14 +130,12 @@ Step-By-Step Analysis
 
        snakemake heatmapSF_plot -f
   
-  This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis. It presents patterns of peaks across samples and identifies the clusters that are enriched in a subset of samples.
+  This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis. It presents patterns of peaks (by k-means clustering) across samples and identifies the clusters that are enriched in a subset of samples.
   
   .. figure:: ./tutorial_figures/1_SF.png
       :scale: 28 %
       :alt: case 1 sf heatmap
       :align: center
- 
- As illustrated in the Sample-Sample correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be far different from samples treated with 5nM or 50nM dexamethasone.
  
 
 4. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
@@ -245,7 +243,7 @@ Step-By-Step Analysis
        snakemake heatmapSS_plot -f
        snakemake heatmapSF_plot -f
   
-  Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
+  As demonstrated in the previous case study, these command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
 
   .. figure:: ./tutorial_figures/2_pca.png
       :scale: 28 %
@@ -257,8 +255,8 @@ Step-By-Step Analysis
       :alt: tutorial 2 pca scree
       :align: center
 
-  As illustrated in the PCA plot and scree plot above, PC1 (capturing 44.5% of variance explained) clearly separates the f
-  
+  As illustrated in the PCA plot and scree plot above, PC1 (capturing 44.5% of variance explained) clearly separates the MSS samples (colored in turquois) and MSI samples (colored in pink).
+
   
   .. figure:: ./tutorial_figures/2_SS.png
       :scale: 28 %
@@ -270,57 +268,74 @@ Step-By-Step Analysis
       :alt: tutorial 2 sf heatmap
       :align: center
  
+  The Sample-Sample Correlation shows clearly that the MSS samples cluster together, and the same applies to the MSI samples. And the two sample groups exhibit little correlation. 
+
 
 2. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
 
     .. code-block:: Bash
 
        snakemake limma_and_deseq -f
+       snakemake deeptools_diff_peaks -f
   
-  This command produces a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm`` folder, including the following:
-  - ``MSS_vs_MSI.limma.csv``: a differentail peaks analysis table produced by Limma
-  - ``MSS_vs_MSI.deseq.csv``: a differentail peaks analysis table produced by DESeq2
-  - ``MSS_vs_MSI.deseq.Padj0.05.LG2FC.0.up.bed`` and ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.-0.down.bed``: bed files of peaks that are differentially up- and down-regulated, respectively
-  - ``MSS_vs_MSI.deseq.sum.csv``: a table including total number of differential peaks under different thresholds
-  - ``MSS_vs_MSI.t.test.csv``: a t-test table of the differential peaks
-  - ``MA_plot.pdf``: a MA plot comparing the two treatment samples
+  As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/MSS_vs_MSI`` folder, including a MA plot and a peak intensity plot. Applying copy number variation adjustment eliminates false positive peaks that would otherwise be called as differential due to their significant copy number difference between the two sample groups MSI and MSS.
+  
   
   .. figure:: ./tutorial_figures/2_maplot.png
       :scale: 50 %
       :alt: tutorial 2 ma plot
       :align: center
+      
+      MA Plot with CNV Adjustment
   
+  .. figure:: ./tutorial_figures/2_maplot_nocnv.png
+      :scale: 50 %
+      :alt: tutorial 2 ma plot no cnv
+      :align: center
+      
+      MA Plot with No CNV Adjustment
   
-  Intensity measurement of the differnetial peaks can be done using the following command
+  Comparing the two MA Plots above, differential peaks in the MA Plot generated with CNV adjustment exhibits less significant log fold change. 
   
-    .. code-block:: Bash
-
-       snakemake deeptools_diff_peaks -f
-  
-  It produces ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.pdf`` which illustrates the peak intensity of the differentially up and downregulated peaks. 
-
   .. figure:: ./tutorial_figures/2_peaks.png
       :scale: 50 %
-      :alt: tutorial 2 diff peats
+      :alt: tutorial 2 diff peaks
       :align: center
-       
-  As illustrated in the heatmap above, there only exist upregulated peaks in 50nM dexamethasone treated samples as compared to 0.5 nM dexamethasone treated samples, and intensity goes as high as 1.75.
-
-
+      
+      Peaks Intensity Plot with CNV Adjustment
+      
+ .. figure:: ./tutorial_figures/2_peaks_nocnv.png
+      :scale: 50 %
+      :alt: tutorial 2 diff peaks no cnv
+      :align: center
+      
+      Peaks Intensity Plot with No CNV Adjustment
+  
+  Comparing the two peak intensity heatmaps above, differential peaks in the plot generated with CNV adjustment generally shows in general higher intensity.
+  
+  
 3. **GSEA**: 
 
-  *CoBRA* has built-in features to do the Gene Set Enrichment analysis is performed on the ranked list of genes produced.. 
+  *CoBRA* has built-in features to do the Gene Set Enrichment analysis, which is performed on the ranked list of genes produced by the pipeline.
   
     .. code-block:: Bash
 
        snakemake GSEA -f
   
-  Using the command above, *CoBRA* outputs a series of GSEA analysis results. See an example below
-
-  .. figure:: ./tutorial_figures/2_gsea1.png
+  Using the command above, *CoBRA* outputs a series of GSEA analysis results in ``analysis_result/differential_peaks/MSS_vs_MSI/GSEA`` folder, including: 
+  - ``gsea_report_for_na_neg`` and ``gsea_report_for_na_pos``: summary report including all ranked genes sets and their statistics 
+  - ``neg_snapshot.html`` and ``pos_snapshot.html``: snapshots of all enrichment plots of enriched gene sets curated
+  - ``enplot_{Gene_Set}``: individual enrichment plots of an enriched gene set
+  - ``{Gene_Set}.html`` and ``{Gene_Set}.xls``: individual GSEA Results Summary of an enriched gene set
+  
+  .. figure:: ./tutorial_figures/2_gsea_farmer1.png
       :scale: 50 %
       :alt: tutorial 2 GSEA
       :align: center
+      
+      An Example Enrichment Plot
+  
+  Without CNV adjustment, GSEA will indicate greatest enrichment in gene sets solely related to amplification. As a result, it is challenging to assess the true epigenetic differences between the two colorectal cancer types. For instance, the gene set NIKOLSKY_BREAST_CANCER_8Q12_Q22_AMPLICON includes genes up-regulated in non-metastatic breast cancer tumors with amplification in the 8q22 region. Without adjustment for copy number variation, this gene set is significantly enriched and ranked 6th, with a normalized enrichment score of -1.91 and an adjusted p-value less than 0.0001. With CNV adjustment, this gene set is far less enriched and ranked 55th, and has a normalized enrichment score of -1.69 and an adjusted p-value of 0.076.
 
 
 Case Study 3: ATAC-seq from HL-60 promyelocytes differentiating into macrophages
@@ -374,4 +389,71 @@ Step-By-Step Analysis
   
   Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
 
+  .. figure:: ./tutorial_figures/3_pca.png
+      :scale: 28 %
+      :alt: tutorial 3 pca plot
+      :align: center
+      
+  .. figure:: ./tutorial_figures/3_pca_scree.png
+      :scale: 28 %
+      :alt: tutorial 3 pca scree
+      :align: center
 
+  As illustrated in the PCA plot and scree plot above, PC1 (capturing 57=0.7% of variance explained) clearly separates the samplesby their time frame
+  
+  .. figure:: ./tutorial_figures/3_SS.png
+      :scale: 28 %
+      :alt: tutorial 3 ss heatmap
+      :align: center
+
+  .. figure:: ./tutorial_figures/3_SF.png
+      :scale: 28 %
+      :alt: tutorial 3 sf heatmap
+      :align: center
+ 
+  The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar.
+
+
+2. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
+
+    .. code-block:: Bash
+
+       snakemake limma_and_deseq -f
+       snakemake deeptools_diff_peaks -f
+  
+  As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/MSS_vs_MSI`` folder, including a MA plot and a peak intensity plot. Applying copy number variation adjustment eliminates false positive peaks that would otherwise be called as differential due to their significant copy number difference between the two sample groups MSI and MSS.
+  
+  
+  .. figure:: ./tutorial_figures/2_maplot.png
+      :scale: 50 %
+      :alt: tutorial 2 ma plot
+      :align: center
+      
+      MA Plot with CNV Adjustment
+  
+  .. figure:: ./tutorial_figures/2_maplot_nocnv.png
+      :scale: 50 %
+      :alt: tutorial 2 ma plot no cnv
+      :align: center
+      
+      MA Plot with No CNV Adjustment
+  
+  Comparing the two MA Plots above, differential peaks in the MA Plot generated with CNV adjustment exhibits less significant log fold change. 
+  
+  .. figure:: ./tutorial_figures/2_peaks.png
+      :scale: 50 %
+      :alt: tutorial 2 diff peaks
+      :align: center
+      
+      Peaks Intensity Plot with CNV Adjustment
+      
+ .. figure:: ./tutorial_figures/2_peaks_nocnv.png
+      :scale: 50 %
+      :alt: tutorial 2 diff peaks no cnv
+      :align: center
+      
+      Peaks Intensity Plot with No CNV Adjustment
+  
+  Comparing the two peak intensity heatmaps above, differential peaks in the plot generated with CNV adjustment generally shows in general higher intensity.
+  
+  
