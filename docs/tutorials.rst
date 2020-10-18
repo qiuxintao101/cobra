@@ -44,7 +44,7 @@ In preparation for the tutorials, please use the following steps to set up the c
   If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
 
 
-Case Study 1: GR ChIP-seq Data Set
+Case Study 1: GR ChIP-set Data Set
 ================
 
 Background
@@ -95,6 +95,7 @@ Step-By-Step Analysis
   
   This command produces the ``pca_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. The first page of the file is a color-coded Principal component analysis (PCA) plot that depicts how samples are separated in the first two principal components (those with the largest variance). The second page includes a scree plot indicating the percentage of variance captured by each principal component
 
+<<<<<<< HEAD
   
 |case 1 pca| and |case 1 scree|
 
@@ -106,9 +107,21 @@ Step-By-Step Analysis
       :scale: 15 %
       :alt: case 1 pca scree
 
+=======
+  .. figure:: ./tutorial_figures/1_pca.png
+      :scale: 30 %
+      :alt: tutorial 1 pca plot
+      :align: center
+      
+  As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further    separates the sample replicates.
+ 
+  .. figure:: ./tutorial_figures/1_pca_scree.png
+      :scale: 30 %
+      :alt: tutorial 1 pca scree
+      :align: center
+>>>>>>> parent of 7a4162b... Update tutorials.rst
 
-  As illustrated in the PCA plot and scree plot above, PC1 (capturing 40.8% of variance explained) separates the samples with different treatment concentration of dexamethasone, while PC2 (18.7% variance) further separates the sample replicates.
-
+      As illustrated in the scree plot, PC1 captures over 40% of the variance explained, and PC2 captures about 19%.
 
 2. **Unsupervised Analysis - Sample-Sample Correlation Plot**: 
 
