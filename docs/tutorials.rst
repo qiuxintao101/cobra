@@ -411,7 +411,7 @@ Step-By-Step Analysis
       :alt: tutorial 3 sf heatmap
       :align: center
  
-  The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar.
+  The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 1), intermediate (cluster 2), and late stage (cluster 3) time points.
 
 
 2. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
@@ -421,39 +421,19 @@ Step-By-Step Analysis
        snakemake limma_and_deseq -f
        snakemake deeptools_diff_peaks -f
   
-  As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/MSS_vs_MSI`` folder, including a MA plot and a peak intensity plot. Applying copy number variation adjustment eliminates false positive peaks that would otherwise be called as differential due to their significant copy number difference between the two sample groups MSI and MSS.
+  As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/{your_comparison}`` folder, including a MA plot and a peak intensity plot. 
   
-  
-  .. figure:: ./tutorial_figures/2_maplot.png
+  .. figure:: ./tutorial_figures/3_maplot.png
       :scale: 50 %
       :alt: tutorial 2 ma plot
       :align: center
       
-      MA Plot with CNV Adjustment
   
-  .. figure:: ./tutorial_figures/2_maplot_nocnv.png
-      :scale: 50 %
-      :alt: tutorial 2 ma plot no cnv
-      :align: center
-      
-      MA Plot with No CNV Adjustment
-  
-  Comparing the two MA Plots above, differential peaks in the MA Plot generated with CNV adjustment exhibits less significant log fold change. 
-  
-  .. figure:: ./tutorial_figures/2_peaks.png
+  .. figure:: ./tutorial_figures/3_peaks_peaks.png
       :scale: 50 %
       :alt: tutorial 2 diff peaks
       :align: center
       
       Peaks Intensity Plot with CNV Adjustment
-      
- .. figure:: ./tutorial_figures/2_peaks_nocnv.png
-      :scale: 50 %
-      :alt: tutorial 2 diff peaks no cnv
-      :align: center
-      
-      Peaks Intensity Plot with No CNV Adjustment
-  
-  Comparing the two peak intensity heatmaps above, differential peaks in the plot generated with CNV adjustment generally shows in general higher intensity.
-  
-  
+
+ 
