@@ -442,7 +442,7 @@ Step-By-Step Analysis
       :align: center
       
   
-  .. figure:: ./tutorial_figures/3_peaks_peaks.png
+  .. figure:: ./tutorial_figures/3_peaks.png
       :scale: 50 %
       :alt: tutorial 2 diff peaks
       :align: center
