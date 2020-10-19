@@ -432,20 +432,19 @@ Step-By-Step Analysis
 
     .. code-block:: Bash
 
-       snakemake limma_and_deseq -f
-       snakemake deeptools_diff_peaks -f
+       snakemake run_limma_and_deseq -f
+       snakemake run_deeptools_diff_peaks -f
   
   As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/{your_comparison}`` folder, including a MA plot and a peak intensity plot. 
   
   .. figure:: ./tutorial_figures/3_maplot.png
       :scale: 50 %
-      :alt: tutorial 2 ma plot
+      :alt: tutorial 3 ma plot
       :align: center
-      
   
   .. figure:: ./tutorial_figures/3_peaks.png
       :scale: 50 %
-      :alt: tutorial 2 diff peaks
+      :alt: tutorial 3 diff peaks
       :align: center
      
  3. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
