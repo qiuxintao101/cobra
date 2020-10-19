@@ -97,25 +97,15 @@ Step-By-Step Analysis
 
 
   .. figure:: ./tutorial_figures/1_pca.png
-      :scale: 25%
+      :scale: 28%
       :alt: case 1 pca plot
       :align: center
 
-  .. figure:: ./tutorial_figures/1_pca_scree.png
-      :scale: 25 %
-      :alt: case 1 pca scree
-      :align: center
-
-  .. figure:: ./tutorial_figures/1_pca.png
-      :scale: 30 %
-      :alt: tutorial 1 pca plot
-      :align: center
-      
   As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further    separates the sample replicates.
  
   .. figure:: ./tutorial_figures/1_pca_scree.png
-      :scale: 30 %
-      :alt: tutorial 1 pca scree
+      :scale: 28 %
+      :alt: case 1 pca scree
       :align: center
 
   As illustrated in the PCA plot and scree plot above, PC1 (capturing 40.8% of variance explained) separates the samples with different treatment concentration of dexamethasone - namely 0.5nM from 5nM and 50nM, while PC2 (18.7% variance) further separates the sample replicates.
@@ -149,7 +139,8 @@ Step-By-Step Analysis
       :scale: 28 %
       :alt: case 1 sf heatmap
       :align: center
- 
+  
+   **TOBEFILLED**
 
 4. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
 
@@ -335,8 +326,9 @@ Step-By-Step Analysis
 
        snakemake GSEA -f
   
-  Using the command above, *CoBRA* outputs a series of GSEA analysis results in ``analysis_result/differential_peaks/MSS_vs_MSI/GSEA`` folder, including: 
-  - ``gsea_report_for_na_neg`` and ``gsea_report_for_na_pos``: summary report including all ranked genes sets and their statistics 
+  Using the command above, *CoBRA* outputs GSEA results in the ``analysis_result/differential_peaks/MSS_vs_MSI/GSEA`` folder. Analysis were conducted for both curated genes (in ``C2_Curated.GseaPreranked`` subfolder) and hallmark genes (in ``H_Hallmark.GseaPreranked`` subfolder). The result files include: 
+  - ``index.html``: index and summary report for the GSEA
+  - ``gsea_report_for_na_neg.html`` and ``gsea_report_for_na_pos.html``: summary report including all ranked genes sets and their statistics 
   - ``neg_snapshot.html`` and ``pos_snapshot.html``: snapshots of all enrichment plots of enriched gene sets curated
   - ``enplot_{Gene_Set}``: individual enrichment plots of an enriched gene set
   - ``{Gene_Set}.html`` and ``{Gene_Set}.xls``: individual GSEA Results Summary of an enriched gene set
@@ -442,11 +434,10 @@ Step-By-Step Analysis
       :align: center
       
   
-  .. figure:: ./tutorial_figures/3_peaks_peaks.png
+  .. figure:: ./tutorial_figures/3_peaks.png
       :scale: 50 %
       :alt: tutorial 2 diff peaks
       :align: center
-      
-      Peaks Intensity Plot with CNV Adjustment
+
 
  
