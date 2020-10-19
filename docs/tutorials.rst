@@ -160,11 +160,11 @@ Step-By-Step Analysis
        snakemake run_limma_and_deseq -f
   
   This command produces a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm`` folder, including the following:
-  - ``c50nm_vs_0.5nm.deseq.csv``: a differentail peaks analysis table produced by DESeq2
-  - ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.up.bed`` and ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.-0.down.bed``: bed files of peaks that are differentially up- and down-regulated, respectively
-  - ``c50nm_vs_0.5nm.deseq.sum.csv``: a table including total number of differential peaks under different thresholds
-  - ``c50nm_vs_0.5nm.t.test.csv``: a t-test table of the differential peaks
-  - ``MA_plot.pdf``: a MA plot comparing the two treatment samples
+    - ``c50nm_vs_0.5nm.deseq.csv``: a differentail peaks analysis table produced by DESeq2
+    - ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.up.bed`` and ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.-0.down.bed``: bed files of peaks that are differentially up- and down-regulated, respectively
+    - ``c50nm_vs_0.5nm.deseq.sum.csv``: a table including total number of differential peaks under different thresholds
+    - ``c50nm_vs_0.5nm.t.test.csv``: a t-test table of the differential peaks
+    - ``MA_plot.pdf``: a MA plot comparing the two treatment samples
   
   .. figure:: ./tutorial_figures/1_maplot.png
       :scale: 50 %
@@ -198,8 +198,8 @@ Step-By-Step Analysis
        snakemake run_cistrome_toolkit -f
   
   Using the command above, *CoBRA* outputs a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm/cistrome_toolkit`` folder, including:
-  - a plot of most similar samples ranked by their giggle score, and
-  - two tables of cistrome toolkit result, each include a list of GEO accession numbers corresponding to all ChIP-seq data with similarity to the differential peak set (up or down-regulated)
+    - a plot of most similar samples ranked by their giggle score, and
+    - two tables of cistrome toolkit result, each include a list of GEO accession numbers corresponding to all ChIP-seq data with similarity to the differential peak set (up or down-regulated)
   
   .. figure:: ./tutorial_figures/1_cistrome.png
       :scale: 40 %
@@ -455,6 +455,5 @@ Step-By-Step Analysis
        snakemake deseq_motif -f
        
   The command above runs de novo motif analysis on each cluster of accessible sites across all 3 clusters automatically to identify potential transcriptional regulators enriched in differentially accessible chromatin elements. The results are located in the ``analysis_result/differential_peaks/{your_comparison}``, including two different subfolder ``analysis_result/differential_peaks/{your_comparison}/{your_comparison}.{thresholds}.up.bed_motifs``, and ``analysis_result/differential_peaks/{your_comparison}/{your_comparison}.{thresholds}.down.bed_motifs``.
-  
 
  
