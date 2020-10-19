@@ -454,5 +454,7 @@ Step-By-Step Analysis
        snakemake deseq_motif -f
        
   The command above runs de novo motif analysis on each cluster of accessible sites across all 3 clusters automatically to identify potential transcriptional regulators enriched in differentially accessible chromatin elements. The results are located in the ``analysis_result/differential_peaks/{your_comparison}``, including two different subfolder ``analysis_result/differential_peaks/{your_comparison}/{your_comparison}.{thresholds}.up.bed_motifs``, and ``analysis_result/differential_peaks/{your_comparison}/{your_comparison}.{thresholds}.down.bed_motifs``.
+  
+  Digging in into the result folder, we identified many transcription factor motifs enriched in each cluster. Motifs for PU.1, RUNX and MYB were enriched in cluster 1, which exhibits a decrease in accessibility during myeloid differentiation. It is likely that a depletion of PU.1, RUNX and MYB occupancy occurs at these elements during cellular commitment. In addition, we observe the EGR and MAF motifs in clusters 3 suggesting a gain of EGR and MAP occurs at these elements during macrophage differentiation.
 
  
