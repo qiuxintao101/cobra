@@ -157,7 +157,7 @@ Step-By-Step Analysis
   
     .. code-block:: Bash
 
-       snakemake limma_and_deseq -f
+       snakemake run_limma_and_deseq -f
   
   This command produces a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm`` folder, including the following:
   - ``c50nm_vs_0.5nm.deseq.csv``: a differentail peaks analysis table produced by DESeq2
@@ -195,7 +195,7 @@ Step-By-Step Analysis
   
     .. code-block:: Bash
 
-       snakemake cistrome_tookit -f
+       snakemake run_cistrome_toolkit -f
   
   Using the command above, *CoBRA* outputs a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm/cistrome_toolkit`` folder, including:
   - a plot of most similar samples ranked by their giggle score, and
@@ -288,8 +288,8 @@ Step-By-Step Analysis
 
     .. code-block:: Bash
 
-       snakemake limma_and_deseq -f
-       snakemake deeptools_diff_peaks -f
+       snakemake run_limma_and_deseq -f
+       snakemake run_deeptools_diff_peaks -f
   
   As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/MSS_vs_MSI`` folder, including a MA plot and a peak intensity plot. Applying copy number variation adjustment eliminates false positive peaks that would otherwise be called as differential due to their significant copy number difference between the two sample groups MSI and MSS.
   
@@ -333,9 +333,10 @@ Step-By-Step Analysis
   
     .. code-block:: Bash
 
-       snakemake GSEA -f
+       snakemake run_GSEA -f
   
   Using the command above, *CoBRA* outputs a series of GSEA analysis results in ``analysis_result/differential_peaks/MSS_vs_MSI/GSEA`` folder, including:
+    - ``index.html``: summary report for the GSEA
     - ``gsea_report_for_na_neg`` and ``gsea_report_for_na_pos``: summary report including all ranked genes sets and their statistics 
     - ``neg_snapshot.html`` and ``pos_snapshot.html``: snapshots of all enrichment plots of enriched gene sets curated
     - ``enplot_{Gene_Set}``: individual enrichment plots of an enriched gene set
