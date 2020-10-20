@@ -330,7 +330,7 @@ Details
        sample2: ./XX2.bw
 
 
-
+.. _section_cnv:
 
 SECTION ``CNV``
 --------------------------------------------

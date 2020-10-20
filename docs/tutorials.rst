@@ -55,13 +55,15 @@ This tutorial makes use of a publicly available glucocorticoid receptor (GR) ChI
 Download and set-up for running the GR_ChIP sample dataset
 **********************************************************
 
-  Please use the following command to download the GR_ChIP sample dataset. This dataset is of moderate size (3.9 G) and may take 5-10 minutes to download. 
+  Please use the following command to download the GR_ChIP sample dataset. This dataset is of moderate size (3.9 G) and may take 5-10 minutes to download. It contains the data files, as well as the config files - ``config.yaml`` and ``metasheet.csv`` - filled with correct parameters. 
 
   .. code-block:: Bash
    
      snakemake download_example_GR_ChIP
   
-  When the data set is downloaded, we can proceed to set up for the run. Usually for running CoBRA on a new experiment, the two config files ``config.yaml`` and ``metasheet.csv`` would need to be set up acccordingly. In this tutorial, they have been filled already. Note in ``config.yaml``, the parameter `motif` has been set as true to perform motif enrichement and clustering analysis.
+  When the data set is downloaded, we can proceed to set up for the run. Usually for running CoBRA on a new experiment, the two config files ``config.yaml`` and ``metasheet.csv`` would need to be set up acccordingly. In this tutorial, they have been filled already. 
+  
+  Note in ``config.yaml``, the parameter `motif` has been set as `true` to perform motif enrichement and clustering analysis. The DEseq normalize method parameter `nor_method` was set as `depth` to opt for normlization by the sequence depth of each sample.
 
   To check if the setup is correct, begin a dry run via the following command:
 
@@ -111,7 +113,7 @@ Step-By-Step Analysis
       :alt: tutorial 1 pca plot
       :align: center
       
-  As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further    separates the sample replicates.
+  As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further separates the sample replicates.
  
   .. figure:: ./tutorial_figures/1_pca_scree.png
       :scale: 30 %
@@ -151,7 +153,7 @@ Step-By-Step Analysis
       :align: center
  
 
-4. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
+4. **Supervised Analysis - DeSeq2 Differential Peak Analysis**: 
 
   The key inquiry to be satisfied for any ChIP-seq/ATAC-seq analysis is what the differential sites are between sample groups of interest. In *CoBRA*, this analysis is done by incorporating differential peak callin gby DESeq2 while using sequencing depth as a scale factor, and thus significantly reducing false positive differential peak-calling.
   
@@ -191,7 +193,7 @@ Step-By-Step Analysis
 
 5. **Comparison of Up and Down-regulated Site: Cistrome Toolkit**: 
 
-  *CoBRA* has a built-in feature that compares up and down-regulated sites to a comprehesnive database of ChIP/ATAC and DNase data, and outline a series of most similar samples in terms of genomic interval overlaps with the differential sites located in the Cistrome database. This feature allows researchers to pin-point those similar data set of interest and download for further investigation. It can provide unique insight into gained or lost sites such as identifying which transcription factor potentially binds to a differential peak set after a perturbation and in investigating similar cellular systems.
+  *CoBRA* has a built-in feature that compares up and down-regulated sites to a comprehesnive database of ChIP/ATAC and DNase data, and outline a series of most similar samples in terms of genomic interval overlaps with the differential sites located in the (`Cistrome database <http://cistrome.org/db/#/`_). This feature allows researchers to pin-point those similar data set of interest and download for further investigation. It can provide unique insight into gained or lost sites such as identifying which transcription factor potentially binds to a differential peak set after a perturbation and in investigating similar cellular systems.
   
     .. code-block:: Bash
 
@@ -200,6 +202,13 @@ Step-By-Step Analysis
   Using the command above, *CoBRA* outputs a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm/cistrome_toolkit`` folder, including:
     - a plot of most similar samples ranked by their giggle score, and
     - two tables of cistrome toolkit result, each include a list of GEO accession numbers corresponding to all ChIP-seq data with similarity to the differential peak set (up or down-regulated)
+    
+  .. figure:: ./tutorial_figures/1_cistrome_geo.png
+      :scale: 40 %
+      :alt: case 1 cistrome GEO accession table
+      :align: center
+      
+      The Cistrome Toolkit result table would include Cistrome DB sample ID, GEO accession number (GSM) and key information about the data set, i.e. factor name, cell line, cell type, giggle score. The entries are ranked by their giggle score.
   
   .. figure:: ./tutorial_figures/1_cistrome.png
       :scale: 40 %
@@ -209,7 +218,7 @@ Step-By-Step Analysis
   As show in the plot above, for the gained GR binding sites in the dexamethasone treatment, the NR3C1 factor in Lung is the most similar ChIP-seq in the Cistrome database to this GR data set.
 
 
-Case Study 2: H3K27ac ChIP-seq Data Set
+Case Study 2: MSS and MSI Colorectal Cancers ChIP-seq Data Set
 ================
 
 Background
@@ -217,16 +226,16 @@ Background
 This tutorial makes use six samples from several experiments: three Microsatellite Instable (MSI) samples and three Microsatellite Stable (MSS) samples (Tak et al. 2016; Piunti et al. 2017; Piunti et al. 2017; Maurano et al. 2015; McCleland et al. 2016; Rahnamoun et al. 2018). Microsatellite Instable (MSI) and Microsatellite Stable (MSS) are two classses used to characterize colorectal cancers. MSS tumors are one of the most highly mutated tumor types (Taieb et al. 2017) and exhibit a high number of copy number variations. Without adjustment, a differential peak caller will rank peak loci with high copy number gain in MSS as being the most differential compared to MSI. To observe differential peaks between the MSI and MSS samples, *CoBRA* allows for **copy number variation adjustment** during the supervised analysis.
 
 
-Download and set-up for running the H3K27ac ChIP-seq sample dataset
+Download and set-up for running the MSS_MSI sample dataset
 **********************************************************
 
-  Please use the following command to download the H3K27ac ChIP-seq sample dataset. 
+  Please use the following command to download the MSS_MSI ChIP-seq sample dataset. 
 
   .. code-block:: Bash
    
-     snakemake download_example_H3K27ac_ChIP
+     snakemake download_example_MSS_MSI
   
-  When the data set is downloaded, we can proceed to set up for the run. Note in ``config.yaml``, the parameter `cnv` has laid out a path for **CNV bam files*** corresponding to each sample.
+  When the data set is downloaded, we can proceed to set up for the run. Note in ``config.yaml``, the parameter `cnv` has laid out a path for **CNV files** (usually in ``.igv`` format) corresponding to each sample. See details in :ref:`section_cnv` for how to prepare the files for CNV analysis to be listed in the ``config.yaml``.
 
   To check if the setup is correct, begin a dry run via the following command:
 
@@ -292,24 +301,7 @@ Step-By-Step Analysis
        snakemake run_deeptools_diff_peaks -f
   
   As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/MSS_vs_MSI`` folder, including a MA plot and a peak intensity plot. Applying copy number variation adjustment eliminates false positive peaks that would otherwise be called as differential due to their significant copy number difference between the two sample groups MSI and MSS.
-  
-  
-  .. figure:: ./tutorial_figures/2_maplot.png
-      :scale: 50 %
-      :alt: tutorial 2 ma plot
-      :align: center
-      
-      MA Plot with CNV Adjustment
-  
-  .. figure:: ./tutorial_figures/2_maplot_nocnv.png
-      :scale: 50 %
-      :alt: tutorial 2 ma plot no cnv
-      :align: center
-      
-      MA Plot with No CNV Adjustment
-  
-  Comparing the two MA Plots above, differential peaks in the MA Plot generated with CNV adjustment exhibits less significant log fold change. 
-  
+
   .. figure:: ./tutorial_figures/2_peaks.png
       :scale: 50 %
       :alt: tutorial 2 diff peaks
@@ -357,8 +349,8 @@ Case Study 3: ATAC-seq from HL-60 promyelocytes differentiating into macrophages
 
 Background
 **********
-This tutorial makes use of ATAC-seq from HL-60 promyelocytes differentiating into macrophages. The samples were taken utilized a five-day time course (0hr, 3hr, 24hr, 96hr, and 120hr) to profile accessible chromatin of HL-60 promyelocytes ddifferentiating into macrophages. Here *CoBRA* results shows investigation of the differentiation of macrophages through changes
-in the landscape of accessible chromatin. 
+This tutorial makes use of ATAC-seq from HL-60 promyelocytes differentiating into macrophages (`GSE79019 <https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE79019>`_). The samples were taken utilized a five-day time course (0hr, 3hr, 24hr, 96hr, and 120hr) to profile accessible chromatin of HL-60 promyelocytes differentiating into macrophages. Here *CoBRA* results shows investigation of the differentiation of macrophages through changes in the landscape of accessible chromatin. 
+
 
 Download and set-up for running the Macrophage_atac sample dataset
 **********************************************************
@@ -369,7 +361,7 @@ Download and set-up for running the Macrophage_atac sample dataset
    
      snakemake download_example_Macrophage_atac
   
-  When the data set is downloaded, we can proceed to set up for the run. 
+  When the data set is downloaded, we can proceed to set up for the run. Note in the ``metadata.csv``, a couple of different comparison columns were set up in order to do pair-wise comparison of samples taken from different time point. This is another efficent feature of *CoBRA* - allowing for multiple differential expression analysis done separately. For each comparison, a complete set of supervised analysis results (motif analysis, cistrome toolkit, GSEA) will be completed in the respective subfolder under ``analysis_result/differential_peaks``. See details in :ref:`section_metadata` for how to prepare ``metadata.csv`` for multiple comparisons.
 
 
   To check if the setup is correct, begin a dry run via the following command:
@@ -413,7 +405,7 @@ Step-By-Step Analysis
       :alt: tutorial 3 pca scree
       :align: center
 
-  As illustrated in the PCA plot and scree plot above, PC1 (capturing 57=0.7% of variance explained) clearly separates the samplesby their time frame
+  As illustrated in the PCA plot and scree plot above, PC1 (capturing 57=0.7% of variance explained) clearly separates the samples by their time frame
   
   .. figure:: ./tutorial_figures/3_SS.png
       :scale: 28 %
@@ -425,10 +417,10 @@ Step-By-Step Analysis
       :alt: tutorial 3 sf heatmap
       :align: center
  
-  The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 1), intermediate (cluster 2), and late stage (cluster 3) time points.
+  The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 1 - 0h and 3h), intermediate (cluster 2 - 24h), and late stage (cluster 3 - 96h and 120h) time points.
 
 
-2. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
+2. **Supervised Analysis - DeSeq2 Differential Peak Analysis**: 
 
     .. code-block:: Bash
 
@@ -447,7 +439,7 @@ Step-By-Step Analysis
       :alt: tutorial 3 diff peaks
       :align: center
      
- 3. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
+ 3. **Supervised Analysis - Motif Analysis**: 
  
     .. code-block:: Bash
 
