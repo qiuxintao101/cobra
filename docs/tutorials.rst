@@ -55,13 +55,15 @@ This tutorial makes use of a publicly available glucocorticoid receptor (GR) ChI
 Download and set-up for running the GR_ChIP sample dataset
 **********************************************************
 
-  Please use the following command to download the GR_ChIP sample dataset. This dataset is of moderate size (3.9 G) and may take 5-10 minutes to download. 
+  Please use the following command to download the GR_ChIP sample dataset. This dataset is of moderate size (3.9 G) and may take 5-10 minutes to download. It contains the data files, as well as the config files - ``config.yaml`` and ``metasheet.csv`` - filled with correct parameters. 
 
   .. code-block:: Bash
    
      snakemake download_example_GR_ChIP
   
-  When the data set is downloaded, we can proceed to set up for the run. Usually for running CoBRA on a new experiment, the two config files ``config.yaml`` and ``metasheet.csv`` would need to be set up acccordingly. In this tutorial, they have been filled already. Note in ``config.yaml``, the parameter `motif` has been set as true to perform motif enrichement and clustering analysis.
+  When the data set is downloaded, we can proceed to set up for the run. Usually for running CoBRA on a new experiment, the two config files ``config.yaml`` and ``metasheet.csv`` would need to be set up acccordingly. In this tutorial, they have been filled already. 
+  
+  Note in ``config.yaml``, the parameter `motif` has been set as `true` to perform motif enrichement and clustering analysis. The DEseq normalize method parameter `nor_method` was set as `depth` to opt for normlization by the sequence depth of each sample.
 
   To check if the setup is correct, begin a dry run via the following command:
 
@@ -111,7 +113,7 @@ Step-By-Step Analysis
       :alt: tutorial 1 pca plot
       :align: center
       
-  As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further    separates the sample replicates.
+  As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further separates the sample replicates.
  
   .. figure:: ./tutorial_figures/1_pca_scree.png
       :scale: 30 %
@@ -151,7 +153,7 @@ Step-By-Step Analysis
       :align: center
  
 
-4. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
+4. **Supervised Analysis - DeSeq2 Differential Peak Analysis**: 
 
   The key inquiry to be satisfied for any ChIP-seq/ATAC-seq analysis is what the differential sites are between sample groups of interest. In *CoBRA*, this analysis is done by incorporating differential peak callin gby DESeq2 while using sequencing depth as a scale factor, and thus significantly reducing false positive differential peak-calling.
   
@@ -191,7 +193,7 @@ Step-By-Step Analysis
 
 5. **Comparison of Up and Down-regulated Site: Cistrome Toolkit**: 
 
-  *CoBRA* has a built-in feature that compares up and down-regulated sites to a comprehesnive database of ChIP/ATAC and DNase data, and outline a series of most similar samples in terms of genomic interval overlaps with the differential sites located in the Cistrome database. This feature allows researchers to pin-point those similar data set of interest and download for further investigation. It can provide unique insight into gained or lost sites such as identifying which transcription factor potentially binds to a differential peak set after a perturbation and in investigating similar cellular systems.
+  *CoBRA* has a built-in feature that compares up and down-regulated sites to a comprehesnive database of ChIP/ATAC and DNase data, and outline a series of most similar samples in terms of genomic interval overlaps with the differential sites located in the (`Cistrome database <http://cistrome.org/db/#/`_). This feature allows researchers to pin-point those similar data set of interest and download for further investigation. It can provide unique insight into gained or lost sites such as identifying which transcription factor potentially binds to a differential peak set after a perturbation and in investigating similar cellular systems.
   
     .. code-block:: Bash
 
@@ -200,6 +202,13 @@ Step-By-Step Analysis
   Using the command above, *CoBRA* outputs a series of files located in the ``analysis_result/differential_peaks/c50nm_vs_0.5nm/cistrome_toolkit`` folder, including:
     - a plot of most similar samples ranked by their giggle score, and
     - two tables of cistrome toolkit result, each include a list of GEO accession numbers corresponding to all ChIP-seq data with similarity to the differential peak set (up or down-regulated)
+    
+  .. figure:: ./tutorial_figures/1_cistrome_geo.png
+      :scale: 40 %
+      :alt: case 1 cistrome GEO accession table
+      :align: center
+      
+      The Cistrome Toolkit result table would include Cistrome DB sample ID, GEO accession number (GSM) and key information about the data set, i.e. factor name, cell line, cell type, giggle score. The entries are ranked by their giggle score.
   
   .. figure:: ./tutorial_figures/1_cistrome.png
       :scale: 40 %
@@ -209,7 +218,7 @@ Step-By-Step Analysis
   As show in the plot above, for the gained GR binding sites in the dexamethasone treatment, the NR3C1 factor in Lung is the most similar ChIP-seq in the Cistrome database to this GR data set.
 
 
-Case Study 2: H3K27ac ChIP-seq Data Set
+Case Study 2: MSS and MSI Colorectal Cancers ChIP-seq Data Set
 ================
 
 Background
@@ -226,7 +235,7 @@ Download and set-up for running the H3K27ac ChIP-seq sample dataset
    
      snakemake download_example_H3K27ac_ChIP
   
-  When the data set is downloaded, we can proceed to set up for the run. Note in ``config.yaml``, the parameter `cnv` has laid out a path for **CNV bam files*** corresponding to each sample.
+  When the data set is downloaded, we can proceed to set up for the run. Note in ``config.yaml``, the parameter `cnv` has laid out a path for **CNV files** (usually in ``.igv`` format) corresponding to each sample. See details in :ref:`section_cnv` for how to prepare the files for CNV analysis in the config.yaml.
 
   To check if the setup is correct, begin a dry run via the following command:
 
