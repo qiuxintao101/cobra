@@ -226,16 +226,16 @@ Background
 This tutorial makes use six samples from several experiments: three Microsatellite Instable (MSI) samples and three Microsatellite Stable (MSS) samples (Tak et al. 2016; Piunti et al. 2017; Piunti et al. 2017; Maurano et al. 2015; McCleland et al. 2016; Rahnamoun et al. 2018). Microsatellite Instable (MSI) and Microsatellite Stable (MSS) are two classses used to characterize colorectal cancers. MSS tumors are one of the most highly mutated tumor types (Taieb et al. 2017) and exhibit a high number of copy number variations. Without adjustment, a differential peak caller will rank peak loci with high copy number gain in MSS as being the most differential compared to MSI. To observe differential peaks between the MSI and MSS samples, *CoBRA* allows for **copy number variation adjustment** during the supervised analysis.
 
 
-Download and set-up for running the H3K27ac ChIP-seq sample dataset
+Download and set-up for running the MSS_MSI sample dataset
 **********************************************************
 
-  Please use the following command to download the H3K27ac ChIP-seq sample dataset. 
+  Please use the following command to download the MSS_MSI ChIP-seq sample dataset. 
 
   .. code-block:: Bash
    
-     snakemake download_example_H3K27ac_ChIP
+     snakemake download_example_MSS_MSI
   
-  When the data set is downloaded, we can proceed to set up for the run. Note in ``config.yaml``, the parameter `cnv` has laid out a path for **CNV files** (usually in ``.igv`` format) corresponding to each sample. See details in :ref:`section_cnv` for how to prepare the files for CNV analysis in the config.yaml.
+  When the data set is downloaded, we can proceed to set up for the run. Note in ``config.yaml``, the parameter `cnv` has laid out a path for **CNV files** (usually in ``.igv`` format) corresponding to each sample. See details in :ref:`section_cnv` for how to prepare the files for CNV analysis to be listed in the ``config.yaml``.
 
   To check if the setup is correct, begin a dry run via the following command:
 
@@ -301,24 +301,7 @@ Step-By-Step Analysis
        snakemake run_deeptools_diff_peaks -f
   
   As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/MSS_vs_MSI`` folder, including a MA plot and a peak intensity plot. Applying copy number variation adjustment eliminates false positive peaks that would otherwise be called as differential due to their significant copy number difference between the two sample groups MSI and MSS.
-  
-  
-  .. figure:: ./tutorial_figures/2_maplot.png
-      :scale: 50 %
-      :alt: tutorial 2 ma plot
-      :align: center
-      
-      MA Plot with CNV Adjustment
-  
-  .. figure:: ./tutorial_figures/2_maplot_nocnv.png
-      :scale: 50 %
-      :alt: tutorial 2 ma plot no cnv
-      :align: center
-      
-      MA Plot with No CNV Adjustment
-  
-  Comparing the two MA Plots above, differential peaks in the MA Plot generated with CNV adjustment exhibits less significant log fold change. 
-  
+
   .. figure:: ./tutorial_figures/2_peaks.png
       :scale: 50 %
       :alt: tutorial 2 diff peaks
@@ -366,8 +349,8 @@ Case Study 3: ATAC-seq from HL-60 promyelocytes differentiating into macrophages
 
 Background
 **********
-This tutorial makes use of ATAC-seq from HL-60 promyelocytes differentiating into macrophages. The samples were taken utilized a five-day time course (0hr, 3hr, 24hr, 96hr, and 120hr) to profile accessible chromatin of HL-60 promyelocytes ddifferentiating into macrophages. Here *CoBRA* results shows investigation of the differentiation of macrophages through changes
-in the landscape of accessible chromatin. 
+This tutorial makes use of ATAC-seq from HL-60 promyelocytes differentiating into macrophages (`GSE79019 <https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE79019>`_). The samples were taken utilized a five-day time course (0hr, 3hr, 24hr, 96hr, and 120hr) to profile accessible chromatin of HL-60 promyelocytes differentiating into macrophages. Here *CoBRA* results shows investigation of the differentiation of macrophages through changes in the landscape of accessible chromatin. 
+
 
 Download and set-up for running the Macrophage_atac sample dataset
 **********************************************************
@@ -378,7 +361,7 @@ Download and set-up for running the Macrophage_atac sample dataset
    
      snakemake download_example_Macrophage_atac
   
-  When the data set is downloaded, we can proceed to set up for the run. 
+  When the data set is downloaded, we can proceed to set up for the run. Note in the ``metadata.csv``, a couple of different comparison columns were set up in order to do pair-wise comparison of samples taken from different time point. This is another efficent feature of *CoBRA* - allowing for multiple differential expression analysis done separately. For each comparison, a complete set of supervised analysis results (motif analysis, cistrome toolkit, GSEA) will be completed in the respective subfolder under ``analysis_result/differential_peaks``. See details in :ref:`section_metadata` for how to prepare ``metadata.csv`` for multiple comparisons.
 
 
   To check if the setup is correct, begin a dry run via the following command:
@@ -422,7 +405,7 @@ Step-By-Step Analysis
       :alt: tutorial 3 pca scree
       :align: center
 
-  As illustrated in the PCA plot and scree plot above, PC1 (capturing 57=0.7% of variance explained) clearly separates the samplesby their time frame
+  As illustrated in the PCA plot and scree plot above, PC1 (capturing 57=0.7% of variance explained) clearly separates the samples by their time frame
   
   .. figure:: ./tutorial_figures/3_SS.png
       :scale: 28 %
@@ -434,10 +417,10 @@ Step-By-Step Analysis
       :alt: tutorial 3 sf heatmap
       :align: center
  
-  The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 1), intermediate (cluster 2), and late stage (cluster 3) time points.
+  The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 1 - 0h and 3h), intermediate (cluster 2 - 24h), and late stage (cluster 3 - 96h and 120h) time points.
 
 
-2. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
+2. **Supervised Analysis - DeSeq2 Differential Peak Analysis**: 
 
     .. code-block:: Bash
 
@@ -456,7 +439,7 @@ Step-By-Step Analysis
       :alt: tutorial 3 diff peaks
       :align: center
      
- 3. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
+ 3. **Supervised Analysis - Motif Analysis**: 
  
     .. code-block:: Bash
 
