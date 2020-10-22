@@ -409,6 +409,19 @@ Step-By-Step Analysis
  
   The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 1 - 0h and 3h), intermediate (cluster 2 - 24h), and late stage (cluster 3 - 96h and 120h) time points.
 
+ 3. **Cluster Analysis - Motif Analysis**: 
+ 
+ Following the Sample-Feature heatmap, *CoBRA* is implemented to run a cluster analysis focusing on each cluster of the peaks differentiated by the sample-feature 
+  
+    .. code-block:: Bash
+
+       snakemake cluster_analysis -f
+   
+
+  
+  The command above runs de novo motif analysis on each cluster of accessible sites across all 3 clusters automatically to identify potential transcriptional regulators enriched in differentially accessible chromatin elements. The results are located in the ``analysis_result/differential_peaks/{your_comparison}``, including two different subfolder ``analysis_result/differential_peaks/{your_comparison}/{your_comparison}.{thresholds}.up.bed_motifs``, and ``analysis_result/differential_peaks/{your_comparison}/{your_comparison}.{thresholds}.down.bed_motifs``.
+  
+  Digging in into the result folder, we identified many transcription factor motifs enriched in each cluster. Motifs for PU.1, RUNX and MYB were enriched in cluster 1, which exhibits a decrease in accessibility during myeloid differentiation. It is likely that a depletion of PU.1, RUNX and MYB occupancy occurs at these elements during cellular commitment. In addition, we observe the EGR and MAF motifs in clusters 3 suggesting a gain of EGR and MAP occurs at these elements during macrophage differentiation.
 
 3. **Supervised Analysis - DeSeq2 Differential Peak Analysis**: 
 
@@ -428,12 +441,15 @@ Step-By-Step Analysis
       :scale: 50 %
       :alt: tutorial 3 diff peaks
       :align: center
+      
+  The above MA plot and peak intensity plot are for comparing the 0hr and 120hr samples, and exhibits very robust results. 
+  
      
  4. **Cluster Analysis - Motif Analysis**: 
  
     .. code-block:: Bash
 
-       snakemake deseq_motif -f
+       snakemake cluster_analysis -f
        
   The command above runs de novo motif analysis on each cluster of accessible sites across all 3 clusters automatically to identify potential transcriptional regulators enriched in differentially accessible chromatin elements. The results are located in the ``analysis_result/differential_peaks/{your_comparison}``, including two different subfolder ``analysis_result/differential_peaks/{your_comparison}/{your_comparison}.{thresholds}.up.bed_motifs``, and ``analysis_result/differential_peaks/{your_comparison}/{your_comparison}.{thresholds}.down.bed_motifs``.
   
