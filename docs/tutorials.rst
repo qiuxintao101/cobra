@@ -461,14 +461,17 @@ Step-By-Step Analysis
      
  5. **Pilot Feature - RNA-seq and ChIP-seq result Intergration**: 
  
-    A pilot feature of *CoBRA* that is not implemented in its main snakemake workflow is that it may intergrate differential expression analysis result of the data set's corresponding RNA-seq and ChIP-seq to create an annotated volcano plot that perfectly illustrated all the differential genes of interest. 
+  A pilot feature of *CoBRA* that is not implemented in its main snakemake workflow is that it may intergrate differential expression analysis result of the data set's corresponding RNA-seq and ChIP-seq to create an annotated volcano plot that perfectly illustrated all the differential genes of interest. 
     
     .. code-block:: Bash
 
        Rscript scripts/volcano_plot.R RNA_seq/120h_over_0h.deseq.csv ChIP_seq/120h_over_0h.deseq.with.Nearby.Gene.csv ref_files/hg19/refGene.hg19.id.bed vol.pdf
        
-  The command above runs de novo motif analysis on each cluster of accessible sites across all 3 clusters automatically to identify potential transcriptional regulators enriched in differentially accessible chromatin elements. The results are located in the ``analysis_result/differential_peaks/{your_comparison}``, including two different subfolder ``analysis_result/differential_peaks/{your_comparison}/{your_comparison}.{thresholds}.up.bed_motifs``, and ``analysis_result/differential_peaks/{your_comparison}/{your_comparison}.{thresholds}.down.bed_motifs``.
   
-  Digging in into the result folder, we identified many transcription factor motifs enriched in each cluster. Motifs for PU.1, RUNX and MYB were enriched in cluster 1, which exhibits a decrease in accessibility during myeloid differentiation. It is likely that a depletion of PU.1, RUNX and MYB occupancy occurs at these elements during cellular commitment. In addition, we observe the EGR and MAF motifs in clusters 3 suggesting a gain of EGR and MAP occurs at these elements during macrophage differentiation.
+    .. figure:: ./tutorial_figures/3_vol.png
+      :scale: 50 %
+      :alt: tutorial 3 Volcano Plot
+      :align: center
 
+  Details about the parameter of this R script can be found in :ref:`section_volcano_plot`.
  
