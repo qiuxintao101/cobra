@@ -59,9 +59,14 @@ Outline
 
 The following files are needed to run *CoBRA* on your own experiment:
 
+- *Fastq* files with reads for each sample (see :ref:`parameter_FastqFile`)
+
+**OR**
+
 - *BAM* file with aligned reads for each sample (see :ref:`parameter_BamFile`)
 - *BED* file with called peaks for each sample (see :ref:`parameter_BedFile`)
 - *BIGWIG* file with compressed, indexed, binary format for genome-wide signal data for calculations (see :ref:`parameter_BigwigFile`)
+
 - Optionally: corresponding CNV data (see :ref:`parameter_CNVFile`)
 
 Additionally, reference files are all precompiled and are automatically downloaded as needed. These include hg19, hg38,mm9, mm10.
@@ -107,7 +112,6 @@ Details
   Please use "_" to seperate different words, as spaces are not allowed.
 
 
-
 ``enhancer``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -116,7 +120,6 @@ Summary
 
 Details
   Enhancer options to filter the union set of peaks, which will be used in all analysis in the workflow.
-
 
 
 ``metasheet``
@@ -229,6 +232,26 @@ Details
   This parameter sets the number of clusters that will be used in the k-means clustering for Sample-Feature plot.
 
 
+``cor_method``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
+  String. Default pearson. Correlation method used for sample-sample and sample-feature plot
+  
+Details
+  The correlation method options: pearson, spearson
+
+
+``dis_method``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
+  String. Default euclidean. Distance method used for sample-sample and sample-feature plot
+  
+Details
+  Distance measurement options: euclidean, manhattan, canberra, binary, maximum, or minkowski
+
+
 ``Padj``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -238,6 +261,7 @@ Summary
 Details
   This parameter sets the cut-off for DEseq differential peak calling.
 
+
 ``LG2FC``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -246,6 +270,17 @@ Summary
 
 Details
   This parameter sets the cut-off for DEseq differential peak calling.
+
+.. _parameter_nor_method:
+
+``nor_method``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
+   String. Default depth. DESeq normalization method used for differential expression analysis
+
+Details
+  This parameter sets the DESeq normalization method, options: def- normlize by default setting of DEseq2, depth- normlize by the sequence depth of each sample
 
 
 ``motif``
@@ -278,12 +313,56 @@ Details
   This parameter is required to flag if CNV correction should be perfomed or not.
 
 
+``unchanged_heatmap``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
+  String, default 'false'.
+
+Details
+  This parameter is required to flag if heatmap change should be perfomed or not.
+  
+
+``fastq_in``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
+  String, default 'true'.
+
+Details
+  This parameter is required to indicate types of file used as input. If `true`, only fastq files for each sample will be used. If `false`, then bed, bam, bigwig will need to be provided
+
+
+``thread``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
+  Integer >= 0. Default 8. 
+
+Details
+  Number of threads used in bwa mem alignment. If run on a local PC, use 1 thread.
+
 
 SECTION ``samples``
 --------------------------------------------
 
-.. _parameter_summaryFile:
+.. _parameter_FastqFile:
 
+``fastq``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Summary
+  Paths to the fastq files.
+
+Details
+  Path to a fastq file that summarizes the peaks for each sample. The following is an example:
+  
+  .. code-block:: Bash
+  
+     bed:
+       sample1: ./XX1.fastq
+       sample2: ./XX2.fastq
+
+.. _parameter_BedFile:
 
 ``bed``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -299,8 +378,9 @@ Details
        sample1: ./XX1.bed
        sample2: ./XX2.bed
 
+.. _parameter_BamFile:
 
-``samples``
+``bam``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Summary
   Paths to the bam files.
@@ -314,6 +394,7 @@ Details
        sample1: ./XX1.bam
        sample2: ./XX2.bam
 
+.. _parameter_BigwigFile:
 
 ``bigwig``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
