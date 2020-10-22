@@ -59,7 +59,7 @@ Outline
 
 The following files are needed to run *CoBRA* on your own experiment:
 
-- *Fastq* files with reads for each sample (see :ref:`parameter_FastqFile`)
+- *Fastq* files with reads for each sample (see :ref:`fastq`)
 **OR**
 - *BAM* file with aligned reads for each sample (see :ref:`parameter_BamFile`)
 - *BED* file with called peaks for each sample (see :ref:`parameter_BedFile`)
