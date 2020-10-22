@@ -271,6 +271,7 @@ Summary
 Details
   This parameter sets the cut-off for DEseq differential peak calling.
 
+.. _parameter_nor_method:
 
 ``nor_method``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
