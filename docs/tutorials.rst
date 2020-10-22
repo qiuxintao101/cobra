@@ -1,5 +1,5 @@
 
-.. _docs-quickstart:
+.. _docs-tutorial:
 
 ********
 Case Study
@@ -71,6 +71,9 @@ Download and set-up for running the GR_ChIP sample dataset
 
      snakemake all -np
 
+  The `-np` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. We recommend getting to know the basics of the *Snakemake* workflow system prior to trying this tutorial, as it helps with basic troubleshooting and solving common errors associated with running *CoBRA*. The *Snakemake* documentation and tutorial page can be directed through _`this link<https://snakemake.readthedocs.io/en/stable/index.html>`_.
+  
+  
 
 Quick One-Step Analysis
 **********************************************************
