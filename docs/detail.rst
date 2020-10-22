@@ -59,8 +59,10 @@ Outline
 
 The following files are needed to run *CoBRA* on your own experiment:
 
-- *Fastq* files with reads for each sample (see :ref:`fastq`)
+- *Fastq* files with reads for each sample (see :ref:`parameter_FastqFile`)
+
 **OR**
+
 - *BAM* file with aligned reads for each sample (see :ref:`parameter_BamFile`)
 - *BED* file with called peaks for each sample (see :ref:`parameter_BedFile`)
 - *BIGWIG* file with compressed, indexed, binary format for genome-wide signal data for calculations (see :ref:`parameter_BigwigFile`)
@@ -329,8 +331,6 @@ Summary
 Details
   This parameter is required to indicate types of file used as input. If `true`, only fastq files for each sample will be used. If `false`, then bed, bam, bigwig will need to be provided
 
-fastq_in: 'true'
-
 
 ``thread``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -345,7 +345,7 @@ Details
 SECTION ``samples``
 --------------------------------------------
 
-.. _parameter_summaryFile:
+.. _parameter_FastqFile:
 
 ``fastq``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -361,6 +361,7 @@ Details
        sample1: ./XX1.fastq
        sample2: ./XX2.fastq
 
+.. _parameter_BedFile:
 
 ``bed``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -376,6 +377,7 @@ Details
        sample1: ./XX1.bed
        sample2: ./XX2.bed
 
+.. _parameter_BamFile:
 
 ``bam``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -391,6 +393,7 @@ Details
        sample1: ./XX1.bam
        sample2: ./XX2.bam
 
+.. _parameter_BigwigFile:
 
 ``bigwig``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
