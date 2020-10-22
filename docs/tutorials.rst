@@ -102,24 +102,14 @@ Step-By-Step Analysis
 
 
   .. figure:: ./tutorial_figures/1_pca.png
-      :scale: 25%
+      :scale: 28 %
       :alt: case 1 pca plot
-      :align: center
-
-  .. figure:: ./tutorial_figures/1_pca_scree.png
-      :scale: 25 %
-      :alt: case 1 pca scree
-      :align: center
-
-  .. figure:: ./tutorial_figures/1_pca.png
-      :scale: 30 %
-      :alt: tutorial 1 pca plot
       :align: center
       
   As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further separates the sample replicates.
  
   .. figure:: ./tutorial_figures/1_pca_scree.png
-      :scale: 30 %
+      :scale: 28 %
       :alt: tutorial 1 pca scree
       :align: center
 
@@ -142,21 +132,7 @@ Step-By-Step Analysis
   As illustrated in the Sample-Sample correlation plot, samples replicates cluster tightly together (r > 0.6). And samples treated with 0.5nM of dexamethasone exhibited to be far different from samples treated with 5nM or 50nM dexamethasone.
 
 
-3. **Unsupervised Analysis - Sample-Feature Heatmap**: 
-
-    .. code-block:: Bash
-
-       snakemake heatmapSF_plot -f
-  
-  This command produces the ``heatmapSF_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis. It presents patterns of peaks (by k-means clustering) across samples and identifies the clusters that are enriched in a subset of samples.
-  
-  .. figure:: ./tutorial_figures/1_SF.png
-      :scale: 28 %
-      :alt: case 1 sf heatmap
-      :align: center
- 
-
-4. **Supervised Analysis - DeSeq2 Differential Peak Analysis**: 
+3. **Supervised Analysis - DeSeq2 Differential Peak Analysis**: 
 
   The key inquiry to be satisfied for any ChIP-seq/ATAC-seq analysis is what the differential sites are between sample groups of interest. In *CoBRA*, this analysis is done by incorporating differential peak callin gby DESeq2 while using sequencing depth as a scale factor, and thus significantly reducing false positive differential peak-calling.
   
@@ -170,6 +146,10 @@ Step-By-Step Analysis
     - ``c50nm_vs_0.5nm.deseq.sum.csv``: a table including total number of differential peaks under different thresholds
     - ``c50nm_vs_0.5nm.t.test.csv``: a t-test table of the differential peaks
     - ``MA_plot.pdf``: a MA plot comparing the two treatment samples
+  
+  DEseq2 by default normalizes all samples by total reads in the read count table. In contrast, in the GR ChIP-seq experiment, samples treated with 50nM dexamethasone exhibit much greater GR binding and the FRiP score is higher than samples treated with 0.5nM (9.3 vs 0.9). Therefore, DESeq2’s normalization method decreases the peak intensity in the 0.5nM treated samples because the FRiP scores are higher in the 50nM sample resulting in false positive differential peaks. In *CoBRA*, we use a scaling factor dependent on the sequencing depth of each sample. This eliminates the false positive downregulated peaks called by DESeq2 using the default scaling factor. 
+  
+  However, normalizaiton by default DESeq2 method is still included as an option in our pipeline, see :ref:`parameter_nor_method` for detail.
   
   .. figure:: ./tutorial_figures/1_maplot.png
       :scale: 50 %
@@ -191,10 +171,10 @@ Step-By-Step Analysis
       :alt: case 1 diff peats
       :align: center
        
-  The peak-intensity heatmap above further illustrates taht there only exist differentially upregulated peaks in 50nM treatment samples as compared to 0.5 nM dexamethasone treated samples, and intensity goes as high as 1.75.
+  The peak-intensity heatmap above further illustrates that there only exist differentially upregulated peaks in 50nM treatment samples as compared to 0.5 nM dexamethasone treated samples, and intensity goes as high as 1.75.
 
 
-5. **Comparison of Up and Down-regulated Site: Cistrome Toolkit**: 
+4. **Comparison of Up and Down-regulated Site: Cistrome Toolkit**: 
 
   *CoBRA* has a built-in feature that compares up and down-regulated sites to a comprehesnive database of ChIP/ATAC and DNase data, and outline a series of most similar samples in terms of genomic interval overlaps with the differential sites located in the (`Cistrome database <http://cistrome.org/db/#/`_). This feature allows researchers to pin-point those similar data set of interest and download for further investigation. It can provide unique insight into gained or lost sites such as identifying which transcription factor potentially binds to a differential peak set after a perturbation and in investigating similar cellular systems.
   
@@ -226,7 +206,7 @@ Case Study 2: MSS and MSI Colorectal Cancers ChIP-seq Data Set
 
 Background
 **********
-This tutorial makes use six samples from several experiments: three Microsatellite Instable (MSI) samples and three Microsatellite Stable (MSS) samples (Tak et al. 2016; Piunti et al. 2017; Piunti et al. 2017; Maurano et al. 2015; McCleland et al. 2016; Rahnamoun et al. 2018). Microsatellite Instable (MSI) and Microsatellite Stable (MSS) are two classses used to characterize colorectal cancers. MSS tumors are one of the most highly mutated tumor types (Taieb et al. 2017) and exhibit a high number of copy number variations. Without adjustment, a differential peak caller will rank peak loci with high copy number gain in MSS as being the most differential compared to MSI. To observe differential peaks between the MSI and MSS samples, *CoBRA* allows for **copy number variation adjustment** during the supervised analysis.
+This tutorial makes use six samples from several experiments: three Microsatellite Instable (MSI) samples and three Microsatellite Stable (MSS) samples (Tak et al. 2016; Piunti et al. 2017; Piunti et al. 2017; Maurano et al. 2015; McCleland et al. 2016; Rahnamoun et al. 2018). Microsatellite Instable (MSI) and Microsatellite Stable (MSS) are two classses used to characterize colorectal cancers. MSS tumors are one of the most highly mutated tumor types (Taieb et al. 2017) and exhibit a high copy number variations. Without adjustment, a differential peak caller will rank peak loci with high copy number gain in MSS as being the most differential compared to MSI. To observe differential peaks between the MSI and MSS samples, *CoBRA* allows for **copy number variation adjustment** during the supervised analysis.
 
 
 Download and set-up for running the MSS_MSI sample dataset
@@ -260,13 +240,12 @@ Quick One-Step Analysis
 Step-By-Step Analysis
 **********************************************************
 
-1. **Unsupervised Analysis - PCA Plot, Sample-Sample Correlation Plot, Sample-Feature Heatmap, etc.**: 
+1. **Unsupervised Analysis - PCA Plot, Sample-Sample Correlation Plot, etc.**: 
 
     .. code-block:: Bash
 
        snakemake pca_plot -f
        snakemake heatmapSS_plot -f
-       snakemake heatmapSF_plot -f
   
   As demonstrated in the previous case study, these command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
 
@@ -287,16 +266,11 @@ Step-By-Step Analysis
       :scale: 28 %
       :alt: tutorial 2 ss heatmap
       :align: center
-
-  .. figure:: ./tutorial_figures/2_SF.png
-      :scale: 28 %
-      :alt: tutorial 2 sf heatmap
-      :align: center
  
   The Sample-Sample Correlation shows clearly that the MSS samples cluster together, and the same applies to the MSI samples. And the two sample groups exhibit little correlation. 
 
 
-2. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
+3. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
 
     .. code-block:: Bash
 
@@ -344,7 +318,9 @@ Step-By-Step Analysis
       
       An Example Enrichment Plot
   
-  Without CNV adjustment, GSEA will indicate greatest enrichment in gene sets solely related to amplification. As a result, it is challenging to assess the true epigenetic differences between the two colorectal cancer types. For instance, the gene set NIKOLSKY_BREAST_CANCER_8Q12_Q22_AMPLICON includes genes up-regulated in non-metastatic breast cancer tumors with amplification in the 8q22 region. Without adjustment for copy number variation, this gene set is significantly enriched and ranked 6th, with a normalized enrichment score of -1.91 and an adjusted p-value less than 0.0001. With CNV adjustment, this gene set is far less enriched and ranked 55th, and has a normalized enrichment score of -1.69 and an adjusted p-value of 0.076.
+  Without CNV adjustment, GSEA will indicate greatest enrichment in gene sets solely related to amplification. As a result, it is challenging to assess the true epigenetic differences between the two colorectal cancer types. MSS vs MSI type tumors presents an especially challenging scenario. The MSS tumors exhibits large scale high copy number variations across the genome, including the 8q arm. However, the MSI tumors exhibits a focal amplification directly at 8q12-q22 region, making it very difficult for regular DE pipelines to assess the difference between these two types of amplifications. *CoBRA* is able to distinguish that difference by CNV adjustment and demonstrate in the GSEA result.
+  
+  The gene set NIKOLSKY_BREAST_CANCER_8Q12_Q22_AMPLICON includes genes up-regulated in non-metastatic breast cancer tumors with amplification in the 8q22 region. Without adjustment for copy number variation, this gene set is significantly enriched in MSS samples, with a normalized enrichment score of -1.91 and an adjusted p-value less than 0.0001. With CNV adjustment, this gene set is considered far less enriched, with a normalized enrichment score of -1.69 and an adjusted p-value of 0.076.
 
 
 Case Study 3: ATAC-seq from HL-60 promyelocytes differentiating into macrophages
@@ -365,6 +341,8 @@ Download and set-up for running the Macrophage_atac sample dataset
      snakemake download_example_Macrophage_atac
   
   When the data set is downloaded, we can proceed to set up for the run. Note in the ``metadata.csv``, a couple of different comparison columns were set up in order to do pair-wise comparison of samples taken from different time point. This is another efficent feature of *CoBRA* - allowing for multiple differential expression analysis done separately. For each comparison, a complete set of supervised analysis results (motif analysis, cistrome toolkit, GSEA) will be completed in the respective subfolder under ``analysis_result/differential_peaks``. See details in :ref:`section_metadata` for how to prepare ``metadata.csv`` for multiple comparisons.
+  
+  Also note in the ``config.yaml``, the parameter `percent` has been set to 10, indicating that only top 10% peaks will be used in the unsupervised analysis and clustering analysis. The `rpkm_threshold` and `mini_num_sample` can also be adjusted accordingly to different data sets. See details in :ref:`configurationFile` for how to set those parameters. 
 
 
   To check if the setup is correct, begin a dry run via the following command:
@@ -396,7 +374,7 @@ Step-By-Step Analysis
        snakemake heatmapSS_plot -f
        snakemake heatmapSF_plot -f
   
-  Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
+  Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ```analysis_result/clustering_analysis/rpkm.3_num_sample.2_scale.q_fliter.cov.10/plots`` folder. 
 
   .. figure:: ./tutorial_figures/3_pca.png
       :scale: 28 %
@@ -415,6 +393,15 @@ Step-By-Step Analysis
       :alt: tutorial 3 ss heatmap
       :align: center
 
+
+2. **Unsupervised Analysis - Sample-Feature Heatmap**: 
+
+    .. code-block:: Bash
+
+       snakemake heatmapSF_plot -f
+  
+  This command produces the ``heatmapSF_plot_10_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.3_num_sample.2_scale.q_fliter.cov.10/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis. It presents patterns of peaks (by k-means clustering) across samples and identifies the clusters that are enriched in a subset of samples.
+  
   .. figure:: ./tutorial_figures/3_SF.png
       :scale: 28 %
       :alt: tutorial 3 sf heatmap
@@ -423,7 +410,7 @@ Step-By-Step Analysis
   The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 1 - 0h and 3h), intermediate (cluster 2 - 24h), and late stage (cluster 3 - 96h and 120h) time points.
 
 
-2. **Supervised Analysis - DeSeq2 Differential Peak Analysis**: 
+3. **Supervised Analysis - DeSeq2 Differential Peak Analysis**: 
 
     .. code-block:: Bash
 
@@ -442,7 +429,7 @@ Step-By-Step Analysis
       :alt: tutorial 3 diff peaks
       :align: center
      
- 3. **Supervised Analysis - Motif Analysis**: 
+ 4. **Cluster Analysis - Motif Analysis**: 
  
     .. code-block:: Bash
 
