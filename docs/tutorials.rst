@@ -12,6 +12,8 @@ The three case studies below gives you a taste of different capabilities of our 
 
 Each of the case studies wiil demonstrate a subfield of expertise of our CoBRA pipeline. 
 
+Out *CoBRA* pipeline is implemented using the *Snakemake* workflow management system. We recommend getting to know the basics of *Snakemake* prior to trying this tutorial, as it helps with basic troubleshooting and solving common errors associated with running *CoBRA*. The *Snakemake* documentation and tutorial page can be directed through `here <https://snakemake.readthedocs.io/en/stable/index.html>`_.
+
 
 Setup
 =====
@@ -71,8 +73,7 @@ Download and set-up for running the GR_ChIP sample dataset
 
      snakemake all -np
 
-  The `-np` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. We recommend getting to know the basics of the *Snakemake* workflow system prior to trying this tutorial, as it helps with basic troubleshooting and solving common errors associated with running *CoBRA*. The *Snakemake* documentation and tutorial page can be directed through _`this link<https://snakemake.readthedocs.io/en/stable/index.html>`_.
-  
+  The `-np` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. 
   
 
 Quick One-Step Analysis
@@ -149,7 +150,7 @@ Step-By-Step Analysis
   
   DEseq2 by default normalizes all samples by total reads in the read count table. In contrast, in the GR ChIP-seq experiment, samples treated with 50nM dexamethasone exhibit much greater GR binding and the FRiP score is higher than samples treated with 0.5nM (9.3 vs 0.9). Therefore, DESeq2’s normalization method decreases the peak intensity in the 0.5nM treated samples because the FRiP scores are higher in the 50nM sample resulting in false positive differential peaks. In *CoBRA*, we use a scaling factor dependent on the sequencing depth of each sample. This eliminates the false positive downregulated peaks called by DESeq2 using the default scaling factor. 
   
-  However, normalizaiton by default DESeq2 method is still included as an option in our pipeline, see :ref:`parameter_nor_method` for detail.
+  However, normalizaiton by default DESeq2 method is still included as an option in our pipeline, see :ref:`parameter_norm_method` for detail.
   
   .. figure:: ./tutorial_figures/1_maplot.png
       :scale: 50 %
