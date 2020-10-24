@@ -135,7 +135,7 @@ Download and set-up for running the GR_ChIP sample dataset
 
      snakemake all -np
 
-  As seen above The ``-np`` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. 
+  As seen above the ``-np`` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. 
   
   
 
