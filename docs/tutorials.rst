@@ -68,43 +68,20 @@ Download and set-up for running the GR_ChIP sample dataset
   Note in ``config.yaml``, the parameter `motif` has been set as `true` to perform motif enrichement and clustering analysis. The DEseq normalize method parameter `nor_method` was set as `depth` to opt for normlization by the sequence depth of each sample.
 
   To check if the setup is correct, begin a dry run via the following command:
-
-
+  
   .. tabs::
-    .. group-tab:: Bash Command       
-       
-       ::                                   
-                                     
-          snakemake all -np
-
-    .. group-tab:: Shell Output - Sample Job Count List                       
-          
-       .. code-block:: shell-session            
-          $ pip install -r Documentation/requirements.txt
-          Job counts:
-          count jobs
-          1 GSEA
-          1 add_deseq_gene
-          1 add_id_column
-          1 all
-          1 bed_enhancer_promoter
-          6 bedtools_intersect
-          10
-
-    .. group-tab:: Shell Output - Sample Job Summary                       
-          
-       .. code-block:: shell-session            
-                
-          $ pip install -r Documentation/requirements.txt
-          Job 81: ALIGN: Running BWA mem for alignment
-         
-          bwa mem -t 8 ref_files/hg19/bwa_indices/hg19/hg19.fa /mnt/cfce-stor1/home/xq08/Projects/Diff_Peak_Methods_Investigation/FASTQ_files_GR_ENCSR989EXF/dexamethasone_at_500pM/ENCFF000NBL.fastq.gz | samtools view -Sb - > analysis/preprocessed_files/align/0.5nM_Dex_1/0.5nM_Dex_1.bam 2>>analysis/logs/align.log
+     
+     .. group-tab:: Bash Command       
+        
+        ::                                   
+        
+           snakemake all -np
   
   .. code-block:: Bash
 
      snakemake all -np
 
-  As seen above the ``-np`` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. 
+  As seen above, the ``-np`` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. 
   
   
 
