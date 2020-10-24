@@ -12,7 +12,7 @@ The three case studies below gives you a taste of different capabilities of our 
 
 Each of the case studies wiil demonstrate a subfield of expertise of our CoBRA pipeline. 
 
-Out *CoBRA* pipeline is implemented using the *Snakemake* workflow management system. We recommend getting to know the basics of *Snakemake* prior to trying this tutorial, as it helps with basic troubleshooting and solving common errors associated with running *CoBRA*. The *Snakemake* documentation and tutorial page can be directed through `here <https://snakemake.readthedocs.io/en/stable/index.html>`_.
+.. note::  Our *CoBRA* pipeline is implemented using the *Snakemake* workflow management system. We recommend getting to know the basics of *Snakemake* prior to trying this tutorial, as it helps with basic troubleshooting and solving common errors associated with running *CoBRA*. The *Snakemake* documentation and tutorial page can be directed through `here <https://snakemake.readthedocs.io/en/stable/index.html>`_.
 
 
 Setup
