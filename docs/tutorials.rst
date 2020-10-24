@@ -69,11 +69,74 @@ Download and set-up for running the GR_ChIP sample dataset
 
   To check if the setup is correct, begin a dry run via the following command:
 
+
+  .. tabs::
+
+   .. group-tab:: Bash Command       
+                            
+      ::                                   
+                                     
+         snakemake all -np
+
+   .. group-tab:: Shell Output - Job Count List                       
+          
+      .. code-block:: shell-session            
+                
+         $ pip install -r Documentation/requirements.txt
+         Job counts:
+         count jobs
+         1 GSEA
+         1 add_deseq_gene
+         1 add_id_column
+         1 all
+         1 bed_enhancer_promoter
+         6 bedtools_intersect
+         6 big_wig
+         1 cistrome_toolkit
+         1 cut_concat_bed_columns
+         1 deeptools_diff_peaks
+         1 deseq_motif
+         1 deseq_motif_cluster
+         1 filter_count
+         1 get_giggle
+         1 get_lift_chain
+         1 get_ref_gene
+         1 get_ref_genome
+         1 heatmapSF_plot
+         1 heatmapSS_plot
+         1 liftover
+         1 limma_and_deseq
+         6 make_bedfile_folder
+         1 make_concat_bed
+         1 merge_count
+         1 merge_raw_count
+         1 merge_total_count
+         1 merged_bed
+         1 nearby_gene
+         1 pca_plot
+         6 remove_chrM
+         1 rpkm_threshold
+         6 samtools_sort
+         1 scale_count
+         1 sort_concat_bed
+         1 unchanged_peaks
+         60
+
+   .. group-tab:: Shell Output - Sample Job Summary                       
+          
+      .. code-block:: shell-session            
+                
+         $ pip install -r Documentation/requirements.txt
+         Job 81: ALIGN: Running BWA mem for alignment
+         
+         bwa mem -t 8 ref_files/hg19/bwa_indices/hg19/hg19.fa /mnt/cfce-stor1/home/xq08/Projects/Diff_Peak_Methods_Investigation/FASTQ_files_GR_ENCSR989EXF/dexamethasone_at_500pM/ENCFF000NBL.fastq.gz | samtools view -Sb - > analysis/preprocessed_files/align/0.5nM_Dex_1/0.5nM_Dex_1.bam 2>>analysis/logs/align.log
+  
   .. code-block:: Bash
 
      snakemake all -np
 
-  The `-np` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. 
+  As seen above The ``-np`` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. 
+  
   
 
 Quick One-Step Analysis
