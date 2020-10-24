@@ -69,13 +69,18 @@ Download and set-up for running the GR_ChIP sample dataset
 
   To check if the setup is correct, begin a dry run via the following command:
   
-  .. tabs::
+.. tabs::
      
-     .. group-tab:: Bash Command       
+   .. group-tab:: Bash Command       
         
-        ::                                   
+      ::                                   
         
-           snakemake all -np
+         snakemake all -np
+  
+  
+  
+  
+  
   
   .. code-block:: Bash
 
