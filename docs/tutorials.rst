@@ -71,65 +71,34 @@ Download and set-up for running the GR_ChIP sample dataset
 
 
   .. tabs::
-
-   .. group-tab:: Bash Command       
-                            
-      ::                                   
+    .. group-tab:: Bash Command       
+       
+       ::                                   
                                      
-         snakemake all -np
+          snakemake all -np
 
-   .. group-tab:: Shell Output - Job Count List                       
+    .. group-tab:: Shell Output - Sample Job Count List                       
           
-      .. code-block:: shell-session            
-                
-         $ pip install -r Documentation/requirements.txt
-         Job counts:
-         count jobs
-         1 GSEA
-         1 add_deseq_gene
-         1 add_id_column
-         1 all
-         1 bed_enhancer_promoter
-         6 bedtools_intersect
-         6 big_wig
-         1 cistrome_toolkit
-         1 cut_concat_bed_columns
-         1 deeptools_diff_peaks
-         1 deseq_motif
-         1 deseq_motif_cluster
-         1 filter_count
-         1 get_giggle
-         1 get_lift_chain
-         1 get_ref_gene
-         1 get_ref_genome
-         1 heatmapSF_plot
-         1 heatmapSS_plot
-         1 liftover
-         1 limma_and_deseq
-         6 make_bedfile_folder
-         1 make_concat_bed
-         1 merge_count
-         1 merge_raw_count
-         1 merge_total_count
-         1 merged_bed
-         1 nearby_gene
-         1 pca_plot
-         6 remove_chrM
-         1 rpkm_threshold
-         6 samtools_sort
-         1 scale_count
-         1 sort_concat_bed
-         1 unchanged_peaks
-         60
+       .. code-block:: shell-session            
+          $ pip install -r Documentation/requirements.txt
+          Job counts:
+          count jobs
+          1 GSEA
+          1 add_deseq_gene
+          1 add_id_column
+          1 all
+          1 bed_enhancer_promoter
+          6 bedtools_intersect
+          10
 
-   .. group-tab:: Shell Output - Sample Job Summary                       
+    .. group-tab:: Shell Output - Sample Job Summary                       
           
-      .. code-block:: shell-session            
+       .. code-block:: shell-session            
                 
-         $ pip install -r Documentation/requirements.txt
-         Job 81: ALIGN: Running BWA mem for alignment
+          $ pip install -r Documentation/requirements.txt
+          Job 81: ALIGN: Running BWA mem for alignment
          
-         bwa mem -t 8 ref_files/hg19/bwa_indices/hg19/hg19.fa /mnt/cfce-stor1/home/xq08/Projects/Diff_Peak_Methods_Investigation/FASTQ_files_GR_ENCSR989EXF/dexamethasone_at_500pM/ENCFF000NBL.fastq.gz | samtools view -Sb - > analysis/preprocessed_files/align/0.5nM_Dex_1/0.5nM_Dex_1.bam 2>>analysis/logs/align.log
+          bwa mem -t 8 ref_files/hg19/bwa_indices/hg19/hg19.fa /mnt/cfce-stor1/home/xq08/Projects/Diff_Peak_Methods_Investigation/FASTQ_files_GR_ENCSR989EXF/dexamethasone_at_500pM/ENCFF000NBL.fastq.gz | samtools view -Sb - > analysis/preprocessed_files/align/0.5nM_Dex_1/0.5nM_Dex_1.bam 2>>analysis/logs/align.log
   
   .. code-block:: Bash
 
