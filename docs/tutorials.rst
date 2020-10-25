@@ -184,7 +184,7 @@ Step-By-Step Analysis
   
     .. code-block:: Bash
 
-       snakemake deeptools_diff_peaks -f
+       snakemake run_deeptools_diff_peaks -f
   
   It produces ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.pdf`` which illustrates the peak intensity of the differentially up and downregulated peaks. 
 
@@ -441,13 +441,6 @@ Step-By-Step Analysis
  .. figure:: ./tutorial_figures/3_cluster_motif_120.png
       :scale: 40 %
       :alt: case 3 cluster motif
-      :align: center
- 
- The cistrome result for this cluster is shown below:
- 
- .. figure:: ./tutorial_figures/3_cluster_cistrome_120.png
-      :scale: 40 %
-      :alt: case 3 cluster cistrome
       :align: center
 
 
