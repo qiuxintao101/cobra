@@ -12,6 +12,8 @@ The three case studies below gives you a taste of different capabilities of our 
 
 Each of the case studies wiil demonstrate a subfield of expertise of our CoBRA pipeline. 
 
+.. note::  Our *CoBRA* pipeline is implemented using the *Snakemake* workflow management system. We recommend getting to know the basics of *Snakemake* prior to trying this tutorial, as it helps with basic troubleshooting and solving common errors associated with running *CoBRA*. The *Snakemake* documentation and tutorial page can be directed through `here <https://snakemake.readthedocs.io/en/stable/index.html>`_.
+
 
 Setup
 =====
@@ -63,17 +65,37 @@ Download and set-up for running the GR_ChIP sample dataset
   
   When the data set is downloaded, we can proceed to set up for the run. Usually for running CoBRA on a new experiment, the two config files ``config.yaml`` and ``metasheet.csv`` would need to be set up acccordingly. In this tutorial, they have been filled already. 
   
-  Note in ``config.yaml``, the parameter `motif` has been set as `true` to perform motif enrichement and clustering analysis. The DEseq normalize method parameter `nor_method` was set as `depth` to opt for normlization by the sequence depth of each sample.
+  .. note::  In ``config.yaml``, the parameter `motif` has been set as `true` to perform motif enrichement and clustering analysis. The DEseq normalize method parameter `nor_method` was set as `depth` to opt for normlization by the sequence depth of each sample.
 
   To check if the setup is correct, begin a dry run via the following command:
-
+  
   .. code-block:: Bash
 
      snakemake all -np
 
-  The `-np` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. We recommend getting to know the basics of the *Snakemake* workflow system prior to trying this tutorial, as it helps with basic troubleshooting and solving common errors associated with running *CoBRA*. The *Snakemake* documentation and tutorial page can be directed through _`this link<https://snakemake.readthedocs.io/en/stable/index.html>`_.
+  As seen below, the ``-np`` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. 
   
-  
+  .. code-block:: shell-session            
+     
+     #Sample Job Count List
+     $ snakemake all -np
+     Job counts:
+     count jobs
+     1 GSEA
+     1 add_deseq_gene
+     1 add_id_column
+     1 all
+     1 bed_enhancer_promoter
+     6 bedtools_intersect
+     10
+     
+  .. code-block:: shell-session            
+     
+     #Sample Job Summary 
+     $ snakemake all -np
+     Job 81: ALIGN: Running BWA mem for alignment
+     bwa mem -t 8 ref_files/hg19/bwa_indices/hg19/hg19.fa /mnt/cfce-stor1/home/xq08/Projects/Diff_Peak_Methods_Investigation/FASTQ_files_GR_ENCSR989EXF/dexamethasone_at_500pM/ENCFF000NBL.fastq.gz | samtools view -Sb - > analysis/preprocessed_files/align/0.5nM_Dex_1/0.5nM_Dex_1.bam 2>>analysis/logs/align.log
+
 
 Quick One-Step Analysis
 **********************************************************
@@ -149,7 +171,7 @@ Step-By-Step Analysis
   
   DEseq2 by default normalizes all samples by total reads in the read count table. In contrast, in the GR ChIP-seq experiment, samples treated with 50nM dexamethasone exhibit much greater GR binding and the FRiP score is higher than samples treated with 0.5nM (9.3 vs 0.9). Therefore, DESeq2’s normalization method decreases the peak intensity in the 0.5nM treated samples because the FRiP scores are higher in the 50nM sample resulting in false positive differential peaks. In *CoBRA*, we use a scaling factor dependent on the sequencing depth of each sample. This eliminates the false positive downregulated peaks called by DESeq2 using the default scaling factor. 
   
-  However, normalizaiton by default DESeq2 method is still included as an option in our pipeline, see :ref:`parameter_nor_method` for detail.
+  However, normalizaiton by default DESeq2 method is still included as an option in our pipeline, see :ref:`parameter_norm_method` for detail.
   
   .. figure:: ./tutorial_figures/1_maplot.png
       :scale: 50 %
@@ -176,7 +198,7 @@ Step-By-Step Analysis
 
 4. **Comparison of Up and Down-regulated Site: Cistrome Toolkit**: 
 
-  *CoBRA* has a built-in feature that compares up and down-regulated sites to a comprehesnive database of ChIP/ATAC and DNase data, and outline a series of most similar samples in terms of genomic interval overlaps with the differential sites located in the (`Cistrome database <http://cistrome.org/db/#/`_). This feature allows researchers to pin-point those similar data set of interest and download for further investigation. It can provide unique insight into gained or lost sites such as identifying which transcription factor potentially binds to a differential peak set after a perturbation and in investigating similar cellular systems.
+  *CoBRA* has a built-in feature that compares up and down-regulated sites to a comprehesnive database of ChIP/ATAC and DNase data, and outline a series of most similar samples in terms of genomic interval overlaps with the differential sites located in the (`Cistrome database <http://cistrome.org/db/#/>`_). This feature allows researchers to pin-point those similar data set of interest and download for further investigation. It can provide unique insight into gained or lost sites such as identifying which transcription factor potentially binds to a differential peak set after a perturbation and in investigating similar cellular systems.
   
     .. code-block:: Bash
 
@@ -187,7 +209,7 @@ Step-By-Step Analysis
     - two tables of cistrome toolkit result, each include a list of GEO accession numbers corresponding to all ChIP-seq data with similarity to the differential peak set (up or down-regulated)
     
   .. figure:: ./tutorial_figures/1_cistrome_geo.png
-      :scale: 40 %
+      :scale: 35 %
       :alt: case 1 cistrome GEO accession table
       :align: center
       
@@ -218,7 +240,9 @@ Download and set-up for running the MSS_MSI sample dataset
    
      snakemake download_example_MSS_MSI
   
-  When the data set is downloaded, we can proceed to set up for the run. Note in ``config.yaml``, the parameter `cnv` has laid out a path for **CNV files** (usually in ``.igv`` format) corresponding to each sample. See details in :ref:`section_cnv` for how to prepare the files for CNV analysis to be listed in the ``config.yaml``.
+  When the data set is downloaded, we can proceed to set up for the run. 
+  
+  .. note::  In ``config.yaml``, the parameter `cnv` has laid out a path for **CNV files** (usually in ``.igv`` format) corresponding to each sample. See details in :ref:`section_cnv` for how to prepare the files for CNV analysis to be listed in the ``config.yaml``.
 
   To check if the setup is correct, begin a dry run via the following command:
 
@@ -251,26 +275,21 @@ Step-By-Step Analysis
 
   .. figure:: ./tutorial_figures/2_pca.png
       :scale: 28 %
-      :alt: tutorial 2 pca plot
-      :align: center
-      
-  .. figure:: ./tutorial_figures/2_pca_scree.png
-      :scale: 28 %
-      :alt: tutorial 2 pca scree
+      :alt: case 2 pca plot
       :align: center
 
-  As illustrated in the PCA plot and scree plot above, PC1 (capturing 44.5% of variance explained) clearly separates the MSS samples (colored in turquois) and MSI samples (colored in pink).
+  As illustrated in the PCA plot above, PC1 (capturing 44.5% of variance explained) clearly separates the MSS samples (colored in turquois) and MSI samples (colored in pink).
 
   
   .. figure:: ./tutorial_figures/2_SS.png
       :scale: 28 %
-      :alt: tutorial 2 ss heatmap
+      :alt: case 2 ss heatmap
       :align: center
  
   The Sample-Sample Correlation shows clearly that the MSS samples cluster together, and the same applies to the MSI samples. And the two sample groups exhibit little correlation. 
 
 
-3. **Supervised Analysis - Limma/DeSeq2 Differential Peak Analysis**: 
+2. **Supervised Analysis - DeSeq2 Differential Peak Analysis**: 
 
     .. code-block:: Bash
 
@@ -281,7 +300,7 @@ Step-By-Step Analysis
 
   .. figure:: ./tutorial_figures/2_peaks.png
       :scale: 50 %
-      :alt: tutorial 2 diff peaks
+      :alt: case 2 diff peaks
       :align: center
       
       Peaks Intensity Plot with CNV Adjustment
@@ -311,12 +330,12 @@ Step-By-Step Analysis
     - ``enplot_{Gene_Set}``: individual enrichment plots of an enriched gene set
     - ``{Gene_Set}.html`` and ``{Gene_Set}.xls``: individual GSEA Results Summary of an enriched gene set
   
-  .. figure:: ./tutorial_figures/2_gsea_farmer1.png
+  .. figure:: ./tutorial_figures/2_gsea_nocnv.png
       :scale: 50 %
-      :alt: tutorial 2 GSEA
+      :alt: case 2 GSEA
       :align: center
       
-      An Example Enrichment Plot
+      Enrichment Plot with No CNV Adjustment
   
   Without CNV adjustment, GSEA will indicate greatest enrichment in gene sets solely related to amplification. As a result, it is challenging to assess the true epigenetic differences between the two colorectal cancer types. MSS vs MSI type tumors presents an especially challenging scenario. The MSS tumors exhibits large scale high copy number variations across the genome, including the 8q arm. However, the MSI tumors exhibits a focal amplification directly at 8q12-q22 region, making it very difficult for regular DE pipelines to assess the difference between these two types of amplifications. *CoBRA* is able to distinguish that difference by CNV adjustment and demonstrate in the GSEA result.
   
@@ -340,9 +359,10 @@ Download and set-up for running the Macrophage_atac sample dataset
    
      snakemake download_example_Macrophage_atac
   
-  When the data set is downloaded, we can proceed to set up for the run. Note in the ``metadata.csv``, a couple of different comparison columns were set up in order to do pair-wise comparison of samples taken from different time point. This is another efficent feature of *CoBRA* - allowing for multiple differential expression analysis done separately. For each comparison, a complete set of supervised analysis results (motif analysis, cistrome toolkit, GSEA) will be completed in the respective subfolder under ``analysis_result/differential_peaks``. See details in :ref:`section_metadata` for how to prepare ``metadata.csv`` for multiple comparisons.
+  When the data set is downloaded, we can proceed to set up for the run. 
+  .. note::  In the ``metadata.csv``, a couple of different comparison columns were set up in order to do pair-wise comparison of samples taken from different time point. This is another efficent feature of *CoBRA* - allowing for multiple differential expression analysis done separately. For each comparison, a complete set of supervised analysis results (motif analysis, cistrome toolkit, GSEA) will be completed in the respective subfolder under ``analysis_result/differential_peaks``. See details in :ref:`section_metadata` for how to prepare ``metadata.csv`` for multiple comparisons.
   
-  Also note in the ``config.yaml``, the parameter `percent` has been set to 10, indicating that only top 10% peaks will be used in the unsupervised analysis and clustering analysis. The `rpkm_threshold` and `mini_num_sample` can also be adjusted accordingly to different data sets. See details in :ref:`configurationFile` for how to set those parameters. 
+  .. note::  In the ``config.yaml``, the parameter `percent` has been set to 10, indicating that only top 10% peaks will be used in the unsupervised analysis and clustering analysis. The `rpkm_threshold` and `mini_num_sample` can also be adjusted accordingly to different data sets. See details in :ref:`configurationFile` for how to set those parameters. 
 
 
   To check if the setup is correct, begin a dry run via the following command:
@@ -372,25 +392,19 @@ Step-By-Step Analysis
 
        snakemake pca_plot -f
        snakemake heatmapSS_plot -f
-       snakemake heatmapSF_plot -f
   
   Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ```analysis_result/clustering_analysis/rpkm.3_num_sample.2_scale.q_fliter.cov.10/plots`` folder. 
 
   .. figure:: ./tutorial_figures/3_pca.png
       :scale: 28 %
-      :alt: tutorial 3 pca plot
-      :align: center
-      
-  .. figure:: ./tutorial_figures/3_pca_scree.png
-      :scale: 28 %
-      :alt: tutorial 3 pca scree
+      :alt: case 3 pca plot
       :align: center
 
   As illustrated in the PCA plot and scree plot above, PC1 (capturing 57=0.7% of variance explained) clearly separates the samples by their time frame
   
   .. figure:: ./tutorial_figures/3_SS.png
       :scale: 28 %
-      :alt: tutorial 3 ss heatmap
+      :alt: case 3 ss heatmap
       :align: center
 
 
@@ -404,7 +418,7 @@ Step-By-Step Analysis
   
   .. figure:: ./tutorial_figures/3_SF.png
       :scale: 28 %
-      :alt: tutorial 3 sf heatmap
+      :alt: case 3 sf heatmap
       :align: center
  
   The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 1 - 0h and 3h), intermediate (cluster 2 - 24h), and late stage (cluster 3 - 96h and 120h) time points.
@@ -426,14 +440,14 @@ Step-By-Step Analysis
  
  .. figure:: ./tutorial_figures/3_cluster_motif_120.png
       :scale: 40 %
-      :alt: tutorial 3 cluster motif
+      :alt: case 3 cluster motif
       :align: center
  
  The cistrome result for this cluster is shown below:
  
  .. figure:: ./tutorial_figures/3_cluster_cistrome_120.png
       :scale: 40 %
-      :alt: tutorial 3 cluster cistrome
+      :alt: case 3 cluster cistrome
       :align: center
 
 
@@ -448,12 +462,12 @@ Step-By-Step Analysis
   
   .. figure:: ./tutorial_figures/3_maplot.png
       :scale: 50 %
-      :alt: tutorial 3 ma plot
+      :alt: case 3 ma plot
       :align: center
   
   .. figure:: ./tutorial_figures/3_peaks.png
       :scale: 50 %
-      :alt: tutorial 3 diff peaks
+      :alt: case 3 diff peaks
       :align: center
       
   The above MA plot and peak intensity plot are for comparing the 0hr and 120hr samples, and exhibits very robust results. 
@@ -469,8 +483,8 @@ Step-By-Step Analysis
        
   
     .. figure:: ./tutorial_figures/3_vol.png
-      :scale: 50 %
-      :alt: tutorial 3 Volcano Plot
+      :scale: 40 %
+      :alt: case 3 Volcano Plot
       :align: center
 
   Details about the parameter of this R script can be found in :ref:`section_volcano_plot`.
