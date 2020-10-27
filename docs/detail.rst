@@ -867,22 +867,21 @@ Rerun Incomplete Files
 
 When *Snakemake* encounter an error when running a task, the affected incomplete output files will automatically be removed. Yet, if a *Snakemake* run is exited by force (this may also include Docker container exited in the middle of the run, see :ref:`docs-DockerReminder`), output files would be left incomplete. Then the following error message may appear when trying to resume the *Snakemake* run:
 
-.. code-block:: Bash
+.. code-block:: shell-session            
+     
    IncompleteFilesException:
    The files below seem to be incomplete. If you are sure that certain files are not incomplete, mark them as complete with
 
-      snakemake --cleanup-metadata <filenames>
+   snakemake --cleanup-metadata <filenames>
 
    To re-generate the files rerun your command with the --rerun-incomplete flag.
    Incomplete files:
    analysis/preprocessed_files/bam/sorted_reads/XXX.bam
-..
-  
-  When this error message appears, simply follow the instruction and add the ``--rerun-incomplete`` flag next to the rule that need to be re-run, for instance:
+
+When this error message appears, simply follow the instruction and add the ``--rerun-incomplete`` flag next to the rule that need to be re-run, for instance:
   
 .. code-block:: Bash
-   snakemake all --cores 6 --rerun-incomplete
-..
+   snakemake all --rerun-incomplete
   
 
 If you do encounter an error and are unable to find a solution in the FAQ, post an Issue in the `Bitbucket Issue Tracker <https://bitbucket.org/cfce/cobra/issues>`_ tracker.
