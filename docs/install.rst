@@ -160,6 +160,6 @@ The above command prompt change means that you have suceefully started the cotai
 .. _docs-DockerReminder:
   .. note:: Once a run is initiated on the Docker container, please DO NOT exit the container while the run is still ongoing. This would result in **interruption of the current *CoBRA* run**. 
   
-  If you need to perform multiple runs at the same time, please open multiple terminal window and **open one Docker container for each**.
+  .. note:: Once a run is initiated on the Docker container, please DO NOT exit the container while the run is still ongoing. This would result in interruption of the current *CoBRA* run. If you need to perform multiple runs at the same time, please open multiple terminal window and **open one Docker container for each**.
 
 You do not have to, but you may go through the following tutorial related to ``Docker``. This will help you gain a better understanding of ``Docker``. For more details, see `here <https://docker-curriculum.com/>`_.
