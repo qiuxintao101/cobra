@@ -865,7 +865,7 @@ After debugging, run *Snakemake* again. It will automatically continue from the 
 Rerun Incomplete Files 
 ----------------------
 
-Sometimes when a *Snakemake* run is exited by force (this may also include Docker container exited in the middle of the run, see :ref:`docs-DockerReminder`) and not because of an error, output files would be left incomplete. Then the following error message may appear when trying to resume the *Snakemake* run:
+When *Snakemake* encounter an error when running a task, the affected incomplete output files will automatically be removed. Yet, if a *Snakemake* run is exited by force (this may also include Docker container exited in the middle of the run, see :ref:`docs-DockerReminder`), output files would be left incomplete. Then the following error message may appear when trying to resume the *Snakemake* run:
 
 .. code-block:: Bash
    IncompleteFilesException:
@@ -875,12 +875,7 @@ Sometimes when a *Snakemake* run is exited by force (this may also include Docke
 
    To re-generate the files rerun your command with the --rerun-incomplete flag.
    Incomplete files:
-   analysis/preprocessed_files/bam/sorted_reads/453_DMSO_2.bam
-   analysis/preprocessed_files/bam/sorted_reads/453_co_NER_1.bam
-   analysis/preprocessed_files/bam/sorted_reads/453_co_DMSO_1.bam
-   analysis/preprocessed_files/bam/sorted_reads/453_co_NER_2.bam
-   analysis/preprocessed_files/bam/sorted_reads/453_NER_1.bam
-   analysis/preprocessed_files/bam/sorted_reads/453_co_DMSO_2.bam
+   analysis/preprocessed_files/bam/sorted_reads/XXX.bam
 ..
   
   When this error message appears, simply follow the instruction and add the ``--rerun-incomplete`` flag next to the rule that need to be re-run, for instance:
