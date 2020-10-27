@@ -367,6 +367,7 @@ Download and set-up for running the Macrophage_atac sample dataset
      snakemake download_example_Macrophage_atac
   
   When the data set is downloaded, we can proceed to set up for the run. 
+  
   .. note::  In the ``metadata.csv``, a couple of different comparison columns were set up in order to do pair-wise comparison of samples taken from different time point. This is another efficent feature of *CoBRA* - allowing for multiple differential expression analysis done separately. For each comparison, a complete set of supervised analysis results (motif analysis, cistrome toolkit, GSEA) will be completed in the respective subfolder under ``analysis_result/differential_peaks``. See details in :ref:`section_metadata` for how to prepare ``metadata.csv`` for multiple comparisons.
   
   .. note::  In the ``config.yaml``, the parameter `percent` has been set to 10, indicating that only top 10% peaks will be used in the unsupervised analysis and clustering analysis. The `rpkm_threshold` and `mini_num_sample` can also be adjusted accordingly to different data sets. See details in :ref:`configurationFile` for how to set those parameters. 
@@ -487,5 +488,21 @@ Step-By-Step Analysis
       :alt: case 3 Volcano Plot
       :align: center
 
-  Details about the parameter of this R script can be found in :ref:`section_volcano_plot`.
+  The command consists of the following inputs:
  
+    - ``scripts/volcano_plot.R``: the R script that makes the volcano plot, located in the ``scripts`` folder
+    - ``ChIP_seq/120h_over_0h.deseq.with.Nearby.Gene.csv``: DESeq analysis result output by *CoBRA*
+    - ``RNA_seq/120h_over_0h.deseq.csv``: the differential expression gene output from RNA-seq result with the same comparison of interest
+    - ``ref_files/hg19/refGene.hg19.id.bed``: reference genome file, located in the ``ref_files/{your_genome}`` folder
+    - ``vol.pdf``: the pdf file of which the figure will be saved to
+
+  The R script includes the following parameter available for alteration:
+ 
+    - ``Max_Peak_Gene_Distance``: The maximum distance (in bp) considered when pairing a peak with its nearby gene
+    - ``Gene_FC_cutoff`` and ``Gene_P_cutoff``: cutoff (fold change and adjusted p-value) for including differentially expressed genes in RNA-seq DE result, default set at 2 and 0.01, respectively
+    - ``Peak_FC_cutoff`` and ``Peak_P_cutoff``: cutoff (fold change and adjusted p-value) for including differentially expressed genes in ChIP-seq/ATAC-seq DE result, default set at 2 and 0.01, respectively
+    - ``Min_padj``: y_axis limit, any adjusted p-value smaller than this value will be set to this value
+    - ``X_axis_limit``: x_axis limit, any fold change value larger than this value will be set to this value
+    - ``Genes_To_Label``: the top N genes that will be labeled on this graph
+    - ``Transparancy``: transparancy level on genes below the cutoff, default set at 0 (i.e. not shown on the graph)
+
