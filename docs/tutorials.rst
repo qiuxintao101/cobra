@@ -65,7 +65,7 @@ Download and set-up for running the GR_ChIP sample dataset
   
   When the data set is downloaded, we can proceed to set up for the run. Usually for running CoBRA on a new experiment, the two config files ``config.yaml`` and ``metasheet.csv`` would need to be set up acccordingly. In this tutorial, they have been filled already. 
   
-  .. note::  In ``config.yaml``, the parameter `motif` has been set as `true` to perform motif enrichement and clustering analysis. The DEseq normalize method parameter `nor_method` was set as `depth` to opt for normlization by the sequence depth of each sample.
+  .. note::  In ``config.yaml``, the parameter `motif` has been set as `true` to perform motif enrichement and clustering analysis. The DEseq normalize method parameter `norm_method` was set as `depth` to opt for normlization by the sequence depth of each sample.
 
   To check if the setup is correct, begin a dry run via the following command:
   
@@ -96,7 +96,7 @@ Download and set-up for running the GR_ChIP sample dataset
      Job 81: ALIGN: Running BWA mem for alignment
      bwa mem -t 8 ref_files/hg19/bwa_indices/hg19/hg19.fa /mnt/cfce-stor1/home/xq08/Projects/Diff_Peak_Methods_Investigation/FASTQ_files_GR_ENCSR989EXF/dexamethasone_at_500pM/ENCFF000NBL.fastq.gz | samtools view -Sb - > analysis/preprocessed_files/align/0.5nM_Dex_1/0.5nM_Dex_1.bam 2>>analysis/logs/align.log
      
-  .. note:: Once a run is initiated on the Docker container, please DO NOT exit the container while the run is still ongoing. This would result in **interruption of the current *CoBRA* run**. 
+  .. note:: Once a run is initiated on the Docker container, please DO NOT exit the container while the run is still ongoing. This would result in **interruption of the current `CoBRA` run**. 
 
 
 Quick One-Step Analysis
@@ -333,14 +333,14 @@ Step-By-Step Analysis
     - ``{Gene_Set}.html`` and ``{Gene_Set}.xls``: individual GSEA Results Summary of an enriched gene set
   
   .. figure:: ./tutorial_figures/2_gsea_nocnv.png
-      :scale: 50 %
+      :scale: 80 %
       :alt: case 2 GSEA
       :align: center
       
       Enrichment Plot with No CNV Adjustment
       
   .. figure:: ./tutorial_figures/2_gsea_cnv.png
-      :scale: 50 %
+      :scale: 80 %
       :alt: case 2 GSEA
       :align: center
       
@@ -431,7 +431,7 @@ Step-By-Step Analysis
       :alt: case 3 sf heatmap
       :align: center
  
-  The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 1 - 0h and 3h), intermediate (cluster 2 - 24h), and late stage (cluster 3 - 96h and 120h) time points.
+  The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 3 - 0h and 3h), intermediate (cluster 2 - 24h), and late stage (cluster 1 - 96h and 120h) time points.
 
  3. **Cluster Analysis - Motif and Cistrome Analysis**: 
  
@@ -446,10 +446,10 @@ Step-By-Step Analysis
   - ``cistrome_toolkit``: cistrome toolkit analysis giggle plot for each of the cluster 
   - ``motif``: motif analysis result fo reach of the cluster
  
- In the previous part, cluster 1 exhibits to be the peaks significantly upregulated in the 96h and 120h samples. The motifs significantly enriched in these peaks are shown below:
+ In the previous part, cluster 3 exhibits to be the peaks differentially upregulated in the 96h and 120h samples. The motifs significantly enriched in these peaks are shown below:
  
  .. figure:: ./tutorial_figures/3_cluster_motif_120.png
-      :scale: 40 %
+      :scale: 30 %
       :alt: case 3 cluster motif
       :align: center
 
@@ -492,7 +492,7 @@ Step-By-Step Analysis
 
   The command consists of the following inputs:
  
-    - ``scripts/volcano_plot.R``: the R script that makes the volcano plot, located in the ``scripts`` folder
+    - ``scripts/volcano_plot.R``: the R script that produces the volcano plot, located in the ``scripts`` folder
     - ``ChIP_seq/120h_over_0h.deseq.with.Nearby.Gene.csv``: DESeq analysis result output by *CoBRA*
     - ``RNA_seq/120h_over_0h.deseq.csv``: the differential expression gene output from RNA-seq result with the same comparison of interest
     - ``ref_files/hg19/refGene.hg19.id.bed``: reference genome file, located in the ``ref_files/{your_genome}`` folder
