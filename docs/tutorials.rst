@@ -336,6 +336,13 @@ Step-By-Step Analysis
       :align: center
       
       Enrichment Plot with No CNV Adjustment
+      
+  .. figure:: ./tutorial_figures/2_gsea_cnv.png
+      :scale: 50 %
+      :alt: case 2 GSEA
+      :align: center
+      
+      Enrichment Plot with CNV Adjustment
   
   Without CNV adjustment, GSEA will indicate greatest enrichment in gene sets solely related to amplification. As a result, it is challenging to assess the true epigenetic differences between the two colorectal cancer types. MSS vs MSI type tumors presents an especially challenging scenario. The MSS tumors exhibits large scale high copy number variations across the genome, including the 8q arm. However, the MSI tumors exhibits a focal amplification directly at 8q12-q22 region, making it very difficult for regular DE pipelines to assess the difference between these two types of amplifications. *CoBRA* is able to distinguish that difference by CNV adjustment and demonstrate in the GSEA result.
   
@@ -466,9 +473,9 @@ Step-By-Step Analysis
   The above MA plot and peak intensity plot are for comparing the 0hr and 120hr samples, and exhibits very robust results. 
   
      
- 5. **Pilot Feature - RNA-seq and ChIP-seq result Intergration**: 
+ 5. **Pilot Feature - RNA-seq result Intergration**: 
  
-  A pilot feature of *CoBRA* that is not implemented in its main snakemake workflow is that it may intergrate differential expression analysis result of the data set's corresponding RNA-seq and ChIP-seq to create an annotated volcano plot that perfectly illustrated all the differential genes of interest. 
+  A pilot feature of *CoBRA* that is not implemented in its main snakemake workflow is that it may intergrate differential expression analysis result of the data set's corresponding RNA-seq to create an annotated volcano plot that perfectly illustrated all the differential genes of interest. 
     
     .. code-block:: Bash
 
