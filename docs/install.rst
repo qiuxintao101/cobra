@@ -149,12 +149,16 @@ Notes for running with Docker
 
 4. ``cfce/cobra:latest``: ``cfce/cobra`` is the name of the container that we created in the dockerhub. ``lastest`` is the version of the container.
 
-Once you start runing the *CoBRA* containter, it's bash shell will be attached to the terminal, and the command prompt will change:
+Once you start running the *CoBRA* containter, it's bash shell will be attached to the terminal, and the command prompt will change:
 
 .. code-block:: Bash
 
    (base) root@5d8bf16cd2cb:/#
 
 The above command prompt change means that you have suceefully started the cotainer of *CoBRA*, and you may proceed to run the example or your own data.
+
+  .. note:: Once a run is initiated on the Docker container, please DO NOT exit the container while the run is still ongoing. This would result in **interruption of the current *CoBRA* run**. 
+  
+  If you need to perform multiple runs at the same time, please open multiple terminal window and **open one Docker container for each**.
 
 You do not have to, but you may go through the following tutorial related to ``Docker``. This will help you gain a better understanding of ``Docker``. For more details, see `here <https://docker-curriculum.com/>`_.
