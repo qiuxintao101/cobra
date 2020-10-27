@@ -157,6 +157,7 @@ Once you start running the *CoBRA* containter, it's bash shell will be attached 
 
 The above command prompt change means that you have suceefully started the cotainer of *CoBRA*, and you may proceed to run the example or your own data.
 
+.. _docs-DockerReminder:
   .. note:: Once a run is initiated on the Docker container, please DO NOT exit the container while the run is still ongoing. This would result in **interruption of the current *CoBRA* run**. 
   
   If you need to perform multiple runs at the same time, please open multiple terminal window and **open one Docker container for each**.
