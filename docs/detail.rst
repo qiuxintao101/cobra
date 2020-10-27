@@ -67,7 +67,7 @@ The following files are needed to run *CoBRA* on your own experiment:
 - *BED* file with called peaks for each sample (see :ref:`parameter_BedFile`)
 - *BIGWIG* file with compressed, indexed, binary format for genome-wide signal data for calculations (see :ref:`parameter_BigwigFile`)
 
-- Optionally: corresponding CNV data (see :ref:`parameter_CNVFile`)
+- Optionally: corresponding CNV data (see :ref:`section_cnv`)
 
 Additionally, reference files are all precompiled and are automatically downloaded as needed. These include hg19, hg38,mm9, mm10.
 
@@ -271,9 +271,9 @@ Summary
 Details
   This parameter sets the cut-off for DEseq differential peak calling.
 
-.. _parameter_nor_method:
+.. _parameter_norm_method:
 
-``nor_method``
+``norm_method``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Summary
@@ -849,7 +849,7 @@ Here are some common errors that users have encountered and reported.
 
   This error is normally encountered when you have duplicate sample names in the metasheet.csv. *CoBRA* does not allow duplicate sample names in the ``config`` and ``metasheet`` files.
 
-
+   
 
 Bug solutions
 ==============================
@@ -861,6 +861,34 @@ Resuming *Snakemake* run
 
 After debugging, run *Snakemake* again. It will automatically continue from the rule at which the error occured.
 
+
+Rerun Incomplete Files 
+----------------------
+
+Sometimes when a *Snakemake* run is exited by force (this may also include Docker container exited in the middle of the run, see :ref:`docs-DockerReminder`) and not because of an error, output files would be left incomplete. Then the following error message may appear when trying to resume the *Snakemake* run:
+
+.. code-block:: Bash
+   IncompleteFilesException:
+   The files below seem to be incomplete. If you are sure that certain files are not incomplete, mark them as complete with
+
+      snakemake --cleanup-metadata <filenames>
+
+   To re-generate the files rerun your command with the --rerun-incomplete flag.
+   Incomplete files:
+   analysis/preprocessed_files/bam/sorted_reads/453_DMSO_2.bam
+   analysis/preprocessed_files/bam/sorted_reads/453_co_NER_1.bam
+   analysis/preprocessed_files/bam/sorted_reads/453_co_DMSO_1.bam
+   analysis/preprocessed_files/bam/sorted_reads/453_co_NER_2.bam
+   analysis/preprocessed_files/bam/sorted_reads/453_NER_1.bam
+   analysis/preprocessed_files/bam/sorted_reads/453_co_DMSO_2.bam
+..
+  
+  When this error message appears, simply follow the instruction and add the ``--rerun-incomplete`` flag next to the rule that need to be re-run, for instance:
+  
+.. code-block:: Bash
+   snakemake all --cores 6 --rerun-incomplete
+..
+  
 
 If you do encounter an error and are unable to find a solution in the FAQ, post an Issue in the `Bitbucket Issue Tracker <https://bitbucket.org/cfce/cobra/issues>`_ tracker.
 
