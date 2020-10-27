@@ -832,7 +832,6 @@ Here are some common errors that users have encountered and reported.
 
 
 3. rule ``heatmapSS_plot`` duplicate 'row.names' are not allowed
-
  
   .. code-block:: Bash
 
@@ -849,7 +848,19 @@ Here are some common errors that users have encountered and reported.
 
   This error is normally encountered when you have duplicate sample names in the metasheet.csv. *CoBRA* does not allow duplicate sample names in the ``config`` and ``metasheet`` files.
 
+
+4. Error due to short of space
+
+   Sometimes, *Snakemake* reports failure to produce an output even though the inputs and the scripts are correct. This could happen when the CPU is heavily used by other programs, or other users when running on a server. When this issue occurs, try re-running the pipeline with smaller number of cores, or running the following command before re-starting the pipeline:
+
+   .. code-block:: Bash
+
+      mkdir tmp
+      export TMPDIR=./tmp
+   ..
    
+   This creates a ``tmp`` folder within the directory where *CoBRA* is located and divert all the temporary files from the default temp folder into the new folder created.  
+  
 
 Bug solutions
 ==============================
@@ -857,13 +868,13 @@ Bug solutions
 When an error is encountered, see the log file that corresponds to the failing *Snakemake* rule. Do a dry run to assess which command must be run. Running the command outside of the workflow will provide a more detailed error message. It is also recommended to check the intermediate files (such as the input and output files of the rule) ensure that they are correct.
 
 Resuming *Snakemake* run
-----------------------
+==============================
 
 After debugging, run *Snakemake* again. It will automatically continue from the rule at which the error occured.
 
 
 Rerun Incomplete Files 
-----------------------
+==============================
 
 When *Snakemake* encounter an error when running a task, the affected incomplete output files will automatically be removed. Yet, if a *Snakemake* run is exited by force (this may also include Docker container exited in the middle of the run, see :ref:`docs-DockerReminder`), output files would be left incomplete. Then the following error message may appear when trying to resume the *Snakemake* run:
 
