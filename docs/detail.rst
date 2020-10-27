@@ -879,10 +879,11 @@ When *Snakemake* encounter an error when running a task, the affected incomplete
    analysis/preprocessed_files/bam/sorted_reads/XXX.bam
 
 When this error message appears, simply follow the instruction and add the ``--rerun-incomplete`` flag next to the rule that need to be re-run, for instance:
-  
+
 .. code-block:: Bash
+
    snakemake all --rerun-incomplete
-  
+..
 
 If you do encounter an error and are unable to find a solution in the FAQ, post an Issue in the `Bitbucket Issue Tracker <https://bitbucket.org/cfce/cobra/issues>`_ tracker.
 
