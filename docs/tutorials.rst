@@ -432,6 +432,9 @@ Step-By-Step Analysis
       :align: center
  
   The Sample-Sample Correlation shows clearly that the samples collected at different time frame cluster together. In addition, samples collected closer time points (for instance, 0h and 3h) appears to be more similar. We observe three clusters that show clear differences in open chromatin between the early (cluster 3 - 0h and 3h), intermediate (cluster 2 - 24h), and late stage (cluster 1 - 96h and 120h) time points.
+  
+  .. note::  Samples in the clustering tree are ordered by what is given in the :ref:`section_metadata`. Simply switch sample order in the Metasheet if you want the Sample-Feature clusters to look more neat. 
+  
 
  3. **Cluster Analysis - Motif and Cistrome Analysis**: 
  
