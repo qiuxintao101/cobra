@@ -20,26 +20,27 @@ Setup
 
 In preparation for the tutorials, please use the following steps to set up the cobra environment and retrieve the latest version of our pipeline:
 
-1. **Initiate Docker Container**: 
+1. **Initiate Environment**: 
   
-  Use the following command to start the cobra container in an empty working folder:
+  Use the following command to activate the cobra environment:
   
   .. code-block:: Bash
 
-    docker run --rm -v $PWD:/cobra -it cfce/cobra:2.0
+    source activate cobra
 
-2. **Retrieve the Latest Version of Cobra Pipeline:**
+2. **Retrieve the Latest Version of Cobra:**
 
   If installed using docker, run the following command to change the working directory. Otherwise, skip to next command:
    
   .. code-block:: Bash
    
-     cd cobra && source activate cobra 
+     cd cobra
    
-  pull the latest version of CoBRA using ``git clone`` :
+  Create a new directory for the tutorial (ex: gr_chip), change to the new working directory and pull the latest version of CoBRA using ``git clone`` :
 
   .. code-block:: Bash
 
+     mkdir gr_chip
      git clone https://bitbucket.org/cfce/cobra.git .
 
   If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
@@ -56,11 +57,13 @@ This tutorial makes use of a publicly available glucocorticoid receptor (GR) ChI
 Download and set-up for running the GR_ChIP sample dataset
 **********************************************************
 
-  Please use the following command to download the GR_ChIP sample dataset. This dataset is of moderate size (3.9 G) and may take 5-10 minutes to download. It contains the data files, as well as the config files - ``config.yaml`` and ``metasheet.csv`` - filled with correct parameters. 
+  This dataset is of moderate size and may take 5-10 minutes to download. It contains the data files, as well as the config files - ``config.yaml`` and ``metasheet.csv`` - filled with correct parameters. One advantage of *CoBRA* is that it accommodate the use of different input files; it may take either 1) the set of ``.bam``, ``.bed``, and ``.bigwig`` files for each sample, or 2) a single ``.fastq.gz`` file for each sample. We have two separate downloads prepared this specific dataset, one containing the bam, bed and bigwig files as input, the other containing fastq files as input. **Choose only one to download.** The analysis process is exactly the same.
 
   .. code-block:: Bash
    
      snakemake download_example_GR_ChIP
+                   #OR
+     snakemake download_example_GR_ChIP_fastq 
   
   When the data set is downloaded, we can proceed to set up for the run. Usually for running CoBRA on a new experiment, the two config files ``config.yaml`` and ``metasheet.csv`` would need to be set up acccordingly. In this tutorial, they have been filled already. 
   
@@ -74,6 +77,20 @@ Download and set-up for running the GR_ChIP sample dataset
 
   As seen below, the ``-np`` command of *Snakemake* outputs the execution plan of the run instead of actually perform the steps. It produces a job count list, that is, a list of all the snakemake rules that will be run to achieve the outputs, and a summary for each snakemake rule including the rule name, input, and output. 
   
+  .. code-block:: shell-session            
+     
+     #Sample Job Count List
+     $ snakemake all -np
+     Job counts:
+     count jobs
+     1 GSEA
+     1 add_deseq_gene
+     1 add_id_column
+     1 all
+     1 bed_enhancer_promoter
+     6 bedtools_intersect
+     10
+     
   .. code-block:: shell-session            
      
      #Sample Job Summary 
@@ -111,14 +128,14 @@ Step-By-Step Analysis
 
 
   .. figure:: ./tutorial_figures/1_pca.png
-      :scale: 28 %
+      :scale: 25 %
       :alt: case 1 pca plot
       :align: center
       
   As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further separates the sample replicates.
  
   .. figure:: ./tutorial_figures/1_pca_scree.png
-      :scale: 28 %
+      :scale: 25 %
       :alt: tutorial 1 pca scree
       :align: center
 
@@ -134,7 +151,7 @@ Step-By-Step Analysis
   This command produces the ``heatmapSS_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It provides information on the clustering result based on the Pearson correlation coefficient, and illustrates the similarity between all samples in a pairwise fashion.
   
   .. figure:: ./tutorial_figures/1_SS.png
-      :scale: 28 %
+      :scale: 25 %
       :alt: case 1 ss heatmap
       :align: center
       
@@ -161,7 +178,7 @@ Step-By-Step Analysis
   However, normalizaiton by default DESeq2 method is still included as an option in our pipeline, see :ref:`parameter_norm_method` for detail.
   
   .. figure:: ./tutorial_figures/1_maplot.png
-      :scale: 50 %
+      :scale: 40 %
       :alt: case 1 ma plot
       :align: center
   
@@ -176,7 +193,7 @@ Step-By-Step Analysis
   It produces ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.pdf`` which illustrates the peak intensity of the differentially up and downregulated peaks. 
 
   .. figure:: ./tutorial_figures/1_peaks.png
-      :scale: 50 %
+      :scale: 40 %
       :alt: case 1 diff peats
       :align: center
        
@@ -196,14 +213,14 @@ Step-By-Step Analysis
     - two tables of cistrome toolkit result, each include a list of GEO accession numbers corresponding to all ChIP-seq data with similarity to the differential peak set (up or down-regulated)
     
   .. figure:: ./tutorial_figures/1_cistrome_geo.png
-      :scale: 35 %
+      :scale: 338 %
       :alt: case 1 cistrome GEO accession table
       :align: center
       
       The Cistrome Toolkit result table would include Cistrome DB sample ID, GEO accession number (GSM) and key information about the data set, i.e. factor name, cell line, cell type, giggle score. The entries are ranked by their giggle score.
   
   .. figure:: ./tutorial_figures/1_cistrome.png
-      :scale: 40 %
+      :scale: 30 %
       :alt: case 1 cistrome result
       :align: center
 
@@ -229,7 +246,9 @@ Download and set-up for running the MSS_MSI sample dataset
   
   When the data set is downloaded, we can proceed to set up for the run. 
   
-  .. note::  In ``config.yaml``, the parameter `cnv` has laid out a path for **CNV files** (usually in ``.igv`` format) corresponding to each sample. See details in :ref:`section_cnv` for how to prepare the files for CNV analysis to be listed in the ``config.yaml``.
+  .. note::  In ``config.yaml``, the parameter `cnv` has laid out a path for **CNV files** (usually in ``.igv`` format) corresponding to each sample. For this dataset, the copy number was called on the ChIP-seq data itself using CopywriteR (Kuilman et al. 2015) with IP but can also be done using qDNAseq (Scheinin et al. 2014) with the input control if available. Any other source of CNV data can also be used when put in a standard format. See details in :ref:`section_cnv` for how to prepare the files for CNV analysis to be listed in the ``config.yaml``.
+  
+  .. note::  In ``metasheet.csv``, there is column ``comp_MSS_vs_MSI`` that compare all 3 samples of MSS to all 3 samples of MSI, and column ``comp_MSS2_vs_MSI2`` that only compares only 2 samples from each group. This demonstrates *CoBRA*'s feature of setting multiple independent differential expression analysis. See details in :ref:`section_metadata`.
 
   To check if the setup is correct, begin a dry run via the following command:
 
@@ -261,7 +280,7 @@ Step-By-Step Analysis
   As demonstrated in the previous case study, these command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
 
   .. figure:: ./tutorial_figures/2_pca.png
-      :scale: 28 %
+      :scale: 25 %
       :alt: case 2 pca plot
       :align: center
 
@@ -269,7 +288,7 @@ Step-By-Step Analysis
 
   
   .. figure:: ./tutorial_figures/2_SS.png
-      :scale: 28 %
+      :scale: 25 %
       :alt: case 2 ss heatmap
       :align: center
  
@@ -286,14 +305,14 @@ Step-By-Step Analysis
   As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/MSS_vs_MSI`` folder, including a MA plot and a peak intensity plot. Applying copy number variation adjustment eliminates false positive peaks that would otherwise be called as differential due to their significant copy number difference between the two sample groups MSI and MSS.
 
   .. figure:: ./tutorial_figures/2_peaks.png
-      :scale: 50 %
+      :scale: 40 %
       :alt: case 2 diff peaks
       :align: center
       
       Peaks Intensity Plot with CNV Adjustment
      
   .. figure:: ./tutorial_figures/2_peaks_nocnv.png
-      :scale: 50 %
+      :scale: 40 %
       :alt: tutorial 2 diff peaks no cnv
       :align: center
       
@@ -318,14 +337,14 @@ Step-By-Step Analysis
     - ``{Gene_Set}.html`` and ``{Gene_Set}.xls``: individual GSEA Results Summary of an enriched gene set
   
   .. figure:: ./tutorial_figures/2_gsea_nocnv.png
-      :scale: 80 %
+      :scale: 60 %
       :alt: case 2 GSEA
       :align: center
       
       Enrichment Plot with No CNV Adjustment
       
   .. figure:: ./tutorial_figures/2_gsea_cnv.png
-      :scale: 80 %
+      :scale: 60 %
       :alt: case 2 GSEA
       :align: center
       
@@ -333,7 +352,7 @@ Step-By-Step Analysis
   
   Without CNV adjustment, GSEA will indicate greatest enrichment in gene sets solely related to amplification. As a result, it is challenging to assess the true epigenetic differences between the two colorectal cancer types. MSS vs MSI type tumors presents an especially challenging scenario. The MSS tumors exhibits large scale high copy number variations across the genome, including the 8q arm. However, the MSI tumors exhibits a focal amplification directly at 8q12-q22 region, making it very difficult for regular DE pipelines to assess the difference between these two types of amplifications. *CoBRA* is able to distinguish that difference by CNV adjustment and demonstrate in the GSEA result.
   
-  The gene set NIKOLSKY_BREAST_CANCER_8Q12_Q22_AMPLICON includes genes up-regulated in non-metastatic breast cancer tumors with amplification in the 8q22 region. Without adjustment for copy number variation, this gene set is significantly enriched in MSS samples, with a normalized enrichment score of -2.84 and an adjusted p-value less than 0.0001. With CNV adjustment, this gene set is considered far less enriched, with a normalized enrichment score of -0.21 and an adjusted p-value of 1.
+  The gene set NIKOLSKY_BREAST_CANCER_8Q12_Q22_AMPLICON includes genes up-regulated in non-metastatic breast cancer tumors with amplification in the 8q22 region. Without adjustment for copy number variation, this gene set is significantly enriched in MSS samples, with a normalized enrichment score of -1.91 and an adjusted p-value less than 0.0001. With CNV adjustment, this gene set is considered far less enriched, with a normalized enrichment score of -1.69 and an adjusted p-value of 0.076.
 
 
 Case Study 3: ATAC-seq from HL-60 promyelocytes differentiating into macrophages
@@ -379,8 +398,6 @@ Quick One-Step Analysis
 Step-By-Step Analysis
 **********************************************************
 
-  While the CoBRA pipeline is designed to be fast and efficient, easily-excuetable with just a few lines of commands, it is possible to produce the analysis in a step-wise fashion by running specific parts of the pipeline.
-
 1. **Unsupervised Analysis - PCA Plot, Sample-Sample Correlation Plot, Sample-Feature Heatmap, etc.**: 
 
     .. code-block:: Bash
@@ -391,14 +408,14 @@ Step-By-Step Analysis
   Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ```analysis_result/clustering_analysis/rpkm.3_num_sample.2_scale.q_fliter.cov.10/plots`` folder. 
 
   .. figure:: ./tutorial_figures/3_pca.png
-      :scale: 28 %
+      :scale: 25 %
       :alt: case 3 pca plot
       :align: center
 
   As illustrated in the PCA plot and scree plot above, PC1 (capturing 57=0.7% of variance explained) clearly separates the samples by their time frame
   
   .. figure:: ./tutorial_figures/3_SS.png
-      :scale: 28 %
+      :scale: 25 %
       :alt: case 3 ss heatmap
       :align: center
 
@@ -412,7 +429,7 @@ Step-By-Step Analysis
   This command produces the ``heatmapSF_plot_10_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.3_num_sample.2_scale.q_fliter.cov.10/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis. It presents patterns of peaks (by k-means clustering) across samples and identifies the clusters that are enriched in a subset of samples.
   
   .. figure:: ./tutorial_figures/3_SF.png
-      :scale: 28 %
+      :scale: 25 %
       :alt: case 3 sf heatmap
       :align: center
  
@@ -437,7 +454,7 @@ Step-By-Step Analysis
  In the previous part, cluster 3 exhibits to be the peaks differentially upregulated in the 96h and 120h samples. The motifs significantly enriched in these peaks are shown below:
  
  .. figure:: ./tutorial_figures/3_cluster_motif_120.png
-      :scale: 30 %
+      :scale: 26 %
       :alt: case 3 cluster motif
       :align: center
 
@@ -452,12 +469,12 @@ Step-By-Step Analysis
   As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/{your_comparison}`` folder, including a MA plot and a peak intensity plot. 
   
   .. figure:: ./tutorial_figures/3_maplot.png
-      :scale: 50 %
+      :scale: 40 %
       :alt: case 3 ma plot
       :align: center
   
   .. figure:: ./tutorial_figures/3_peaks.png
-      :scale: 50 %
+      :scale: 40 %
       :alt: case 3 diff peaks
       :align: center
       
@@ -474,7 +491,7 @@ Step-By-Step Analysis
        
   
     .. figure:: ./tutorial_figures/3_vol.png
-      :scale: 40 %
+      :scale: 30 %
       :alt: case 3 Volcano Plot
       :align: center
 
