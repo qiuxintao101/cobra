@@ -76,20 +76,6 @@ Download and set-up for running the GR_ChIP sample dataset
   
   .. code-block:: shell-session            
      
-     #Sample Job Count List
-     $ snakemake all -np
-     Job counts:
-     count jobs
-     1 GSEA
-     1 add_deseq_gene
-     1 add_id_column
-     1 all
-     1 bed_enhancer_promoter
-     6 bedtools_intersect
-     10
-     
-  .. code-block:: shell-session            
-     
      #Sample Job Summary 
      $ snakemake all -np
      Job 81: ALIGN: Running BWA mem for alignment
