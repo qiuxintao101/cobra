@@ -2,7 +2,7 @@
 .. _docs-tutorial:
 
 ********
-Case Study
+Case Studies
 ********
 
 The three case studies below gives you a taste of different capabilities of our CoBRA workflow. The data sets you will be exploring are, 
