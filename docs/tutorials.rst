@@ -128,14 +128,14 @@ Step-By-Step Analysis
 
 
   .. figure:: ./tutorial_figures/1_pca.png
-      :scale: 25 %
+      :scale: 20 %
       :alt: case 1 pca plot
       :align: center
       
   As illustrated in the PCA plot, PC1 separates the samples with different treatment concentration of dexamethasone, while PC2 further separates the sample replicates.
  
   .. figure:: ./tutorial_figures/1_pca_scree.png
-      :scale: 25 %
+      :scale: 20 %
       :alt: tutorial 1 pca scree
       :align: center
 
@@ -151,7 +151,7 @@ Step-By-Step Analysis
   This command produces the ``heatmapSS_plot_100_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. It provides information on the clustering result based on the Pearson correlation coefficient, and illustrates the similarity between all samples in a pairwise fashion.
   
   .. figure:: ./tutorial_figures/1_SS.png
-      :scale: 25 %
+      :scale: 20 %
       :alt: case 1 ss heatmap
       :align: center
       
@@ -178,7 +178,7 @@ Step-By-Step Analysis
   However, normalizaiton by default DESeq2 method is still included as an option in our pipeline, see :ref:`parameter_norm_method` for detail.
   
   .. figure:: ./tutorial_figures/1_maplot.png
-      :scale: 40 %
+      :scale: 35 %
       :alt: case 1 ma plot
       :align: center
   
@@ -193,7 +193,7 @@ Step-By-Step Analysis
   It produces ``c50nm_vs_0.5nm.deseq.Padj0.05.LG2FC.0.pdf`` which illustrates the peak intensity of the differentially up and downregulated peaks. 
 
   .. figure:: ./tutorial_figures/1_peaks.png
-      :scale: 40 %
+      :scale: 30 %
       :alt: case 1 diff peats
       :align: center
        
@@ -213,14 +213,14 @@ Step-By-Step Analysis
     - two tables of cistrome toolkit result, each include a list of GEO accession numbers corresponding to all ChIP-seq data with similarity to the differential peak set (up or down-regulated)
     
   .. figure:: ./tutorial_figures/1_cistrome_geo.png
-      :scale: 338 %
+      :scale: 30 %
       :alt: case 1 cistrome GEO accession table
       :align: center
       
       The Cistrome Toolkit result table would include Cistrome DB sample ID, GEO accession number (GSM) and key information about the data set, i.e. factor name, cell line, cell type, giggle score. The entries are ranked by their giggle score.
   
   .. figure:: ./tutorial_figures/1_cistrome.png
-      :scale: 30 %
+      :scale: 25 %
       :alt: case 1 cistrome result
       :align: center
 
@@ -280,7 +280,7 @@ Step-By-Step Analysis
   As demonstrated in the previous case study, these command produces the pca plot and the heatmaps located in the ``analysis_result/clustering_analysis/rpkm.1_num_sample.0_scale.q_fliter.cov.100/plots`` folder. 
 
   .. figure:: ./tutorial_figures/2_pca.png
-      :scale: 25 %
+      :scale: 20 %
       :alt: case 2 pca plot
       :align: center
 
@@ -288,7 +288,7 @@ Step-By-Step Analysis
 
   
   .. figure:: ./tutorial_figures/2_SS.png
-      :scale: 25 %
+      :scale: 20 %
       :alt: case 2 ss heatmap
       :align: center
  
@@ -305,14 +305,14 @@ Step-By-Step Analysis
   As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/MSS_vs_MSI`` folder, including a MA plot and a peak intensity plot. Applying copy number variation adjustment eliminates false positive peaks that would otherwise be called as differential due to their significant copy number difference between the two sample groups MSI and MSS.
 
   .. figure:: ./tutorial_figures/2_peaks.png
-      :scale: 40 %
+      :scale: 30 %
       :alt: case 2 diff peaks
       :align: center
       
       Peaks Intensity Plot with CNV Adjustment
      
   .. figure:: ./tutorial_figures/2_peaks_nocnv.png
-      :scale: 40 %
+      :scale: 30 %
       :alt: tutorial 2 diff peaks no cnv
       :align: center
       
@@ -408,14 +408,14 @@ Step-By-Step Analysis
   Like illustrated in Case Study 1, this command produces the pca plot and the heatmaps located in the ```analysis_result/clustering_analysis/rpkm.3_num_sample.2_scale.q_fliter.cov.10/plots`` folder. 
 
   .. figure:: ./tutorial_figures/3_pca.png
-      :scale: 25 %
+      :scale: 20 %
       :alt: case 3 pca plot
       :align: center
 
   As illustrated in the PCA plot and scree plot above, PC1 (capturing 57=0.7% of variance explained) clearly separates the samples by their time frame
   
   .. figure:: ./tutorial_figures/3_SS.png
-      :scale: 25 %
+      :scale: 20 %
       :alt: case 3 ss heatmap
       :align: center
 
@@ -429,7 +429,7 @@ Step-By-Step Analysis
   This command produces the ``heatmapSF_plot_10_percent.pdf`` file located in the ``analysis_result/clustering_analysis/rpkm.3_num_sample.2_scale.q_fliter.cov.10/plots`` folder. It illustrates clustering of samples based on correlation on the horizontal axis and clustering of peaks on the vertical axis. It presents patterns of peaks (by k-means clustering) across samples and identifies the clusters that are enriched in a subset of samples.
   
   .. figure:: ./tutorial_figures/3_SF.png
-      :scale: 25 %
+      :scale: 20 %
       :alt: case 3 sf heatmap
       :align: center
  
@@ -454,7 +454,7 @@ Step-By-Step Analysis
  In the previous part, cluster 3 exhibits to be the peaks differentially upregulated in the 96h and 120h samples. The motifs significantly enriched in these peaks are shown below:
  
  .. figure:: ./tutorial_figures/3_cluster_motif_120.png
-      :scale: 26 %
+      :scale: 20 %
       :alt: case 3 cluster motif
       :align: center
 
@@ -469,12 +469,12 @@ Step-By-Step Analysis
   As demonstrated in Case Study 1, these command produces a series of differential peak analysis results located in the ``analysis_result/differential_peaks/{your_comparison}`` folder, including a MA plot and a peak intensity plot. 
   
   .. figure:: ./tutorial_figures/3_maplot.png
-      :scale: 40 %
+      :scale: 35 %
       :alt: case 3 ma plot
       :align: center
   
   .. figure:: ./tutorial_figures/3_peaks.png
-      :scale: 40 %
+      :scale: 30 %
       :alt: case 3 diff peaks
       :align: center
       
@@ -491,7 +491,7 @@ Step-By-Step Analysis
        
   
     .. figure:: ./tutorial_figures/3_vol.png
-      :scale: 30 %
+      :scale: 25 %
       :alt: case 3 Volcano Plot
       :align: center
 
