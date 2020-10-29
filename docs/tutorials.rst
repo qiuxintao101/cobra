@@ -20,27 +20,26 @@ Setup
 
 In preparation for the tutorials, please use the following steps to set up the cobra environment and retrieve the latest version of our pipeline:
 
-1. **Initiate Environment**: 
+1. **Initiate Docker Container**: 
   
-  Use the following command to activate the cobra environment:
+  Use the following command to start the cobra container in an empty working folder:
   
   .. code-block:: Bash
 
-    source activate cobra
+    docker run --rm -v $PWD:/cobra -it cfce/cobra:2.0
 
-2. **Retrieve the Latest Version of Cobra:**
+2. **Retrieve the Latest Version of Cobra Pipeline:**
 
   If installed using docker, run the following command to change the working directory. Otherwise, skip to next command:
    
   .. code-block:: Bash
    
-     cd cobra
+     cd cobra && source activate cobra 
    
-  Create a new directory for the tutorial (ex: gr_chip), change to the new working directory and pull the latest version of CoBRA using ``git clone`` :
+  pull the latest version of CoBRA using ``git clone`` :
 
   .. code-block:: Bash
 
-     mkdir gr_chip
      git clone https://bitbucket.org/cfce/cobra.git .
 
   If you receive an error, *Git* may not be installed on your system. Please consult the internet on how to best install Git for your system.
@@ -348,7 +347,7 @@ Step-By-Step Analysis
   
   Without CNV adjustment, GSEA will indicate greatest enrichment in gene sets solely related to amplification. As a result, it is challenging to assess the true epigenetic differences between the two colorectal cancer types. MSS vs MSI type tumors presents an especially challenging scenario. The MSS tumors exhibits large scale high copy number variations across the genome, including the 8q arm. However, the MSI tumors exhibits a focal amplification directly at 8q12-q22 region, making it very difficult for regular DE pipelines to assess the difference between these two types of amplifications. *CoBRA* is able to distinguish that difference by CNV adjustment and demonstrate in the GSEA result.
   
-  The gene set NIKOLSKY_BREAST_CANCER_8Q12_Q22_AMPLICON includes genes up-regulated in non-metastatic breast cancer tumors with amplification in the 8q22 region. Without adjustment for copy number variation, this gene set is significantly enriched in MSS samples, with a normalized enrichment score of -1.91 and an adjusted p-value less than 0.0001. With CNV adjustment, this gene set is considered far less enriched, with a normalized enrichment score of -1.69 and an adjusted p-value of 0.076.
+  The gene set NIKOLSKY_BREAST_CANCER_8Q12_Q22_AMPLICON includes genes up-regulated in non-metastatic breast cancer tumors with amplification in the 8q22 region. Without adjustment for copy number variation, this gene set is significantly enriched in MSS samples, with a normalized enrichment score of -2.84 and an adjusted p-value less than 0.0001. With CNV adjustment, this gene set is considered far less enriched, with a normalized enrichment score of -0.21 and an adjusted p-value of 1.
 
 
 Case Study 3: ATAC-seq from HL-60 promyelocytes differentiating into macrophages
