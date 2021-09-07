@@ -6,7 +6,7 @@ For more details, please see out following publication:
 
 Xintao Qiu*, Avery S. Feit*, Ariel Feiglin*, Yingtian Xie, Nikolas Kesten, Len Taing, Joseph Perkins, Shengqing Gu, Yihao Li, Paloma Cejas, Ningxuan Zhou, Rinath Jeselsohn, Myles Brown, X. Shirley Liu, Henry W. Long. CoBRA: Containerized Bioinformatics Workflow for Reproducible ChIP/ATAC-seq Analysis. 2021. Genomics, Proteomics & Bioinformatics.
 
-Open Access. DOI: `https://doi.org/10.1016/j.gpb.2020.11.007. <https://doi.org/10.1016/j.gpb.2020.11.007.>`_
+Open Access. DOI: `https://doi.org/10.1016/j.gpb.2020.11.007 <https://doi.org/10.1016/j.gpb.2020.11.007>`_
 
 
 *CoBRA's* conceptual idea and schematic is illustrated here. The first figure introduces the biological motivation. 
