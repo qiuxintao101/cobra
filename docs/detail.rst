@@ -364,8 +364,10 @@ Details
   .. code-block:: Bash
   
      bed:
-       sample1: ./XX1.fastq
-       sample2: ./XX2.fastq
+       sample1: 
+         - ./XX1.fastq.gz
+       sample2: 
+         - ./XX2.fastq.gz
 
 .. _parameter_BedFile:
 
