@@ -137,7 +137,7 @@ Notes for running with Docker
 
 .. code-block:: Bash
 
-   docker run --rm -v $PWD:/cobra -it cfce/cobra:latest
+   docker run --rm -v $PWD:/cobra -it cfce/cobra:2.0
 
 1. ``--rm``: This option will help delete the container immediately after it exits. This helps to prevent having to clean up containers after the workflow has finished running.
 
