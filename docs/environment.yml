@@ -276,5 +276,6 @@ dependencies:
   - xz=5.2.4=h470a237_1
   - yaml=0.1.7=had09818_2
   - zlib=1.2.11=h470a237_4
+  - tabulate
 prefix: /opt/conda/envs/cobra
 
