@@ -42,8 +42,8 @@ The documentation is organized into the following two sections:
    :maxdepth: 2
    :caption: Tutorials
 
-
    tutorials.rst
+
 
 *License*
 GNU General Public License v2.0
