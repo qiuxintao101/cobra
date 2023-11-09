@@ -43,9 +43,7 @@ The documentation is organized into the following two sections:
    :caption: Tutorials
 
 
-License
-GNU General Public License v2.0
    tutorials.rst
 
-License
+*License*
 GNU General Public License v2.0
