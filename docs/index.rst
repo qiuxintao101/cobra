@@ -44,3 +44,5 @@ The documentation is organized into the following two sections:
 
    tutorials.rst
 
+License
+GNU General Public License v2.0
